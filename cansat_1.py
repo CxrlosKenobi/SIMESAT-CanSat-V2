@@ -37,7 +37,6 @@ mpu = MPU9250(
 mpu.configure() # Apply the settings to the registers.
 
 while True:
-
     print("|.....MPU9250 in 0x68 Address.....|")
     print("Accelerometer", mpu.readAccelerometerMaster())
     print("Gyroscope", mpu.readGyroscopeMaster())
@@ -60,37 +59,37 @@ b1 = bus.read_i2c_block_data(0x76, 0x88, 24) # Read data back from 0x88(136), 24
 dig_T1 = b1[1] * 256 + b1[0]
 dig_T2 = b1[3] * 256 + b1[2]
 if dig_T2 > 32767 :
-dig_T2 -= 65536
-dig_T3 = b1[5] * 256 + b1[4]
+    dig_T2 -= 65536
+    dig_T3 = b1[5] * 256 + b1[4]
 if dig_T3 > 32767 :
-dig_T3 -= 65536
+    dig_T3 -= 65536
 
 # Pressure coefficents
 dig_P1 = b1[7] * 256 + b1[6]
 dig_P2 = b1[9] * 256 + b1[8]
 if dig_P2 > 32767 :
-dig_P2 -= 65536
-dig_P3 = b1[11] * 256 + b1[10]
+    dig_P2 -= 65536
+    dig_P3 = b1[11] * 256 + b1[10]
 if dig_P3 > 32767 :
-dig_P3 -= 65536
-dig_P4 = b1[13] * 256 + b1[12]
+    dig_P3 -= 65536
+    dig_P4 = b1[13] * 256 + b1[12]
 if dig_P4 > 32767 :
-dig_P4 -= 65536
-dig_P5 = b1[15] * 256 + b1[14]
+    dig_P4 -= 65536
+    dig_P5 = b1[15] * 256 + b1[14]
 if dig_P5 > 32767 :
-dig_P5 -= 65536
-dig_P6 = b1[17] * 256 + b1[16]
+    dig_P5 -= 65536
+    dig_P6 = b1[17] * 256 + b1[16]
 if dig_P6 > 32767 :
-dig_P6 -= 65536
-dig_P7 = b1[19] * 256 + b1[18]
+    dig_P6 -= 65536
+    dig_P7 = b1[19] * 256 + b1[18]
 if dig_P7 > 32767 :
-dig_P7 -= 65536
-dig_P8 = b1[21] * 256 + b1[20]
+    dig_P7 -= 65536
+    dig_P8 = b1[21] * 256 + b1[20]
 if dig_P8 > 32767 :
-dig_P8 -= 65536
-dig_P9 = b1[23] * 256 + b1[22]
+    dig_P8 -= 65536
+    dig_P9 = b1[23] * 256 + b1[22]
 if dig_P9 > 32767 :
-dig_P9 -= 65536
+    dig_P9 -= 65536
 
 # BMP280 address, 0x76(118)
 # Select Control measurement register, 0xF4(244)
@@ -150,6 +149,7 @@ GPS Ublox NEO-6M
 #Configurar desde Rasp con alguno de los siguientes:
     #https://github.com/FranzTscharf/Python-NEO-6M-GPS-Raspberry-Pi
     #https://sparklers-the-makers.github.io/blog/robotics/use-neo-6m-module-with-raspberry-pi/
+    #https://github.com/mikechan0731/GY-91_and_PiCamera_RaspberryPi
 #Chequear en internet para printear también la Velocidad y la Altitud.
 import serial
 import time
@@ -243,12 +243,10 @@ hdc1080.setHumidityResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_HUMIDITY_RESOLUTION_
 print ("configure register = 0x%X" % hdc1080.readConfigRegister())
 
 while True:
-
         print ("-----------------")
         print ("Temperature = %3.1f C" % hdc1080.readTemperature())
         print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
         print ("-----------------")
-
         time.sleep(3.0)
 
 '''
@@ -262,9 +260,7 @@ Placa STM32F103C8T
 '''
 Módulo LoRa RFM95W para 915MHz | Marca: HopeRF
     - Receptor y emisor de paquetes.
-    -
 '''
-
 #https://pypi.org/project/raspi-lora/
 #https://pypi.org/project/pyLoraRFM9x/
 
