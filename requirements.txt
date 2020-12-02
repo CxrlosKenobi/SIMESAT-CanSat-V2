@@ -1,0 +1,2 @@
+pynmea2==1.15.0
+pyserial==3.5
