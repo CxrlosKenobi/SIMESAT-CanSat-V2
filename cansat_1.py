@@ -1,3 +1,8 @@
+## TO-DO LIST ##
+#Remote control de Raspberry Pi Zero W sin ip publica
+#Clases para cada componente.
+    #Ejemplo: Class GY-91: GY-91.Accelerometer | GY-91.Pressure
+
 import os
 #Creando el requirements.txt
 dir = os.system('pwd')
@@ -12,6 +17,130 @@ Módulo GY-91
 - Presión
 - Temperatura
 '''
+#Configurar desde Rasp con algunos de los siguientes:
+    #https://pypi.org/project/mpu9250-jmdev/
+    #http://www.pibits.net/code/raspberry-pi-and-bmp280-sensor-example.php
+#MPU9250
+import time
+from mpu9250_jmdev.registers import *
+from mpu9250_jmdev.mpu_9250 import MPU9250
+
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure() # Apply the settings to the registers.
+
+while True:
+
+    print("|.....MPU9250 in 0x68 Address.....|")
+    print("Accelerometer", mpu.readAccelerometerMaster())
+    print("Gyroscope", mpu.readGyroscopeMaster())
+    print("Magnetometer", mpu.readMagnetometerMaster())
+    print("Temperature", mpu.readTemperatureMaster())
+    print("\n")
+
+    time.sleep(1)
+
+#BMP280
+import smbus
+import time
+
+bus = smbus.SMBus(1) # Get I2C bus
+
+# BMP280 address, 0x76(118)
+b1 = bus.read_i2c_block_data(0x76, 0x88, 24) # Read data back from 0x88(136), 24 bytes
+
+# Convert the data # Temp coefficents
+dig_T1 = b1[1] * 256 + b1[0]
+dig_T2 = b1[3] * 256 + b1[2]
+if dig_T2 > 32767 :
+dig_T2 -= 65536
+dig_T3 = b1[5] * 256 + b1[4]
+if dig_T3 > 32767 :
+dig_T3 -= 65536
+
+# Pressure coefficents
+dig_P1 = b1[7] * 256 + b1[6]
+dig_P2 = b1[9] * 256 + b1[8]
+if dig_P2 > 32767 :
+dig_P2 -= 65536
+dig_P3 = b1[11] * 256 + b1[10]
+if dig_P3 > 32767 :
+dig_P3 -= 65536
+dig_P4 = b1[13] * 256 + b1[12]
+if dig_P4 > 32767 :
+dig_P4 -= 65536
+dig_P5 = b1[15] * 256 + b1[14]
+if dig_P5 > 32767 :
+dig_P5 -= 65536
+dig_P6 = b1[17] * 256 + b1[16]
+if dig_P6 > 32767 :
+dig_P6 -= 65536
+dig_P7 = b1[19] * 256 + b1[18]
+if dig_P7 > 32767 :
+dig_P7 -= 65536
+dig_P8 = b1[21] * 256 + b1[20]
+if dig_P8 > 32767 :
+dig_P8 -= 65536
+dig_P9 = b1[23] * 256 + b1[22]
+if dig_P9 > 32767 :
+dig_P9 -= 65536
+
+# BMP280 address, 0x76(118)
+# Select Control measurement register, 0xF4(244)
+# 0x27(39) Pressure and Temperature Oversampling rate = 1
+
+# Normal mode
+bus.write_byte_data(0x76, 0xF4, 0x27)
+
+# BMP280 address, 0x76(118)
+# Select Configuration register, 0xF5(245)
+# 0xA0(00) Stand_by time = 1000 ms
+
+bus.write_byte_data(0x76, 0xF5, 0xA0)
+time.sleep(0.5)
+
+# BMP280 address, 0x76(118)
+# Read data back from 0xF7(247), 8 bytes
+# Pressure MSB, Pressure LSB, Pressure xLSB, Temperature MSB, Temperature LSB
+# Temperature xLSB, Humidity MSB, Humidity LSB
+
+data = bus.read_i2c_block_data(0x76, 0xF7, 8)
+
+# Convert pressure and temperature data to 19-bits
+adc_p = ((data[0] * 65536) + (data[1] * 256) + (data[2] & 0xF0)) / 16
+adc_t = ((data[3] * 65536) + (data[4] * 256) + (data[5] & 0xF0)) / 16
+
+# Temperature offset calculations
+var1 = ((adc_t) / 16384.0 - (dig_T1) / 1024.0) * (dig_T2)
+var2 = (((adc_t) / 131072.0 - (dig_T1) / 8192.0) * ((adc_t)/131072.0 - (dig_T1)/8192.0)) * (dig_T3)
+t_fine = (var1 + var2)
+cTemp = (var1 + var2) / 5120.0
+fTemp = cTemp * 1.8 + 32
+
+# Pressure offset calculations
+var1 = (t_fine / 2.0) - 64000.0
+var2 = var1 * var1 * (dig_P6) / 32768.0
+var2 = var2 + var1 * (dig_P5) * 2.0
+var2 = (var2 / 4.0) + ((dig_P4) * 65536.0)
+var1 = ((dig_P3) * var1 * var1 / 524288.0 + ( dig_P2) * var1) / 524288.0
+var1 = (1.0 + var1 / 32768.0) * (dig_P1)
+p = 1048576.0 - adc_p
+p = (p - (var2 / 4096.0)) * 6250.0 / var1
+var1 = (dig_P9) * p * p / 2147483648.0
+var2 = p * (dig_P8) / 32768.0
+pressure = (p + (var1 + var2 + (dig_P7)) / 16.0) / 100
+
+# Output data to screen
+print("Temp(C): %.2f C" %cTemp)
+print("Temp(F): %.2f F" %fTemp)
+print("Pres: %.2f hPa " %pressure)
 
 
 '''
@@ -51,13 +180,82 @@ GY-213 HDC1080
 '''
 #Configurar desde Rasp | Posibles enlaces con info:
     #https://github.com/switchdoclabs/SDL_Pi_HDC1000
+    #https://github.com/switchdoclabs/SDL_Pi_HDC1080_Python3/blob/master/testHDC1080.py
 
+###### TESTING CODE 1 ######
+#imports
+
+import sys
+import time
+import datetime
+import SDL_Pi_HDC1080
+
+
+
+# Main Program
+print
+print ("")
+print ("Test SDL_Pi_HDC1080 Version 1.1 - SwitchDoc Labs")
+print ("")
+print ("Sample uses 0x40 and SwitchDoc HDC1080 Breakout board ")
+print ("Program Started at:"+ time.strftime("%Y-%m-%d %H:%M:%S"))
+print ("")
+
+hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
+
+print ("------------")
+print ("Manfacturer ID=0x%X"% hdc1080.readManufacturerID())
+print ("Device ID=0x%X"% hdc1080.readDeviceID() )
+print ("Serial Number ID=0x%X"% hdc1080.readSerialNumber())
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+# turn heater on
+print ("turning Heater On")
+hdc1080.turnHeaterOn()
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+# turn heater off
+print ("turning Heater Off")
+hdc1080.turnHeaterOff()
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+# change temperature resolution
+print ("change temperature resolution")
+hdc1080.setTemperatureResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_TEMPERATURE_RESOLUTION_11BIT)
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+# change temperature resolution
+print ("change temperature resolution")
+hdc1080.setTemperatureResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_TEMPERATURE_RESOLUTION_14BIT)
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+# change humdity resolution
+print ("change humidity resolution")
+hdc1080.setHumidityResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_HUMIDITY_RESOLUTION_8BIT)
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+# change humdity resolution
+print ("change humidity resolution")
+hdc1080.setHumidityResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_HUMIDITY_RESOLUTION_14BIT)
+# read configuration register
+print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+while True:
+
+        print ("-----------------")
+        print ("Temperature = %3.1f C" % hdc1080.readTemperature())
+        print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
+        print ("-----------------")
+
+        time.sleep(3.0)
 
 '''
 Placa STM32F103C8T
     - Temporizador.
     - Reloj integrado.
-    - Conversor de senñal analógica a digial(viceversa)
+    - Conversor de señal analógica a digital (viceversa)
 '''
 
 
@@ -66,11 +264,12 @@ Módulo LoRa RFM95W para 915MHz | Marca: HopeRF
     - Receptor y emisor de paquetes.
     -
 '''
+
 #https://pypi.org/project/raspi-lora/
 #https://pypi.org/project/pyLoraRFM9x/
-
 
 '''
 Buzzer
     - Emite pitidos.
 '''
+#Se funciona con el paso de energia
