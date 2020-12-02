@@ -1,2 +1,4 @@
 pynmea2==1.15.0
+mpu9250_jmdev==1.0.12
 pyserial==3.5
+smbus==1.1.post2
