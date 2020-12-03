@@ -255,7 +255,11 @@ Placa STM32F103C8T
     - Reloj integrado.
     - Conversor de señal analógica a digital (viceversa)
 '''
-
+#https://www.youtube.com/watch?v=a_G3WqjfPBA
+#https://github.com/micropython/micropython | Micropython
+#https://github.com/PhenixWen/MicroPython_STM32 | Micropython with STM32
+#https://github.com/morris13579/micropython-stm32f1 | Micropython with STM32F1
+    #https://github.com/rsp-esl/micropython-stm32-examples | Examples of the above
 
 '''
 Módulo LoRa RFM95W para 915MHz | Marca: HopeRF
@@ -264,8 +268,62 @@ Módulo LoRa RFM95W para 915MHz | Marca: HopeRF
 #https://pypi.org/project/raspi-lora/
 #https://pypi.org/project/pyLoraRFM9x/
 
+from raspi_lora import LoRa, ModemConfig
+#This is out callback function that runs when a message is received
+def on_recv(payload):
+    print("From:", payload.header_from)
+    print("Received:", payload.message)
+    print("RRSSI: {}; SNR: {}".fromat(payload.rssi, payload.snr))
+#Use chip select 0. GPIO pin 17 will be used for interrupts
+#The address of this device will be set to 2
+lora = LoRa(0, 17, 2, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=True)
+lora.on_recv = on_recv
+
+lora.set_mode_rx()
+
+#Send a  message to a recipient device with addres 10
+#Retry sending the message twice if we don't get an ackonwledgment from the recipient
+message = "Hello there!"
+status = lora.send_to_wait(message, 10, retries=2)
+if status is True:
+    print("Message sent!")
+else:
+    print("No acknowledgment from recipient")
+#And remember to call this as your program exits...
+lora.close()
+
+## Encrypt
+from Crypto.Cipher import AES
+crypto = AES.new(b"my-secret-encryption-key", AES.MODE_EAX)
+
+lora = LoRa(0, 17, 2, crypto=crypto)
+
+
+
 '''
 Buzzer
     - Emite pitidos.
 '''
-#Se funciona con el paso de energia
+#https://www.instructables.com/Raspberry-Pi-Tutorial-How-to-Use-a-Buzzer/
+#https://www.youtube.com/watch?v=HOisQF-JaS0&ab_channel=AndyTran
+from time import sleep
+import RPi.GPIO as GPIO
+
+#Disable warnings (optional)
+GPIO.setwarnings(False)
+
+#Select GPIO mode
+GPIO.setmode(GPIO.BCM)
+
+#Set buzzer - pin 23 as output
+buzzer = 23
+GPIO.setup(buzzer, GPIO.OUT)
+
+#Run forever loop
+while True:
+    GPIO.output(buzzer, GPIO.HIGH)
+    print("Beep")
+    sleep(0.5) # Delay in seconds
+    GPIO.output(buzzer, GPIO.LOW)
+    print("No Beep")
+    sleep(0.5)
