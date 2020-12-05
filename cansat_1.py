@@ -183,14 +183,10 @@ GY-213 HDC1080
     #https://github.com/switchdoclabs/SDL_Pi_HDC1080_Python3/blob/master/testHDC1080.py
 
 ###### TESTING CODE 1 ######
-#imports
-
 import sys
 import time
 import datetime
 import SDL_Pi_HDC1080
-
-
 
 # Main Program
 print
@@ -328,4 +324,4 @@ while True:
     print("No Beep")
     sleep(0.5)
 
-#May the force be with you 
+#May the force be with you
