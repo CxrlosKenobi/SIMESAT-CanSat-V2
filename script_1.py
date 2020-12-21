@@ -147,13 +147,7 @@ def NEO_6M():
         #Output:
         #Lat: XX.XXXXXXX  Long: XX.XXXXXXX
         #Lat: XX.XXXXXXX  Long: XX.XXXXXXX
-    return print(gps)
-
-
-
-def main():
-    print('Main...')
-    return True
+    return gps
 
 #Modulo GY-213 HDC1080
 def GY213():
@@ -212,9 +206,57 @@ def GY213():
         print ("-----------------")
         time.sleep(3.0)
 
+#Modulo LoRa HopeRF
+def loraFunction():
+    def on_Recv(payload):
+            print("From:", payload.header_from)
+            print("Received:", payload.message)
+            print("RRSSI: {}; SNR: {}".fromat(payload.rssi, payload.snr))
+
+    #Use chip select 0. GPIO pin 17 will be used for interrupts
+    #The address of this device will be set to 2
+    lora = LoRa(0, 17, 2, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=True)
+    lora.on_recv = on_recv
+    lora.set_mode_rx()
+
+    #Send a  message to a recipient device with addres 10
+    #Retry sending the message twice if we don't get an ackonwledgment from the recipient
+    message = "Hello there!"
+    status = lora.send_to_wait(message, 10, retries=2)
+    if status is True:
+        print("Message sent!")
+    else:
+        print("No acknowledgment from recipient")
+    #And remember to call this as your program exits...
+    lora.close()
+
+    crypto = AES.new(b'my-secret-encryption-key', AES.MODE_EAX)
+    lora = LoRa(0, 17, 2, crypto=crypto)
+
+#Buzzer script
+def buzzer():
+    #Disable warnings (optional)
+    GPIO.setwarnings(False)
+
+    #Select GPIO mode
+    GPIO.setmode(GPIO.BCM)
+
+    #Set buzzer - pin 23 as Output
+    pinBuzzer = 23
+    GPIO.setup(pinBuzzer, GPIO.OUT)
+
+    while True:
+        GPIO.output(pinBuzzer, GPIO.HIGH)
+        print('Beep')
+        sleep(0.5) # Delay in seconds
+        GPIO.output(pinBuzzer, GPIO.LOW)
+        print('No Beep')
+        sleep(0.5)
+
 def main():
     print('Just the main function')
     return 0
+
 
 if __name__ == '__main__':
     main()
