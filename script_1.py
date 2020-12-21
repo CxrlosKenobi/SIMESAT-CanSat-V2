@@ -1,7 +1,7 @@
 ## Importando librerias ##
-from mpu9250_jmdev.registers import *
 from mpu9250_jmdev.mpu_9250 import MPU9250
 from raspi_lora import LoRa, ModemConfig
+from mpu9250_jmdev.registers import *
 from Cryto.Cipher import AES
 import time import *
 import os
@@ -155,7 +155,7 @@ def main():
     print('Main...')
     return True
 
-#Modulo
+#Modulo GY-213 HDC1080
 def GY213():
     print ("")
     print ("Test SDL_Pi_HDC1080 Version 1.1 - SwitchDoc Labs")
@@ -206,11 +206,11 @@ def GY213():
     print ("configure register = 0x%X" % hdc1080.readConfigRegister())
 
     while True:
-            print ("-----------------")
-            print ("Temperature = %3.1f C" % hdc1080.readTemperature())
-            print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
-            print ("-----------------")
-            time.sleep(3.0)
+        print ("-----------------")
+        print ("Temperature = %3.1f C" % hdc1080.readTemperature())
+        print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
+        print ("-----------------")
+        time.sleep(3.0)
 
 def main():
     print('Just the main function')
