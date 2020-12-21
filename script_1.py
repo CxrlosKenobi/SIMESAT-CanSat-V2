@@ -3,6 +3,8 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 from raspi_lora import LoRa, ModemConfig
 from mpu9250_jmdev.registers import *
 from Cryto.Cipher import AES
+import RPi.GPIO as GPIO
+import SDL_Pi_HDC1080
 import time import *
 import os
 import sys
@@ -11,8 +13,6 @@ import string
 import serial
 import pynmea2
 import datetime
-import SDL_Pi_HDC1080
-import RPi.GPIO as GPIO
 
 
 #Modulo GY-91
