@@ -36,16 +36,185 @@ def GY91():
         print("\n")
 
         time.sleep(1)
-    return 0
 
-
+#Modulo BMP280
 def BMP280():
     bus = smbus.SMBus(1) # Get I2c bus
-    return 0
+    # BMP280 address, 0x76(118)
+    b1 = bus.read_i2c_block_data(0x76, 0x88, 24) # Read data back from 0x88(136), 24 bytes
+
+    # Convert the data # Temp coefficents
+    dig_T1 = b1[1] * 256 + b1[0]
+    dig_T2 = b1[3] * 256 + b1[2]
+    if dig_T2 > 32767 :
+        dig_T2 -= 65536
+        dig_T3 = b1[5] * 256 + b1[4]
+    if dig_T3 > 32767 :
+        dig_T3 -= 65536
+
+    # Pressure coefficents
+    dig_P1 = b1[7] * 256 + b1[6]
+    dig_P2 = b1[9] * 256 + b1[8]
+    if dig_P2 > 32767 :
+        dig_P2 -= 65536
+        dig_P3 = b1[11] * 256 + b1[10]
+    if dig_P3 > 32767 :
+        dig_P3 -= 65536
+        dig_P4 = b1[13] * 256 + b1[12]
+    if dig_P4 > 32767 :
+        dig_P4 -= 65536
+        dig_P5 = b1[15] * 256 + b1[14]
+    if dig_P5 > 32767 :
+        dig_P5 -= 65536
+        dig_P6 = b1[17] * 256 + b1[16]
+    if dig_P6 > 32767 :
+        dig_P6 -= 65536
+        dig_P7 = b1[19] * 256 + b1[18]
+    if dig_P7 > 32767 :
+        dig_P7 -= 65536
+        dig_P8 = b1[21] * 256 + b1[20]
+    if dig_P8 > 32767 :
+        dig_P8 -= 65536
+        dig_P9 = b1[23] * 256 + b1[22]
+    if dig_P9 > 32767 :
+        dig_P9 -= 65536
+
+    # BMP280 address, 0x76(118)
+    # Select Control measurement register, 0xF4(244)
+    # 0x27(39) Pressure and Temperature Oversampling rate = 1
+
+    # Normal mode
+    bus.write_byte_data(0x76, 0xF4, 0x27)
+
+    # BMP280 address, 0x76(118)
+    # Select Configuration register, 0xF5(245)
+    # 0xA0(00) Stand_by time = 1000 ms
+
+    bus.write_byte_data(0x76, 0xF5, 0xA0)
+    time.sleep(0.5)
+
+    # BMP280 address, 0x76(118)
+    # Read data back from 0xF7(247), 8 bytes
+    # Pressure MSB, Pressure LSB, Pressure xLSB, Temperature MSB, Temperature LSB
+    # Temperature xLSB, Humidity MSB, Humidity LSB
+
+    data = bus.read_i2c_block_data(0x76, 0xF7, 8)
+
+    # Convert pressure and temperature data to 19-bits
+    adc_p = ((data[0] * 65536) + (data[1] * 256) + (data[2] & 0xF0)) / 16
+    adc_t = ((data[3] * 65536) + (data[4] * 256) + (data[5] & 0xF0)) / 16
+
+    # Temperature offset calculations
+    var1 = ((adc_t) / 16384.0 - (dig_T1) / 1024.0) * (dig_T2)
+    var2 = (((adc_t) / 131072.0 - (dig_T1) / 8192.0) * ((adc_t)/131072.0 - (dig_T1)/8192.0)) * (dig_T3)
+    t_fine = (var1 + var2)
+    cTemp = (var1 + var2) / 5120.0
+    fTemp = cTemp * 1.8 + 32
+
+    # Pressure offset calculations
+    var1 = (t_fine / 2.0) - 64000.0
+    var2 = var1 * var1 * (dig_P6) / 32768.0
+    var2 = var2 + var1 * (dig_P5) * 2.0
+    var2 = (var2 / 4.0) + ((dig_P4) * 65536.0)
+    var1 = ((dig_P3) * var1 * var1 / 524288.0 + ( dig_P2) * var1) / 524288.0
+    var1 = (1.0 + var1 / 32768.0) * (dig_P1)
+    p = 1048576.0 - adc_p
+    p = (p - (var2 / 4096.0)) * 6250.0 / var1
+    var1 = (dig_P9) * p * p / 2147483648.0
+    var2 = p * (dig_P8) / 32768.0
+    pressure = (p + (var1 + var2 + (dig_P7)) / 16.0) / 100
+
+    # Output data to screen
+    out_data =
+    print("Temp(C): %.2f C" %cTemp)
+    print("Temp(F): %.2f F" %fTemp)
+    print("Pres: %.2f hPa " %pressure)
+
+#Modulo GPS Ublox NEO-6M
+def NEO_6M():
+    while True:
+        port = '/dev/ttyAMA0'
+        ser = serial.Serial(port, baudrate=9600, timeout=0.5)
+        dataout = pynmea2.NMEAStreamReader()
+        newdata = ser.readline()
+
+        if newdata[0:6] == "$GPRMC":
+            newmsg = pynmea2.parse(newdata)
+            lat = newmsg.latitude
+            long = newmsg.longitude
+            gps = "Lat: " + str(lat) + " Long: " + str(long
+
+        #Output:
+        #Lat: XX.XXXXXXX  Long: XX.XXXXXXX
+        #Lat: XX.XXXXXXX  Long: XX.XXXXXXX
+    return print(gps)
+
+
 
 def main():
     print('Main...')
     return True
+
+#Modulo
+def GY213():
+    print ("")
+    print ("Test SDL_Pi_HDC1080 Version 1.1 - SwitchDoc Labs")
+    print ("")
+    print ("Sample uses 0x40 and SwitchDoc HDC1080 Breakout board ")
+    print ("Program Started at:"+ time.strftime("%Y-%m-%d %H:%M:%S"))
+    print ("")
+
+    hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
+
+    print ("------------")
+    print ("Manfacturer ID=0x%X"% hdc1080.readManufacturerID())
+    print ("Device ID=0x%X"% hdc1080.readDeviceID() )
+    print ("Serial Number ID=0x%X"% hdc1080.readSerialNumber())
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+    # turn heater on
+    print ("turning Heater On")
+    hdc1080.turnHeaterOn()
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+    # turn heater off
+    print ("turning Heater Off")
+    hdc1080.turnHeaterOff()
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+    # change temperature resolution
+    print ("change temperature resolution")
+    hdc1080.setTemperatureResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_TEMPERATURE_RESOLUTION_11BIT)
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+    # change temperature resolution
+    print ("change temperature resolution")
+    hdc1080.setTemperatureResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_TEMPERATURE_RESOLUTION_14BIT)
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+    # change humdity resolution
+    print ("change humidity resolution")
+    hdc1080.setHumidityResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_HUMIDITY_RESOLUTION_8BIT)
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+    # change humdity resolution
+    print ("change humidity resolution")
+    hdc1080.setHumidityResolution(SDL_Pi_HDC1080.HDC1080_CONFIG_HUMIDITY_RESOLUTION_14BIT)
+    # read configuration register
+    print ("configure register = 0x%X" % hdc1080.readConfigRegister())
+
+    while True:
+            print ("-----------------")
+            print ("Temperature = %3.1f C" % hdc1080.readTemperature())
+            print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
+            print ("-----------------")
+            time.sleep(3.0)
+
+def main():
+    print('Just the main function')
+    return 0
 
 if __name__ == '__main__':
     main()
