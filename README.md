@@ -3,3 +3,11 @@
 ## Subtitle
 
 [https://aeroespacial.centrosimes.cl/](https://aeroespacial.centrosimes.cl/)
+
+## RPi-GPIO usos de la libreria:
+  -> Para importar la librería sin "errores":
+
+  try:
+    import RPi.GPIO as GPIO
+  except RuntimeError:
+    print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.  You can achieve this by using 'sudo' to run your script")
