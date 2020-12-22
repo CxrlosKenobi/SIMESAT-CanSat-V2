@@ -6,36 +6,36 @@
 
 ## RPi-GPIO usos de la libreria:
  [Library Source](https://sourceforge.net/p/raspberry-gpio-python/wiki/BasicUsage/) <br>
-  **Para importar la librería sin "errores":**
+  **Importing libraries without bugs**
 ```
   try:
     import RPi.GPIO as GPIO
   except RuntimeError:
-    print("Error importing RPi.GPIO! This is probably because you need superuser privileges.  You can achieve this by using 'sudo' to run your script")
+    print("Error al importar GPIO. Puede que necesites permisos de adminitrador; puedes probar ejecutando el Script con "sudo")
 ```
 
-  **Seleccionar Pin de entrada:**
+  **Select IN pin:**
 ```
   GPIO.setup(Pin, GPIO.IN)
 ```
 
-  **Seleccionar Pin de salida:**
+  **Select OUT pin**
 ```
   GPIO.setup(Pin, GPIO.OUT)
 ```
 
-  **Leer un valor de entrada de un Pin específico:**
+  **Read the IN value of a specific pin**
  ```
  GPIO.input(Pin)
  ```
 
-  **Entregar un salida al Pin:**
+  **Give an OUT to the pin**
 ```
 GPIO.output(channel, state)
 Dato -> "state" puede ser "LOW" o "HIGH"
 ```
 
-**La salida de un Pin se puede trabajar en conjunto:**
+**The OUT of a pin can be in colab**
 ```
 Pin_List = [11,12] # Seleciona un lista con dos Pines (11 y 12)                           
 GPIO.output(Pin_List, GPIO.LOW) # Modifica los Pines 11 y 12 como "Low"             
