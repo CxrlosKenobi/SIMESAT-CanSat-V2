@@ -41,3 +41,8 @@ Pin_List = [11,12] # Seleciona un lista con dos Pines (11 y 12)
 GPIO.output(Pin_List, GPIO.LOW) # Modifica los Pines 11 y 12 como "Low"             
 GPIO.output(Pin_List, (GPIO.HIGH, GPIO.LOW)) # Para ambos Pines, pimero pasa por "HIGH" y luego por "LOW"
 ```
+
+## Team
+[![Carlos Pinto](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/CarlosPinto.jpg)](https://www.linkedin.com/in/carloskenobi/) | [![Rodrigo Flores](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/RodrigoFlores.jpeg)](www.google.com)
+---|---
+[Carlos Pinto ](https://www.linkedin.com/in/carloskenobi/) |[Rodrigo Flores](www.google.com)
