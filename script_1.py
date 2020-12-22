@@ -6,13 +6,13 @@ from Cryto.Cipher import AES
 import RPi.GPIO as GPIO
 import SDL_Pi_HDC1080
 import time import *
-import os
-import sys
-import smbus
+import datetime
+import pynmea2
 import string
 import serial
-import pynmea2
-import datetime
+import smbus
+import sys
+import os
 
 
 #Modulo GY-91
