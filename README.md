@@ -42,7 +42,7 @@ GPIO.output(Pin_List, GPIO.LOW) # Modifica los Pines 11 y 12 como "Low"
 GPIO.output(Pin_List, (GPIO.HIGH, GPIO.LOW)) # Para ambos Pines, pimero pasa por "HIGH" y luego por "LOW"
 ```
 
-## Team
-[![Carlos Pinto](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/CarlosPinto.jpg)](https://www.linkedin.com/in/carloskenobi/) | [![Rodrigo Flores](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/RodrigoFlores.jpeg)](www.google.com)
+## Programming's Team
+[![Carlos Pinto](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/CarlosPinto.jpg)](https://www.linkedin.com/in/carloskenobi/) | [![Rodrigo Flores](https://raw.githubusercontent.com/CxrlosKenobi/CanSat-programming/main/assets/images/RodrigoFlores.jpeg)](https://www.linkedin.com/in/rodrigo-flores-549269160/)
 ---|---
 [Carlos Pinto ](https://www.linkedin.com/in/carloskenobi/) |[Rodrigo Flores](http://linkedin.com/in/rodrigo-flores-549269160)
