@@ -109,7 +109,7 @@ def GY91():
         print("Temperature", mpu.readTemperatureMaster())
         print("\n")
 
-        time.sleep(1)
+        sleep(1)
 
 #Modulo BMP280
 def BMP280():
@@ -165,7 +165,7 @@ def BMP280():
     # 0xA0(00) Stand_by time = 1000 ms
 
     bus.write_byte_data(0x76, 0xF5, 0xA0)
-    time.sleep(0.5)
+    sleep(0.5)
 
     # BMP280 address, 0x76(118)
     # Read data back from 0xF7(247), 8 bytes
@@ -229,7 +229,7 @@ def GY213():
     print ("Test SDL_Pi_HDC1080 Version 1.1 - SwitchDoc Labs")
     print ("")
     print ("Sample uses 0x40 and SwitchDoc HDC1080 Breakout board ")
-    print ("Program Started at:"+ time.strftime("%Y-%m-%d %H:%M:%S"))
+    print ("Program Started at:"+ strftime("%Y-%m-%d %H:%M:%S"))
     print ("")
 
     hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
@@ -278,7 +278,7 @@ def GY213():
         print ("Temperature = %3.1f C" % hdc1080.readTemperature())
         print ("Humidity = %3.1f %%" % hdc1080.readHumidity())
         print ("-----------------")
-        time.sleep(3.0)
+        sleep(3.0)
 
 #Modulo LoRa HopeRF
 def loraFunction():
