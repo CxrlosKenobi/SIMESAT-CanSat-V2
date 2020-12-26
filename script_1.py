@@ -2,18 +2,92 @@
 from mpu9250_jmdev.mpu_9250 import MPU9250
 from raspi_lora import LoRa, ModemConfig
 from mpu9250_jmdev.registers import *
+import matplotlib.pyplot as plt
 from Cryto.Cipher import AES
 import RPi.GPIO as GPIO
 import SDL_Pi_HDC1080
-import time import *
+import numpy as np
+from time import *
 import datetime
 import pynmea2
 import string
 import serial
 import smbus
 import sys
+import csv
 import os
 
+def plotter(type, data1, data2, data3):
+    # Can be plot, bar, hist, pie...
+    if type = 'plot':
+        x = []
+        y = []
+
+        plt.xlabel('lala')
+        plt.plot(x, y, linestyle=':', color='violet', alpha=0.9)
+        #plt.show()
+        plt.savefig('plot.png')
+        return 0
+    elif type = 'bar':
+        return 0
+    elif type = 'hist':
+
+        return 0
+    elif type = 'pie':
+        fig1, ax1 = plt.subplots()
+        labels = ['a', 'b', 'c']
+        sizes = [3, 6, 8]
+        colors = ['red', 'blue', 'violet']
+        explode = (0.05, 0.05, 0.05)
+
+        ax1.pie(sizes, colors = colors, labels = labels, explode = explode, autopct='%1.1f%%', startangle=90)
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        fig = plt.gcf()
+        fig.gca().add_artist(centre_circle)
+
+        ax1.axis=('equal')
+        plt.tight_layout()
+        plt.show()
+        plt.savefig('piechart.png')
+        return 0
+
+    return 0
+
+def logs(output): # Maybe, the output can be evaluated by the lenght
+    current_time = datetime.datetime.now()
+
+# In all cases, "output" is the output of a module. For identificate each type of module.
+    if output == x:
+            with open('x1.csv', 'w', newline='') as file:
+                fieldnames = ['Time', 'Data']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                writer.writeheader()
+                writer.writerow('Time': current_time, 'Data': 'Data output': '
+
+    elif output == x2:
+            with open('x2.csv', 'w', newline='') as file:
+                fieldnames = ['Time', 'Data']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                writer.writeheader()
+                writer.writerow('Time': current_time, 'Data': 'Data output': '
+    elif output == x3:
+            with open('x3.csv', 'w', newline='') as file:
+                fieldnames = ['Time', 'Data']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                writer.writeheader()
+                writer.writerow('Time': current_time, 'Data': 'Data output': '
+    elif output == x4:
+            with open('x4.csv', 'w', newline='') as file:
+                fieldnames = ['Time', 'Data']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                writer.writeheader()
+                writer.writerow('Time': current_time, 'Data': 'Data output': '
+    else:
+        print("The output is invalid. Please, try again.")
 
 #Modulo GY-91
 def GY91():
@@ -252,6 +326,7 @@ def buzzer():
         GPIO.output(pinBuzzer, GPIO.LOW)
         print('No Beep')
         sleep(0.5)
+
 
 def main():
     print('Just the main function')
