@@ -57,29 +57,29 @@ def logs(output): # Maybe, the output can be evaluated by the lenght
     current_time = datetime.datetime.now()
 
 # In all cases, "output" is the output of a module. For identificate each type of module.
-    if output == x:
-            with open('x1.csv', 'w', newline='') as file:
+    if output == loraFunction_output:
+            with open('loraFunction_output.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
 
-    elif output == x2:
-            with open('x2.csv', 'w', newline='') as file:
+    elif output == BMP280_output:
+            with open('BMP280_output.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == x3:
-            with open('x3.csv', 'w', newline='') as file:
+    elif output == GY91_oytput:
+            with open('GY91_oytput.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == x4:
+    elif output == NEO6M_output:
             with open('x4.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -201,7 +201,7 @@ def BMP280():
     # Output data to screen
     out_data =
     print("Temp(C): %.2f C" %cTemp)
-    print("Temp(F): %.2f F" %fTemp)
+    print("Temp(F): %.2f F" %fTemp) # Really we need the Fahrenheit temperature?
     print("Pres: %.2f hPa " %pressure)
 
 #Modulo GPS Ublox NEO-6M
@@ -325,7 +325,7 @@ def buzzer():
         sleep(0.5) # Delay in seconds
         GPIO.output(pinBuzzer, GPIO.LOW)
         print('No Beep')
-        sleep(0.5)
+        sleep(1)
 
 
 def main():
