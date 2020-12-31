@@ -109,22 +109,43 @@ mpu = MPU9250(
     mfs=AK8963_BIT_16,
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
+counter = 0
 
 while True:
-	temperature = mpu.readTemperatureMaster()
+    accelerometer = mpu.readAccelerometerMaster()
+    gyroscope = mpu.readGyroscopeMaster()
+    magnetometer = mpu.readMagnetometerMaster()
+    temperature = mpu.readTemperatureMaster()
+
+    #Accelerometer sorted values if [0][1][2] are X,Y,Z axis respectively
+    xA = round(accelerometer[0], 4)
+    yA = round(accelerometer[1], 4)
+    zA = round(accelerometer[2], 4)
+    outA = [xA, yA, zA]
+
+    #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
+    xG = round(gyroscope[0], 4)
+    yG = round(gyroscope[1], 4)
+    zG = round(gyroscope[2], 4)
+    outG = [xG, yG, zG]
+
+    #Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
+    xM = round(magnetometer[0], 4)
+    yM = round(magnetometer[1], 4)
+    zM = round(magnetometer[2], 4)
+    outM = [xM, yM, zM]
 
 	try:
-
-		print("\t|.....MPU9250 in 0x68 Address.....|\n")
-		print(Back.WHITE + Fore.GREEN + "Accelerometer",str(mpu.readAccelerometerMaster()) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.GREEN + "Gyroscope",str(mpu.readGyroscopeMaster()) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.BLUE + "Magnetometer", str(mpu.readMagnetometerMaster()) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.MAGENTA + "(C) Temperature: " + str(round(temperature, 4)) + Style.RESET_ALL )
+        print('\t#.....MPU9250 in 0x68 Address on collect ' + Fore.GREEN + f'{counter}' + Style.RESET_ALL + '.....#\n')
+		print(Back.WHITE + Fore.BLACK + "Accelerometer:   " + str(outA) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLACK + "Gyroscope:       "+ str(outG) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLACK + "Magnetometer:    "+ str(outM) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLACK + "(C) Temperature: " + str(round(temperature, 4)) + Style.RESET_ALL )
 		print('\n')
-
+        counter += 1
 		sleep(1)
 	except KeyboardInterrupt:
-		print(Fore.RED + '\nStopped\n' + Style.RESET_ALL)
+		print(Fore.RED + '\nStopped of collecting data from MPU9250\n' + Style.RESET_ALL)
 		exit()
 
 #Modulo BMP280
