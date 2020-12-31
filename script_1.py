@@ -53,41 +53,18 @@ def plotter(type, data1, data2, data3):
 
     return 0
 
-def logs(output): # Maybe, the output can be evaluated by the lenght
-    current_time = datetime.datetime.now()
+def logs(): # The function is incorpore to each module function #
+    	#### IN THE LOOP ####
+	current_time = datetime.datetime.now()
 
-# In all cases, "output" is the output of a module. For identificate each type of module.
-    if output == x:
-            with open('x1.csv', 'w', newline='') as file:
-                fieldnames = ['Time', 'Data']
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
+    with open('/Data/_Data.csv', 'w', newline='') as file:
+        fieldnames = ['Time', 'Data']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
 
-                writer.writeheader()
-                writer.writerow('Time': current_time, 'Data': 'Data output': '
+        writer.writeheader()
+       	writer.writerow({'Time': current_time, 'Data': "MODULE OUTPUT"})
 
-    elif output == x2:
-            with open('x2.csv', 'w', newline='') as file:
-                fieldnames = ['Time', 'Data']
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-                writer.writeheader()
-                writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == x3:
-            with open('x3.csv', 'w', newline='') as file:
-                fieldnames = ['Time', 'Data']
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-                writer.writeheader()
-                writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == x4:
-            with open('x4.csv', 'w', newline='') as file:
-                fieldnames = ['Time', 'Data']
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-                writer.writeheader()
-                writer.writerow('Time': current_time, 'Data': 'Data output': '
-    else:
-        print("The output is invalid. Please, try again.")
+     # En caso de que el modulo posea mas de una salida de datos, se puede aumentar el numero de "fieldnames" y luego especificar los datos dentro del diccionario.
 
 #Modulo GY-91
 def GY91():
