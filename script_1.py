@@ -135,7 +135,7 @@ while True:
     zM = round(magnetometer[2], 6)
     outM = [xM, yM, zM]
 
-	try:
+    try:
         print('\t#.....MPU9250 in 0x68 Address on collect ' + Fore.GREEN + f'{counter}' + Style.RESET_ALL + '.....#\n')
 		print(Back.WHITE + Fore.BLACK + "Accelerometer:   " + str(outA) + Style.RESET_ALL)
 		print(Back.WHITE + Fore.BLACK + "Gyroscope:       "+ str(outG) + Style.RESET_ALL)
@@ -144,9 +144,10 @@ while True:
 		print('\n')
         counter += 1
 		sleep(1)
-	except KeyboardInterrupt:
+    except KeyboardInterrupt:
 		print(Fore.RED + '\nStopped of collecting data from MPU9250\n' + Style.RESET_ALL)
 		exit()
+
 
 #Modulo BMP280
 def BMP280():
