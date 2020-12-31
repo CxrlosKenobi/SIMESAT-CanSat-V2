@@ -57,29 +57,29 @@ def logs(output): # Maybe, the output can be evaluated by the lenght
     current_time = datetime.datetime.now()
 
 # In all cases, "output" is the output of a module. For identificate each type of module.
-    if output == loraFunction_output:
-            with open('loraFunction_output.csv', 'w', newline='') as file:
+    if output == x:
+            with open('x1.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
 
-    elif output == BMP280_output:
-            with open('BMP280_output.csv', 'w', newline='') as file:
+    elif output == x2:
+            with open('x2.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == GY91_oytput:
-            with open('GY91_oytput.csv', 'w', newline='') as file:
+    elif output == x3:
+            with open('x3.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
 
                 writer.writeheader()
                 writer.writerow('Time': current_time, 'Data': 'Data output': '
-    elif output == NEO6M_output:
+    elif output == x4:
             with open('x4.csv', 'w', newline='') as file:
                 fieldnames = ['Time', 'Data']
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -91,25 +91,41 @@ def logs(output): # Maybe, the output can be evaluated by the lenght
 
 #Modulo GY-91
 def GY91():
-    mpu = MPU9250(
-        address_ak=AK8963_ADDRESS,
-        address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
-        address_mpu_slave=None,
-        bus=1,
-        gfs=GFS_1000,
-        afs=AFS_8G,
-        mfs=AK8963_BIT_16,
-        mode=AK8963_MODE_C100HZ)
-    mpu.configure() # Apply the settings to the registers.
-    while True:
-        print("|.....MPU9250 in 0x68 Address.....|")
-        print("Accelerometer", mpu.readAccelerometerMaster())
-        print("Gyroscope", mpu.readGyroscopeMaster())
-        print("Magnetometer", mpu.readMagnetometerMaster())
-        print("Temperature", mpu.readTemperatureMaster())
-        print("\n")
+'''
+from time import *
+from colorama import init, Fore, Back, Style
+from mpu9250_jmdev.registers import *
+from mpu9250_jmdev.mpu_9250 import MPU9250
+import os
+'''
+os.system('clear')
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
 
-        sleep(1)
+while True:
+	temperature = mpu.readTemperatureMaster()
+
+	try:
+
+		print("\t|.....MPU9250 in 0x68 Address.....|\n")
+		print(Back.WHITE + Fore.GREEN + "Accelerometer",str(mpu.readAccelerometerMaster()) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.GREEN + "Gyroscope",str(mpu.readGyroscopeMaster()) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLUE + "Magnetometer", str(mpu.readMagnetometerMaster()) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.MAGENTA + "(C) Temperature: " + str(round(temperature, 4)) + Style.RESET_ALL )
+		print('\n')
+
+		sleep(1)
+	except KeyboardInterrupt:
+		print(Fore.RED + '\nStopped\n' + Style.RESET_ALL)
+		exit()
 
 #Modulo BMP280
 def BMP280():
@@ -201,7 +217,7 @@ def BMP280():
     # Output data to screen
     out_data =
     print("Temp(C): %.2f C" %cTemp)
-    print("Temp(F): %.2f F" %fTemp) # Really we need the Fahrenheit temperature?
+    print("Temp(F): %.2f F" %fTemp)
     print("Pres: %.2f hPa " %pressure)
 
 #Modulo GPS Ublox NEO-6M
@@ -285,7 +301,7 @@ def loraFunction():
     def on_Recv(payload):
             print("From:", payload.header_from)
             print("Received:", payload.message)
-            print("RRSSI: {}; SNR: {}".fromat(payload.rssi, payload.snr))
+            print("RRSSI: {}; SNR: {}".format(payload.rssi, payload.snr))
 
     #Use chip select 0. GPIO pin 17 will be used for interrupts
     #The address of this device will be set to 2
@@ -325,7 +341,7 @@ def buzzer():
         sleep(0.5) # Delay in seconds
         GPIO.output(pinBuzzer, GPIO.LOW)
         print('No Beep')
-        sleep(1)
+        sleep(0.5)
 
 
 def main():
