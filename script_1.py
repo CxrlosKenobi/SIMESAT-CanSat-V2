@@ -118,21 +118,21 @@ while True:
     temperature = mpu.readTemperatureMaster()
 
     #Accelerometer sorted values if [0][1][2] are X,Y,Z axis respectively
-    xA = round(accelerometer[0], 4)
-    yA = round(accelerometer[1], 4)
-    zA = round(accelerometer[2], 4)
+    xA = round(accelerometer[0], 6)
+    yA = round(accelerometer[1], 6)
+    zA = round(accelerometer[2], 6)
     outA = [xA, yA, zA]
 
     #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
-    xG = round(gyroscope[0], 4)
-    yG = round(gyroscope[1], 4)
-    zG = round(gyroscope[2], 4)
+    xG = round(gyroscope[0], 6)
+    yG = round(gyroscope[1], 6)
+    zG = round(gyroscope[2], 6)
     outG = [xG, yG, zG]
 
     #Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
-    xM = round(magnetometer[0], 4)
-    yM = round(magnetometer[1], 4)
-    zM = round(magnetometer[2], 4)
+    xM = round(magnetometer[0], 6)
+    yM = round(magnetometer[1], 6)
+    zM = round(magnetometer[2], 6)
     outM = [xM, yM, zM]
 
 	try:
@@ -140,7 +140,7 @@ while True:
 		print(Back.WHITE + Fore.BLACK + "Accelerometer:   " + str(outA) + Style.RESET_ALL)
 		print(Back.WHITE + Fore.BLACK + "Gyroscope:       "+ str(outG) + Style.RESET_ALL)
 		print(Back.WHITE + Fore.BLACK + "Magnetometer:    "+ str(outM) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.BLACK + "(C) Temperature: " + str(round(temperature, 4)) + Style.RESET_ALL )
+		print(Back.WHITE + Fore.BLACK + "(C) Temperature: " + str(round(temperature, 6)) + Style.RESET_ALL )
 		print('\n')
         counter += 1
 		sleep(1)
