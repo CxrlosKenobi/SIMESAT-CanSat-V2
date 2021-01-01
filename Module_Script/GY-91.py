@@ -41,11 +41,12 @@ while True:
     	current_time = datetime.datetime.now()
 
         with open('/Data/_Data.csv', 'w', newline='') as file:
-            fieldnames = ['Time', 'Gyroscope', 'Magnetometer', 'Temperature']
+            fieldnames = ['Time','Accelerometer', 'Gyroscope', 'Magnetometer', 'Temperature']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-           	writer.writerow({'Time': current_time, 'Gyroscope': mpu.readMagnetometerMaster(),
-            'Magnetometer': mpu.readMagnetometerMaster(), 'Temperature': str(round(temperature, 4))})
+           	writer.writerow({'Time': current_time, 'Accelerometer': mpu.readAccelerometerMaster(),
+            'Gyroscope': mpu.readMagnetometerMaster(), 'Magnetometer': mpu.readMagnetometerMaster(), 
+            'Temperature': str(round(temperature, 4))})
 
 		sleep(1)
 
