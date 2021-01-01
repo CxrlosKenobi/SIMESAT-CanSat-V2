@@ -19,7 +19,7 @@ import os
 
 def plotter(type, data1, data2, data3):
     # Can be plot, bar, hist, pie...
-    if type = 'plot':
+    if type == 'plot':
         x = []
         y = []
 
@@ -28,12 +28,12 @@ def plotter(type, data1, data2, data3):
         #plt.show()
         plt.savefig('plot.png')
         return 0
-    elif type = 'bar':
+    elif type == 'bar':
         return 0
-    elif type = 'hist':
+    elif type == 'hist':
 
         return 0
-    elif type = 'pie':
+    elif type == 'pie':
         fig1, ax1 = plt.subplots()
         labels = ['a', 'b', 'c']
         sizes = [3, 6, 8]
@@ -45,7 +45,7 @@ def plotter(type, data1, data2, data3):
         fig = plt.gcf()
         fig.gca().add_artist(centre_circle)
 
-        ax1.axis=('equal')
+        ax1.axis = ('equal')
         plt.tight_layout()
         plt.show()
         plt.savefig('piechart.png')
