@@ -99,6 +99,20 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 import os
 '''
 os.system('clear')
+counter = 0
+hr = 0
+min = 0
+sec = 0
+
+# Script for have a time's follow up
+sec += 1
+if sec == 60:
+    min += 1
+    sec = 0
+if min == 60:
+    hr += 1
+    min = 0
+
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
@@ -109,9 +123,10 @@ mpu = MPU9250(
     mfs=AK8963_BIT_16,
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
-counter = 0
 
 while True:
+    watch = f'{hr}:{min}:{sec}'
+
     accelerometer = mpu.readAccelerometerMaster()
     gyroscope = mpu.readGyroscopeMaster()
     magnetometer = mpu.readMagnetometerMaster()
@@ -136,16 +151,16 @@ while True:
     outM = [xM, yM, zM]
 
     try:
-        print('\t#.....MPU9250 in 0x68 Address on collect ' + Fore.GREEN + f'{counter}' + Style.RESET_ALL + '.....#\n')
+        print('\t#.....MPU9250 in 0x68 Address at ' + Fore.GREEN + f'{watch}' + Style.RESET_ALL + '.....#\n')
 		print(Back.WHITE + Fore.BLACK + "Accelerometer:   " + str(outA) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.BLACK + "Gyroscope:       "+ str(outG) + Style.RESET_ALL)
-		print(Back.WHITE + Fore.BLACK + "Magnetometer:    "+ str(outM) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLACK + "Gyroscope:       " + str(outG) + Style.RESET_ALL)
+		print(Back.WHITE + Fore.BLACK + "Magnetometer:    " + str(outM) + Style.RESET_ALL)
 		print(Back.WHITE + Fore.BLACK + "(C) Temperature: " + str(round(temperature, 6)) + Style.RESET_ALL )
 		print('\n')
         counter += 1
 		sleep(1)
     except KeyboardInterrupt:
-		print(Fore.RED + '\nStopped of collecting data from MPU9250\n' + Style.RESET_ALL)
+		print(Fore.RED + '\nStopped of collecting data from MPU9250 at the '+ Fore.GREEN + f'{counter}' + Fore.RED + 'th collection\n' + Style.RESET_ALL)
 		exit()
 
 
