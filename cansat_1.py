@@ -39,6 +39,7 @@ Módulo GY-91
 #Configurar desde Rasp con algunos de los siguientes:
     #https://pypi.org/project/mpu9250-jmdev/
     #http://www.pibits.net/code/raspberry-pi-and-bmp280-sensor-example.php
+    #https://makersportal.com/blog/2019/11/11/raspberry-pi-python-accelerometer-gyroscope-magnetometer#simple-plots
 #MPU9250
 import time
 from mpu9250_jmdev.registers import *
