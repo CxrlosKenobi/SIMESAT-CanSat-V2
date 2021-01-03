@@ -13,7 +13,7 @@ os.system('clear')
 
 
 #Plotting data into Command Line Interface with lists
-'''
+
 xValue = random.random()
 yValue = random.random()
 zValue = random.random()
@@ -40,7 +40,7 @@ print('\n')
 while True:
     test(hr, min, sec)
     sleep(1)
-'''
+
 
 
 # Plotting the 3D Gyroscope data
@@ -127,6 +127,7 @@ plt.show()
 
 
 # Real time plot with matplotlib option2
+'''
 plt.style.use('seaborn')
 
 def live_plotter(x_vec, y1_data, line1, title='', y_label='', pause_time=0.1):
@@ -178,3 +179,4 @@ while True:
     except KeyboardInterrupt:
         print('\nStopped')
         exit()
+'''
