@@ -17,7 +17,7 @@ while True:
         print(gps)
 
 #return gps
-
+"""
 # Second Option
 def parseGPS(str):
     if str.find('GGA') > 0:
@@ -49,3 +49,4 @@ while 1:
         longval = msg.lon
         concatlong = "long:" + str(longval)
         print(concatlong, concatlat)
+"""
