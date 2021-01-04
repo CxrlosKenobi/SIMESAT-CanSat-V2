@@ -12,6 +12,6 @@ while True:
         newmsg = pynmea2.parse(newdata)
         lat = newmsg.latitude
         long = newmsg.longitude
-        gps = "Lat: " + str(lat) + " Long: " + str(long
+        gps = "Lat: " + str(lat) + " Long: " + str(long)
 
-        print(gps)
+        print (gps)
