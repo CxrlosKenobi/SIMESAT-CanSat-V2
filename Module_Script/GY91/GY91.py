@@ -11,7 +11,6 @@ min = 0
 sec = 0
 
 # Script for have a time's follow up
-sec += 1
 if sec == 60:
     min += 1
     sec = 0
@@ -31,7 +30,7 @@ mpu = MPU9250(
 mpu.configure()
 
 while True:
-    watch = f'{hr}:{min}:{sec}'
+    watch = (f'{hr}:{min}:{sec}')
 
     accelerometer = mpu.readAccelerometerMaster()
     gyroscope = mpu.readGyroscopeMaster()
@@ -63,7 +62,7 @@ while True:
         print(Back.WHITE + Fore.BLACK + "Magnetometer:    " + str(outM) + Style.RESET_ALL)
         print(Back.WHITE + Fore.BLACK + "(C) Temperature: " + str(round(temperature, 6)) + Style.RESET_ALL )
         print('\n')
-        counter += 1
+        sec += 1
         sleep(1)
     except KeyboardInterrupt:
         print(Fore.RED + '\nStopped of collecting data from MPU9250 at the '+ Fore.GREEN + f'{counter}' + Fore.RED + 'th collection\n' + Style.RESET_ALL)
