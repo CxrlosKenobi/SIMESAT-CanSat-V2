@@ -78,6 +78,7 @@ b1 = bus.read_i2c_block_data(0x76, 0x88, 24) # Read data back from 0x88(136), 24
 # Convert the data # Temp coefficents
 dig_T1 = b1[1] * 256 + b1[0]
 dig_T2 = b1[3] * 256 + b1[2]
+dig_T3 = b1[5] * 256 + b1[4]
 if dig_T2 > 32767 :
     dig_T2 -= 65536
     dig_T3 = b1[5] * 256 + b1[4]
