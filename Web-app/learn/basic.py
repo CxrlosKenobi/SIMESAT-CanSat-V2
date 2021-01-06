@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.offline as pyo
 import plotly.graph_objs as go
 from plotly import tools
-
+'''
 #Scatter plot
 np.random.seed(42)
 random_x = np.random.randint(1,101,100)
@@ -27,7 +27,7 @@ layout = go.Layout(title='Hello First Plot',
 fig = go.Figure(data=data, layout=layout)
 pyo.plot(fig, filename='scatter.html')
 
-
+'''
 # Line chart
 x_values = np.linspace(0,1,100)
 y_values = np.random.randn(100)
@@ -52,7 +52,7 @@ layout = go.Layout(title='Line Charts')
 fig = go.Figure(data=data, layout=layout)
 pyo.plot(fig)
 
-
+'''
 # Line chart part two
 df = pd.read_csv('Data/nst-est2017-alldata.csv')
 df2 = df[df['DIVISION'] == '1']
@@ -129,3 +129,4 @@ fig.append_trace(trace3,1,3)
 fig['layout'].update(title='Temps for 3 cities')
 
 pyo.plot(fig)
+'''

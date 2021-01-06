@@ -49,7 +49,7 @@ def module_data(type):
 '''
 
 # 1000 miliseconds = 1 second
-GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 800)
 
 app = dash.Dash(
 	__name__,
@@ -83,7 +83,7 @@ app.layout = html.Div(
 				html.Div(
 					[
 						html.Img(
-							src=app.get_asset_url('SIMES.png'),
+							src=app.get_asset_url('SIMES_white.png'),
 							className='app__menu__img',
 						)
 					],
@@ -135,16 +135,18 @@ def get_current_time():
     return total_time
 
 Xt = deque(maxlen=20)
-Xt.append(np.random.randint(1,80))
+Xt.append(np.random.randint(1,60))
 
 X = deque(maxlen=20)
-X.append(np.random.randint(60,80))
+X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=20)
-Y.append(np.random.randint(20,40))
+Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
-Z.append(np.random.randint(40,60))
+Z.append(np.random.randint(50,60))
+
+maxValue = max(X, Y, Z)
 
 @app.callback(
 	Output('live-graph', 'figure'),
@@ -159,35 +161,35 @@ def update_graph_scatter(n):
 
     trace0 = go.Scatter(
     			x=list(Xt),
-    			y=list(Y),
+    			y=list(X),
     			name='X',
     			mode= 'lines+markers',
-                line={"color": "#F038FF"}
+                line={"color": "#FF0000"}
                 )
     trace1 = go.Scatter(
     			x=list(Xt),
     			y=list(Y),
     			name='Y',
     			mode= 'lines+markers',
-                line={"color": "#42C4F7"}
+                line={"color": "#00FF00"}
                 )
     trace2 = go.Scatter(
                 x=list(Xt),
     			y=list(Z),
     			name='Z',
     			mode= 'lines+markers',
-                line={"color": "#92DAA7"}
+                line={"color": "#FFFF00"}
                 )
     data = [trace0, trace1, trace2]
     return {'data': data,
             'layout':go.Layout(
                         xaxis = {
-                            'range':[min(X), max(X)],
+                            'range':[min(Xt), max(Xt)],
                             'title':'X axis',
                             'showline':True,
                         },
                         yaxis = {
-                            'range':[min(Y),max(Y)],
+                            'range':[min(X),max(Z)],
                             'title':'Y axis',
                             'showgrid':True,
                             "showline": True,
