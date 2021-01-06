@@ -163,14 +163,30 @@ def update_graph_scatter(n):
 			name='Scatter',
 			mode= 'lines+markers',
 			marker={'opacity':.8
-				,'line':{'width':.5,'color':'red'}}
-			)
+				,'line':{'width':.5,'color':'white'}},
+            line={"color": "#42C4F7"}
+		   )
 	return {'data': [data],
 			'layout' : go.Layout(
-						xaxis = dict(range=[min(X),max(X)], title='X axis'),
-						yaxis = dict(range = [min(Y),max(Y)], title='Y axis'),
-						title = 'GY-91 simulation',
-						hovermode='closest'
+                        xaxis = {
+                            'range':[min(X), max(X)],
+                            'title':'X axis',
+                            'showline':True,
+                            'zeroline':True
+                        },
+                        yaxis = {
+                            'range':[min(Y),max(Y)],
+                            'title':'Y axis',
+                            'showgrid':True,
+                            "showline": True,
+                            "zeroline": False,
+                            "gridcolor": app_color["graph_line"]
+                        },
+						hovermode='closest',
+                        plot_bgcolor=app_color["graph_bg"],
+                        paper_bgcolor=app_color["graph_bg"],
+                        font={"color": "#fff"},
+                        height=400
 					)
 			}
 
