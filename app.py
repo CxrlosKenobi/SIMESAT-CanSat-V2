@@ -79,13 +79,11 @@ app.layout = html.Div(
 			[
 				html.Div(
 					[
-						html.H4('SIMESAT 1 - Draft dashboard',
-						style={'textAlign':'left',
-							'color':colors['text']},
+						html.H4('SIMESAT 1 - DRAFT DASHBOARD',
 						className='app__header__title'
 						),
 						html.P(
-							'This app continually queries csv files and displays live charts of the modules of the OBC at the nano-satellite',
+							'This app continually queries csv files and displays live charts of the modules in the OBC at the nano-satellite',
 							className='app__header__title--grey',
 						),
 					],
@@ -172,7 +170,6 @@ def update_graph_scatter(n):
                             'range':[min(X), max(X)],
                             'title':'X axis',
                             'showline':True,
-                            'zeroline':True
                         },
                         yaxis = {
                             'range':[min(Y),max(Y)],
