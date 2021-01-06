@@ -1,5 +1,5 @@
-from mpu9250_jmdev.mpu_9250 import MPU9250
-from mpu9250_jmdev.registers import *
+#from mpu9250_jmdev.mpu_9250 import MPU9250
+#from mpu9250_jmdev.registers import *
 
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
@@ -47,15 +47,6 @@ def module_data(type):
     elif type == 'GyroZ':
         return zG
 '''
-
-X = deque(maxlen=20)
-X.append(np.random.randint(1,20))
-
-Y = deque(maxlen=20)
-Y.append(np.random.randint(20,40))
-
-Z = deque(maxlen=20)
-Z.append(np.random.randint(40,60))
 
 # 1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
@@ -143,7 +134,17 @@ def get_current_time():
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
     return total_time
 
+Xt = deque(maxlen=20)
+Xt.append(np.random.randint(1,80))
 
+X = deque(maxlen=20)
+X.append(np.random.randint(60,80))
+
+Y = deque(maxlen=20)
+Y.append(np.random.randint(20,40))
+
+Z = deque(maxlen=20)
+Z.append(np.random.randint(40,60))
 
 @app.callback(
 	Output('live-graph', 'figure'),
@@ -151,21 +152,35 @@ def get_current_time():
 )
 
 def update_graph_scatter(n):
-	X.append(X[-1]+1)
-	Y.append(Y[-1]+Y[-1] * random.uniform(-0.1,0.1))
-	Z.append(X[-1]+1)
+    Xt.append(Xt[-1]+1)
+    X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
+    Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
+    Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
 
-	data = go.Scatter(
-			x=list(X),
-			y=list(Y),
-			name='Scatter',
-			mode= 'lines+markers',
-			marker={'opacity':.8
-				,'line':{'width':.5,'color':'white'}},
-            line={"color": "#42C4F7"}
-		   )
-	return {'data': [data],
-			'layout' : go.Layout(
+    trace0 = go.Scatter(
+    			x=list(Xt),
+    			y=list(Y),
+    			name='X',
+    			mode= 'lines+markers',
+                line={"color": "#F038FF"}
+                )
+    trace1 = go.Scatter(
+    			x=list(Xt),
+    			y=list(Y),
+    			name='Y',
+    			mode= 'lines+markers',
+                line={"color": "#42C4F7"}
+                )
+    trace2 = go.Scatter(
+                x=list(Xt),
+    			y=list(Z),
+    			name='Z',
+    			mode= 'lines+markers',
+                line={"color": "#92DAA7"}
+                )
+    data = [trace0, trace1, trace2]
+    return {'data': data,
+            'layout':go.Layout(
                         xaxis = {
                             'range':[min(X), max(X)],
                             'title':'X axis',
@@ -179,7 +194,6 @@ def update_graph_scatter(n):
                             "zeroline": False,
                             "gridcolor": app_color["graph_line"]
                         },
-						hovermode='closest',
                         plot_bgcolor=app_color["graph_bg"],
                         paper_bgcolor=app_color["graph_bg"],
                         font={"color": "#fff"},
