@@ -49,7 +49,7 @@ def module_data(type):
 '''
 
 # 1000 miliseconds = 1 second
-GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 800)
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 
 app = dash.Dash(
 	__name__,
@@ -70,7 +70,7 @@ app.layout = html.Div(
 			[
 				html.Div(
 					[
-						html.H4('SIMESAT 1 - DRAFT DASHBOARD',
+						html.H4('🛰️ SIMESAT 1 - DRAFT DASHBOARD',
 						className='app__header__title'
 						),
 						html.P(
