@@ -120,10 +120,25 @@ app.layout = html.Div(
     			#className='app__content'
 		              ),
             ],
-            className='app__content'
+        ),
+        # footer
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.P(children=[
+                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados. Creado por ',
+                            html.A('Kenobi', href='https://github.com/CxrlosKenobi')
+                            ],
+                            className='app__footer--grey',
+                        ),
+                    ],
+                ),
+            ],
+            className='app__content',
         ),
 	],
-	className='app__container'
+	className='app__container',
 )
 
 
@@ -145,8 +160,6 @@ Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
 Z.append(np.random.randint(50,60))
-
-maxValue = max(X, Y, Z)
 
 @app.callback(
 	Output('live-graph', 'figure'),
