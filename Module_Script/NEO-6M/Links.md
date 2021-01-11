@@ -1,10 +1,10 @@
 # Links about NEO-6M Operation and derivatives
 ## Text
-1. ### **Basics to connect the module
+1. ### Basics to connect the module
 - [Connecting NEO-6M](https://www.instructables.com/Manual-Access-of-GPS-Ublox-Neo-6M-With-Raspberry-P/)
 - [NEO-6M Handbook - About the GPS FILE](http://www.python-exemplary.com/download/gps-cirocomm.pdf)
 
-- [Franz's Repository](https://github.com/FranzTscharf/Python-NEO-6M-GPS-Raspberry-Pi)
+- [GitHub - Franz's Repository](https://github.com/FranzTscharf/Python-NEO-6M-GPS-Raspberry-Pi)
 
 2. ### About GPS in general
 - [GPS Basics](https://learn.sparkfun.com/tutorials/gps-basics/all)
