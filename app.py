@@ -15,6 +15,16 @@ import random
 import dash
 import os
 
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
 
 def module_data(type):
     accelerometer = mpu.readAccelerometerMaster()
@@ -204,6 +214,8 @@ Y.append(module_data(type='GyroY'))
 
 Z = deque(maxlen=20)
 Z.append(module_data(type='GyroZ'))
+
+#print('\n\nX: ' + str(X) + '\nY:' + str(Y) + '\nZ: ' + str(Z))
 #Z.append(np.random.randint(50,60))
 
 @app.callback(
