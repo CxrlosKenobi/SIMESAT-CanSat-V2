@@ -50,11 +50,11 @@ def module_data(type):
     zM = round(magnetometer[2], 6)
     outM = [xM, yM, zM]
 
-    if type == 'GyroX':
+    if type == 'xG':
         return xG
-    elif type == 'GyroY':
+    elif type == 'yG':
         return yG
-    elif type == 'GyroZ':
+    elif type == 'zG':
         return zG
 
 # 1000 miliseconds = 1 second
@@ -202,18 +202,18 @@ def get_current_time():
 '''
 
 Xt = deque(maxlen=20)
-Xt.append(np.random.randint(1,60))
+Xt.append(np.random.randint(-1,1))
 
 X = deque(maxlen=20)
-X.append(module_data(type='GyroX'))
+X.append(module_data(type='xG'))
 #X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=20)
-Y.append(module_data(type='GyroY'))
+Y.append(module_data(type='yG'))
 #Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
-Z.append(module_data(type='GyroZ'))
+Z.append(module_data(type='zG'))
 
 #print('\n\nX: ' + str(X) + '\nY:' + str(Y) + '\nZ: ' + str(Z))
 #Z.append(np.random.randint(50,60))
@@ -225,11 +225,15 @@ Z.append(module_data(type='GyroZ'))
 
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
-
-    X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
+    
+    X.append(str(module_data(type='xG')))
+    Y.append(str(module_data(type='yG')))
+    Z.append(str(module_data(type='zG')))
+    '''
+    X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-
+    '''
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),
