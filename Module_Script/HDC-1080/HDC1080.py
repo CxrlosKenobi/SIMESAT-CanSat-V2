@@ -1,10 +1,10 @@
-sys.path.append('./SDL_Pi_HDC1080_Python3')
-from colorama impor Fore, Back, Style
+from colorama import Fore, Back, Style
 import SDL_Pi_HDC1080
-import datetime
+from datetime import datetime
 import time
 import csv
 import sys
+sys.path.append('./SDL_Pi_HDC1080_Python3')
 
 print ("")
 print ("Read Temperature and Humidity from HDC1080 using I2C bus ")
@@ -17,7 +17,8 @@ with open('HDC-1080.csv', 'w', newline='') as file:
 	file.close()
 
 while True:
-	current_time = datetime.datetime.now()
+	now =  datetime.now()
+	current_time = now.strftime("%H:%M:%S")
 
 	with open('HDC-1080.csv', 'a+', newline='') as file:
 		writer = csv.writer(file)
