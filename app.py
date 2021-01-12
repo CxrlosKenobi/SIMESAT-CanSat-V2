@@ -226,14 +226,20 @@ Z.append(module_data(type='zG'))
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
     
-    X.append(module_data(type='xG'))
-    Y.append(module_data(type='yG'))
-    Z.append(module_data(type='zG'))
+    Xval = module_data(type='xG')
+    Yval = module_data(type='yG')
+    Zval = module_data(type='zG')
+
+    X.append(Xval)
+    Y.append(Yval)
+    Z.append(Zval)
+
     '''
     X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
     '''
+
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),
