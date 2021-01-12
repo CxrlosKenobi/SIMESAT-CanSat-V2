@@ -58,7 +58,7 @@ app = dash.Dash(
 colors = {'background':'#111111', 'text':'#7FDBFF'}
 colors['text']
 
-#server = app.server
+server = app.server
 
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
