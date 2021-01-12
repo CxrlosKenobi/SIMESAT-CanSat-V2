@@ -15,6 +15,16 @@ import random
 import dash
 import os
 
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
 
 def module_data(type):
     accelerometer = mpu.readAccelerometerMaster()
@@ -58,7 +68,7 @@ app = dash.Dash(
 colors = {'background':'#111111', 'text':'#7FDBFF'}
 colors['text']
 
-#server = app.server
+server = app.server
 
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
@@ -195,13 +205,16 @@ Xt = deque(maxlen=20)
 Xt.append(np.random.randint(1,60))
 
 X = deque(maxlen=20)
-X.append(np.random.randint(15,20))
+X.append(module_data(type='GyroX'))
+#X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=20)
-Y.append(np.random.randint(35,40))
+Y.append(module_data(type='GyroY'))
+#Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
-Z.append(np.random.randint(50,60))
+Z.append(module_data(type='GyroZ'))
+#Z.append(np.random.randint(50,60))
 
 @app.callback(
 	Output('live-graph', 'figure'),
@@ -211,15 +224,10 @@ Z.append(np.random.randint(50,60))
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
 
-    X.append(module_data(type='GyroX'))
-    Y.append(module_data(type='GyroY'))
-    Z.append(module_data(type='GyroZ'))
-
-    '''
     X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-    '''
+
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),
