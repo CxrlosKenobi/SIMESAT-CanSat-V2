@@ -226,9 +226,9 @@ Z.append(module_data(type='zG'))
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
     
-    X.append(str(module_data(type='xG')))
-    Y.append(str(module_data(type='yG')))
-    Z.append(str(module_data(type='zG')))
+    X.append(module_data(type='xG'))
+    Y.append(module_data(type='yG'))
+    Z.append(module_data(type='zG'))
     '''
     X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
