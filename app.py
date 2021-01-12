@@ -1,5 +1,5 @@
-#from mpu9250_jmdev.mpu_9250 import MPU9250
-#from mpu9250_jmdev.registers import *
+from mpu9250_jmdev.mpu_9250 import MPU9250
+from mpu9250_jmdev.registers import *
 
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
@@ -15,7 +15,7 @@ import random
 import dash
 import os
 
-'''
+
 def module_data(type):
     accelerometer = mpu.readAccelerometerMaster()
     gyroscope = mpu.readGyroscopeMaster()
@@ -46,7 +46,6 @@ def module_data(type):
         return yG
     elif type == 'GyroZ':
         return zG
-'''
 
 # 1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
@@ -94,7 +93,7 @@ app.layout = html.Div(
 		),
         html.Div(
             [
-        		#GY-91 plot
+        		#GY-91 container
         		html.Div(
         			[
         				#GY91 simulation
@@ -118,36 +117,79 @@ app.layout = html.Div(
         			],
                 className="two-thirds column wind__speed__container",
     			#className='app__content'
-		              ),
+                ),
             ],
+        ),
+        # Second column container
+        html.Div(
+            [   # Second graph
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.H6(
+                                    '2ND GRAPH CONTAINER',
+                                    className='graph__title'
+                                )
+                            ]
+                        ),
+                        dcc.Graph(
+                            id = '',
+                            animate = True,
+                            figure = dict(
+                                layout = dict(
+                                    plot_bgcolor=app_color["graph_bg"],
+                                    paper_bgcolor=app_color["graph_bg"],
+                                )
+                            )
+                        ),
+                        dcc.Interval(
+                            id = '',
+                            interval = int(GRAPH_INTERVAL),
+                            n_intervals = 0
+                        ),
+                    ],
+                    className='graph__container first'
+                )
+            ],
+            className='one-third column histogram__direction',
         ),
         # footer
         html.Div(
             [
                 html.Div(
                     [
-                        html.P(children=[
-                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados. Creado por ',
-                            html.A('Kenobi', href='https://github.com/CxrlosKenobi')
+                        html.Div(
+                            [
+                                html.Div(
+                                    [
+                                        html.P(children=[
+                                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados. Creado por ',
+                                            html.A('Kenobi', href='https://github.com/CxrlosKenobi')
+                                            ],
+                                            className='app__footer--grey',
+                                        ),
+                                    ],
+                                ),
                             ],
-                            className='app__footer--grey',
                         ),
                     ],
                 ),
             ],
-            className='app__content',
-        ),
+            #className='app__content',
+        ), # footer's end
 	],
 	className='app__container',
 )
 
-
+'''
 def get_current_time():
     """ Helper function to get the current time in seconds. """
 
     now = dt.datetime.now()
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
     return total_time
+'''
 
 Xt = deque(maxlen=20)
 Xt.append(np.random.randint(1,60))
@@ -168,10 +210,16 @@ Z.append(np.random.randint(50,60))
 
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
+
+    X.append(module_data(type='GyroX'))
+    Y.append(module_data(type='GyroY'))
+    Z.append(module_data(type='GyroZ'))
+
+    '''
     X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-
+    '''
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),

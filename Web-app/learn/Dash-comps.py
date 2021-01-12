@@ -17,15 +17,14 @@ if __name__ == '__main__':
 
 
 # Dash core Components
-
-markdown_text = '''
+'''
+markdown_text = ''
 ### Dash and Markwon oh yeahh
 Dash apps can be written in Markdown.
 Dash uses the [CommonMark](http://commomnmark.org/) specification of Markdown. And blah blah blah...
 [x]First
 [x]Second
 [o]Third
-'''
 
 app = dash.Dash()
 
@@ -52,3 +51,4 @@ app.layout = html.Div([
 
 if __name__ == '__main__':
     app.run_server()
+'''

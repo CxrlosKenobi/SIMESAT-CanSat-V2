@@ -112,6 +112,10 @@ h6 {
     justify-content: center;
 }
 
+.footer_background {
+    background-color: #000000;
+}
+
 @media only screen and (max-width: 600px) {
     .histogram__direction {
         margin: 15px 0px 20px 0px;
@@ -138,4 +142,13 @@ h6 {
         font-size: 1.5em;
         padding-top: 15px;
     }
+}
+
+.app__footer__img {
+    box-sizing: border-box;
+    display: inline-block;
+    float: none;
+    line-height: 24px;
+    position: static;
+    z-index: auto;
 }
