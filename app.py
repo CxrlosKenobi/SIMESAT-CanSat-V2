@@ -195,13 +195,16 @@ Xt = deque(maxlen=20)
 Xt.append(np.random.randint(1,60))
 
 X = deque(maxlen=20)
-X.append(np.random.randint(15,20))
+X.append(module_data(type='GyroX'))
+#X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=20)
-Y.append(np.random.randint(35,40))
+Y.append(module_data(type='GyroY'))
+#Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
-Z.append(np.random.randint(50,60))
+Z.append(module_data(type='GyroZ'))
+#Z.append(np.random.randint(50,60))
 
 @app.callback(
 	Output('live-graph', 'figure'),
@@ -211,15 +214,10 @@ Z.append(np.random.randint(50,60))
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
 
-    X.append(module_data(type='GyroX'))
-    Y.append(module_data(type='GyroY'))
-    Z.append(module_data(type='GyroZ'))
-
-    '''
     X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-    '''
+
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),
@@ -266,3 +264,4 @@ def update_graph_scatter(n):
 
 if __name__ == '__main__':
 	app.run_server(debug=True)
+
