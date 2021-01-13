@@ -30,6 +30,12 @@ mpu = MPU9250(
 mpu.configure()
 
 while True:
+    if sec == 60:
+        min += 1
+        sec = 0
+    elif min == 60:
+        hr += 1
+        min = 0
     watch = (f'{hr}:{min}:{sec}')
 
     accelerometer = mpu.readAccelerometerMaster()

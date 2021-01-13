@@ -4,12 +4,16 @@ import pynmea2
 import serial
 import string
 import time
+<<<<<<< HEAD
 
 os.system("touch NEO-6M.csv")
 os.system("echo >> NEO-6M.csv time,latitude,longitude,altitude")
+=======
+from datetime import datetime
+
+>>>>>>> 9736f085fddd37672d90009b1caa9922289c5418
 
 def parseGPS(str):
-    from datetime import datetime
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     if str.find('GGA') > 0:
