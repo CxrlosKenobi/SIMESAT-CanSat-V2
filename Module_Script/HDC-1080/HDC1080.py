@@ -12,7 +12,7 @@ os.system('clear')
 print ("\nRead Temperature and Humidity from HDC1080 using I2C bus.\n")
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
-with open('HDC-1080.csv', 'w', newline='') as file:
+with open('HDC-1080-2.csv', 'w', newline='') as file:
 	write = csv.writer(file)
 	write.writerow(['Time', 'Temperature(C)', 'Humidity'])
 HH = 0
@@ -28,7 +28,7 @@ while True:
 		HH += 1
 		MM = 0
 
-	with open('HDC-1080.csv', 'a+', newline='') as file:
+	with open('HDC-1080-2.csv', 'a+', newline='') as file:
 		writer = csv.writer(file)
 		writer.writerow([current_time, hdc1080.readTemperature(), hdc1080.readHumidity()])
 
