@@ -1,13 +1,13 @@
+import sys
 sys.path.append('./SDL_Pi_HDC1080_Python3')
-from colorama impor Fore, Back, Style
+from colorama import Fore, Back, Style
 import SDL_Pi_HDC1080
 import datetime
 import time
 import csv
-import sys
 
 print ("")
-print ("Read Temperature and Humidity from HDC1080 using I2C bus ")
+print ("Reading Temperature and Humidity from HDC1080 Module ")
 print ("")
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 

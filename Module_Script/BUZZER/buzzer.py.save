@@ -1,23 +1,22 @@
 import RPi.GPIO as GPIO
 from time import *
 
-pin = 16
-
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(pin, GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
 
-p = GPIO.PWM(pin, 300)
-#GPIO.setwarings(False)
+p = GPIO.PWM(18, 300)
+GPIO.setwarings(False)
+
 
 while True:
-	GPIO.output(pin, True)
-	p.start(100)
+	GPIO.output(18, True)
+	p.start(50)
 	p.ChangeDutyCycle(100)
 	p.ChangeFrequency(100)
 	sleep(0.5)
 	p.stop()
 
-	GPIO.output(pin, False)
+	GPIO.output(18, False)
 	sleep(2)
 
 GPIO.cleanup()
