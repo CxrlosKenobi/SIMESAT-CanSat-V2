@@ -86,7 +86,6 @@ Z.append(module_data(type='GyroZ'))
 
 #1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
-GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 
 app = dash.Dash(
 	__name__,
@@ -240,19 +239,19 @@ def get_current_time():
 
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
-    '''
+
     Xval = module_data(type='xG')
     Yval = module_data(type='yG')
     Zval = module_data(type='zG')
-
+    '''
     X.append(Xval)
     Y.append(Yval)
     Z.append(Zval)
-
     '''
-    X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
-    Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
-    Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
+
+    X.append(X[1] + X[-1] * Xval)
+    Y.append(Y[-1] + Y[-1] * Yval)
+    Z.append(Z[-1] + Z[-1] * Zval)
 
     trace0 = go.Scatter(
     			x=list(Xt),
