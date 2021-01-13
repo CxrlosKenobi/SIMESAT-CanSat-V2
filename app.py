@@ -56,6 +56,9 @@ def module_data(type):
         return yG
     elif type == 'zG':
         return zG
+    else:
+        print('\nF')
+        exit()
 
 # 1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
@@ -205,30 +208,16 @@ Xt = deque(maxlen=20)
 Xt.append(np.random.randint(-1,1))
 
 X = deque(maxlen=20)
-<<<<<<< HEAD
-X.append(module_data(type='xG'))
+X.append(module_data('xG'))
 #X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=20)
-Y.append(module_data(type='yG'))
+Y.append(module_data('yG'))
 #Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=20)
-Z.append(module_data(type='zG'))
+Z.append(module_data('zG'))
 
-#print('\n\nX: ' + str(X) + '\nY:' + str(Y) + '\nZ: ' + str(Z))
-=======
-X.append(module_data(type='GyroX'))
-#X.append(np.random.randint(15,20))
-
-Y = deque(maxlen=20)
-Y.append(module_data(type='GyroY'))
-#Y.append(np.random.randint(35,40))
-
-Z = deque(maxlen=20)
-Z.append(module_data(type='GyroZ'))
->>>>>>> 1072abe14ea9b60a3411b088ee02052553ce889e
-#Z.append(np.random.randint(50,60))
 
 @app.callback(
 	Output('live-graph', 'figure'),
@@ -237,12 +226,12 @@ Z.append(module_data(type='GyroZ'))
 
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
-    
+
     Xval = module_data(type='xG')
     Yval = module_data(type='yG')
     Zval = module_data(type='zG')
 
-<<<<<<< HEAD
+
     X.append(Xval)
     Y.append(Yval)
     Z.append(Zval)
@@ -252,11 +241,11 @@ def update_graph_scatter(n):
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
     '''
-=======
+
     X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
->>>>>>> 1072abe14ea9b60a3411b088ee02052553ce889e
+
 
     trace0 = go.Scatter(
     			x=list(Xt),
