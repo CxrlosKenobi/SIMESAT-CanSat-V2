@@ -4,11 +4,6 @@ import pynmea2
 import serial
 import string
 import time
-
-
-os.system("touch NEO-6M.csv")
-os.system("echo >> NEO-6M.csv time,latitude,longitude,altitude")
-
 from datetime import datetime
 
 def parseGPS(str):

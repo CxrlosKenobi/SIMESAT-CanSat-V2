@@ -62,22 +62,19 @@ def module_data(type):
 ####################################################################################################
 # Setting up variables for live-update graph
 #####################################################################################################
-
-Xt = deque(maxlen=30)
-Xt.append(np.random.randint(-1,1))
-
 X = deque(maxlen=30)
 X.append(module_data(type='GyroX'))
 #X.append(np.random.randint(15,20))
 
 Y = deque(maxlen=30)
 Y.append(module_data(type='GyroY'))
+Y.append(module_data(type='GyroY'))
 #Y.append(np.random.randint(35,40))
 
 Z = deque(maxlen=30)
 Z.append(module_data(type='GyroZ'))
+Z.append(module_data(type='GyroZ'))
 #Z.append(np.random.randint(50,60))
-
 
 
 ####################################################################################################
@@ -228,6 +225,15 @@ def get_current_time():
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
     return total_time
 '''
+
+max_value = [max(X), max(Y), max(Z)]
+maximum = max(max_value)
+
+min_value = [min(X), min(Y), min(Z)]
+minimum = min(min_value)
+
+Xt = deque(maxlen=30)
+Xt.append(np.random.randint(minimum, maximum))
 
 ####################################################################################################
 # Live-update graph GY91
