@@ -1,32 +1,40 @@
+<<<<<<< HEAD
 import sys
 sys.path.append('./SDL_Pi_HDC1080_Python3')
+=======
+>>>>>>> 4cccd5e752d6627fa78766bcf9499eebd7b1f696
 from colorama import Fore, Back, Style
 import SDL_Pi_HDC1080
 import datetime
 import time
 import csv
+<<<<<<< HEAD
 
 print ("")
 print ("Reading Temperature and Humidity from HDC1080 Module ")
 print ("")
+=======
+import sys
+import os
+sys.path.append('./SDL_Pi_HDC1080_Python3')
+os.system('clear')
+
+print ("\nRead Temperature and Humidity from HDC1080 using I2C bus.\n")
+>>>>>>> 4cccd5e752d6627fa78766bcf9499eebd7b1f696
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
 with open('HDC-1080.csv', 'w', newline='') as file:
 	write = csv.writer(file)
-	write.writerow(['Time', 'Temperature', 'Humidity'])
-	file.close()
+	write.writerow(['Time', 'Temperature(C)', 'Humidity'])
 
 while True:
 	current_time = datetime.datetime.now()
-
 	with open('HDC-1080.csv', 'a+', newline='') as file:
 		writer = csv.writer(file)
 		writer.writerow([current_time, hdc1080.readTemperature(), hdc1080.readHumidity()])
-		file.close()
 
-	print (Fore.RED + "|----------------------|")
-	print (Fore.WHITE + " Temperature = %3.1f C°" % hdc1080.readTemperature())
-	print (Fore.WHITE + " Humidity = %3.1f %%" % hdc1080.readHumidity())
-	print (Fore.RED + "|----------------------|")
-	print(Style.RESET_ALL)
-	time.sleep(2)
+	print (Fore.RED + f"|-------{now.strftime('%H:%M:%S')}-------|")
+	print (Fore.WHITE + f'Temperature = {hdc1080.readTemperature()} C°')
+	print (Fore.WHITE + f'Humidity = {hdc1080.readHumidity()}')
+	print (Fore.RED +  "|----------------------|" + Style.RESET_ALL)
+	time.sleep(5)
