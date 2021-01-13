@@ -205,7 +205,7 @@ def get_current_time():
 '''
 
 Xt = deque(maxlen=20)
-Xt.append(np.random.randint(-1,1))
+Xt.append(np.random.randint(1,60))
 
 X = deque(maxlen=20)
 X.append(module_data('xG'))
@@ -231,7 +231,6 @@ def update_graph_scatter(n):
     Yval = module_data(type='yG')
     Zval = module_data(type='zG')
 
-
     X.append(Xval)
     Y.append(Yval)
     Z.append(Zval)
@@ -241,11 +240,6 @@ def update_graph_scatter(n):
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
     '''
-
-    X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
-    Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
-    Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-
 
     trace0 = go.Scatter(
     			x=list(Xt),
