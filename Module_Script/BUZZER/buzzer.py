@@ -1,6 +1,12 @@
 import RPi.GPIO as GPIO
 from time import *
 
+<<<<<<< HEAD
+pin = 18
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(pin, GPIO.OUT)
+=======
 pin = 16
 
 GPIO.setmode(GPIO.BOARD)
@@ -15,11 +21,12 @@ while True:
 	p.start(100)
 =======
 GPIO.setup(13, GPIO.OUT)
+>>>>>>> fbbdebdbe6046001078a5d4fd3c2100fb6b9dd08
 
-p = GPIO.PWM(13, 300)
+p = GPIO.PWM(pin, 300)
 
 while True:
-	GPIO.output(13, True)
+	GPIO.output(pin, True)
 	p.start(0)
 >>>>>>> 9736f085fddd37672d90009b1caa9922289c5418
 	p.ChangeDutyCycle(100)
@@ -30,8 +37,12 @@ while True:
 <<<<<<< HEAD
 	GPIO.output(pin, False)
 =======
+<<<<<<< HEAD
+	GPIO.output(pin, False)
+=======
 	GPIO.output(13, False)
 >>>>>>> 9736f085fddd37672d90009b1caa9922289c5418
+>>>>>>> fbbdebdbe6046001078a5d4fd3c2100fb6b9dd08
 	sleep(2)
 
 GPIO.cleanup()
