@@ -39,9 +39,9 @@ def module_data(type):
     outA = [xA, yA, zA]
 
     #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
-    xG = round(gyroscope[0], 6)
-    yG = round(gyroscope[1], 6)
-    zG = round(gyroscope[2], 6)
+    xG = round(gyroscope[0], 2)
+    yG = round(gyroscope[1], 2)
+    zG = round(gyroscope[2], 2)
     outG = [xG, yG, zG]
 
     #Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
@@ -58,15 +58,41 @@ def module_data(type):
         return zG
     else:
         print('\nF')
-        exit()
 
-# 1000 miliseconds = 1 second
+####################################################################################################
+# Setting up variables for live-update graph
+#####################################################################################################
+
+Xt = deque(maxlen=30)
+Xt.append(np.random.randint(-1,1))
+
+X = deque(maxlen=30)
+X.append(module_data(type='GyroX'))
+#X.append(np.random.randint(15,20))
+
+Y = deque(maxlen=30)
+Y.append(module_data(type='GyroY'))
+#Y.append(np.random.randint(35,40))
+
+Z = deque(maxlen=30)
+Z.append(module_data(type='GyroZ'))
+#Z.append(np.random.randint(50,60))
+
+
+
+####################################################################################################
+# App set-up
+#####################################################################################################
+
+#1000 miliseconds = 1 second
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 
 app = dash.Dash(
 	__name__,
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+app.title = 'SIMESAT 1 - DRAFT DASHBOARD'
 
 colors = {'background':'#111111', 'text':'#7FDBFF'}
 colors['text']
@@ -204,21 +230,9 @@ def get_current_time():
     return total_time
 '''
 
-Xt = deque(maxlen=20)
-Xt.append(np.random.randint(1,60))
-
-X = deque(maxlen=20)
-X.append(module_data('xG'))
-#X.append(np.random.randint(15,20))
-
-Y = deque(maxlen=20)
-Y.append(module_data('yG'))
-#Y.append(np.random.randint(35,40))
-
-Z = deque(maxlen=20)
-Z.append(module_data('zG'))
-
-
+####################################################################################################
+# Live-update graph GY91
+#####################################################################################################
 @app.callback(
 	Output('live-graph', 'figure'),
 	[ Input('graph-update', 'n_intervals') ]
@@ -226,7 +240,7 @@ Z.append(module_data('zG'))
 
 def update_graph_scatter(n):
     Xt.append(Xt[-1]+1)
-
+    '''
     Xval = module_data(type='xG')
     Yval = module_data(type='yG')
     Zval = module_data(type='zG')
@@ -239,7 +253,6 @@ def update_graph_scatter(n):
     X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
     Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-    '''
 
     trace0 = go.Scatter(
     			x=list(Xt),
