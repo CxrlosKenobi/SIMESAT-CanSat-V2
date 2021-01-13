@@ -7,6 +7,7 @@ import dash_core_components as dcc
 import plotly.graph_objs as go
 import plotly.io as pio
 import plotly
+from db.api import get_gy91_data, get_gy91_data_by_id
 
 from collections import deque
 import numpy as np
@@ -14,75 +15,6 @@ from time import *
 import random
 import dash
 import os
-
-
-####################################################################################################
-# Getting data from GY91
-####################################################################################################
-mpu = MPU9250(
-    address_ak=AK8963_ADDRESS,
-    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
-    address_mpu_slave=None,
-    bus=1,
-    gfs=GFS_1000,
-    afs=AFS_8G,
-    mfs=AK8963_BIT_16,
-    mode=AK8963_MODE_C100HZ)
-mpu.configure()
-
-def module_data(type):
-    accelerometer = mpu.readAccelerometerMaster()
-    gyroscope = mpu.readGyroscopeMaster()
-    magnetometer = mpu.readMagnetometerMaster()
-    temperature = mpu.readTemperatureMaster()
-
-    #Accelerometer sorted values if [0][1][2] are X,Y,Z axis respectively
-    xA = round(accelerometer[0], 6)
-    yA = round(accelerometer[1], 6)
-    zA = round(accelerometer[2], 6)
-    outA = [xA, yA, zA]
-
-    #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
-    xG = round(gyroscope[0], 6)
-    yG = round(gyroscope[1], 6)
-    zG = round(gyroscope[2], 6)
-    outG = [xG, yG, zG]
-
-    #Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
-    xM = round(magnetometer[0], 6)
-    yM = round(magnetometer[1], 6)
-    zM = round(magnetometer[2], 6)
-    outM = [xM, yM, zM]
-
-    if type == 'xG':
-        return xG
-    elif type == 'yG':
-        return yG
-    elif type == 'zG':
-        return zG
-    else:
-        print('\nF')
-        exit()
-
-
-####################################################################################################
-# Setting up variables for live-update graph
-#####################################################################################################
-
-Xt = deque(maxlen=30)
-Xt.append(np.random.randint(-1,1))
-
-X = deque(maxlen=30)
-X.append(module_data(type='GyroX'))
-#X.append(np.random.randint(15,20))
-
-Y = deque(maxlen=30)
-Y.append(module_data(type='GyroY'))
-#Y.append(np.random.randint(35,40))
-
-Z = deque(maxlen=30)
-Z.append(module_data(type='GyroZ'))
-#Z.append(np.random.randint(50,60))
 
 
 ####################################################################################################
@@ -216,54 +148,64 @@ app.layout = html.Div(
 	className='app__container',
 )
 
-'''
 def get_current_time():
     """ Helper function to get the current time in seconds. """
 
     now = dt.datetime.now()
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
     return total_time
-'''
-
-
-X = deque(maxlen=20)
-X.append(module_data('xG'))
-#X.append(np.random.randint(15,20))
-
-Y = deque(maxlen=20)
-Y.append(module_data('yG'))
-#Y.append(np.random.randint(35,40))
-
-Z = deque(maxlen=20)
-Z.append(module_data('zG'))
 
 @app.callback(
 	Output('live-graph', 'figure'),
 	[ Input('graph-update', 'n_intervals') ]
 )
 def update_graph_scatter(n):
-    Xt.append(Xt[-1]+ 1)
+    total_time = get_current_time()
+    df = get_gy91_data(total_time - 200, total_time)
 
-    Xval = module_data(type='xG')
-    Yval = module_data(type='yG')
-    Zval = module_data(type='zG')
+    trace = dict(
+        type = 'scatter',
+        y = df['Y'],
+        line = {'color':'#42C4F7'},
+    )
 
-    X.append(Xval)
-    Y.append(Yval)
-    Z.append(Zval)
+    layout = dict(
+        plot_bgcolor = app_color['graph_bg'],
+        paper_bgcolor = app_color['graph_bg'],
+        font = {'color':'#fff'},
+        height = 700,
+        xaxis = {
+            'range':[-5,5],
+            'showline':True,
+            'zeroline':False,
+            'fixedrange':True,
+            'tickvals':[-0, 50, 100, 150, 200],
+            "ticktext": ["200", "150", "100", "50", "0"],
+            'title':'Time Elapses (sec)'
+        },
+        yaxis = {
+            'range': [
+                min(0, min(df['aY'])),
+                max(45, max(df['aY']))
+            ],
+            'showgrid':True,
+            'showline':True,
+            'zeroline':False,
+            "gridcolor": app_color["graph_line"],
+            "nticks": max(6, round(df["Y"].iloc[-1] / 10)),
+        },
+    )
 
-    '''
-    X.append(X[1] + X[-1] * random.uniform(-0.1, 0.1))
-    Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
-    Z.append(Z[-1] + Z[-1] * random.uniform(-0.1, 0.1))
-    '''
+    return dict(data=[trace], layout=layout)
 
+'''
     trace0 = go.Scatter(
     			x=list(Xt),
     			y=list(X),
     			name='X',
     			mode= 'lines+markers',
-                line={"color": "#FF0000"}
+                line={"color": "#FF0000"},
+#                hoverinfo='skip'
                 )
     trace1 = go.Scatter(
     			x=list(Xt),
@@ -301,6 +243,7 @@ def update_graph_scatter(n):
                         height=400
 					)
 			}
+
 @app.callback(
     Output('counter_text', 'children'),
     [ Input('interval-component', 'n_intervals')]
@@ -338,6 +281,6 @@ def gps_tracker_update(n):
 app.layout = html.Div([
     dcc.Graph(figure=fig)
 ])
-
+'''
 if __name__ == '__main__':
 	app.run_server(debug=True)
