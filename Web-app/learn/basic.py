@@ -27,7 +27,7 @@ layout = go.Layout(title='Hello First Plot',
 fig = go.Figure(data=data, layout=layout)
 pyo.plot(fig, filename='scatter.html')
 
-'''
+
 # Line chart
 x_values = np.linspace(0,1,100)
 y_values = np.random.randn(100)
@@ -52,7 +52,7 @@ layout = go.Layout(title='Line Charts')
 fig = go.Figure(data=data, layout=layout)
 pyo.plot(fig)
 
-'''
+
 # Line chart part two
 df = pd.read_csv('Data/nst-est2017-alldata.csv')
 df2 = df[df['DIVISION'] == '1']
@@ -94,7 +94,7 @@ data = [go.Heatmap(x=df['DAY'],
 layout = go.Layout(title='SB CA Temps')
 fig = go.Figure(data=data, layout=layout)
 #pyo.plot(fig)
-
+'''
 # Multiple heat maps with subplots
 df1 = pd.read_csv('Data/2010SitkaAK.csv')
 df2 = pd.read_csv('Data/2010SantaBarbaraCA.csv')
@@ -129,4 +129,3 @@ fig.append_trace(trace3,1,3)
 fig['layout'].update(title='Temps for 3 cities')
 
 pyo.plot(fig)
-'''
