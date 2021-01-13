@@ -1,0 +1,8 @@
+import csv
+
+lst = ['time','latitude','longitude','altitude']
+
+with open('NEO-6M.csv') as c:
+	for i in c:
+		if lst in c:
+			row(

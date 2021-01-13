@@ -79,9 +79,4 @@ for i in range(0,2):
 		time.sleep(2)
 
 
-'''
-while True:
-    buzzState = not buzzState
-    GPIO.output(BUZZER, buzzState)
-    time.sleep(1)
-'''
+
