@@ -15,6 +15,10 @@ import random
 import dash
 import os
 
+
+####################################################################################################
+# Getting data from GY91
+####################################################################################################
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
@@ -57,13 +61,39 @@ def module_data(type):
     elif type == 'GyroZ':
         return zG
 
-# 1000 miliseconds = 1 second
+
+####################################################################################################
+# Setting up variables for live-update graph
+#####################################################################################################
+
+Xt = deque(maxlen=30)
+Xt.append(np.random.randint(-1,1))
+
+X = deque(maxlen=30)
+X.append(module_data(type='GyroX'))
+#X.append(np.random.randint(15,20))
+
+Y = deque(maxlen=30)
+Y.append(module_data(type='GyroY'))
+#Y.append(np.random.randint(35,40))
+
+Z = deque(maxlen=30)
+Z.append(module_data(type='GyroZ'))
+#Z.append(np.random.randint(50,60))
+
+
+####################################################################################################
+# App set-up
+#####################################################################################################
+
+#1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 
 app = dash.Dash(
 	__name__,
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+app.title = "SIMESAT 1 - DRAFT DASHBOARD"
 
 colors = {'background':'#111111', 'text':'#7FDBFF'}
 colors['text']
@@ -72,6 +102,7 @@ server = app.server
 
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
+# Main layout
 app.layout = html.Div(
 	[
 		#header
@@ -136,25 +167,15 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Div(
-                            [
-                                html.H6(
-                                    '2ND GRAPH CONTAINER',
-                                    className='graph__title'
-                                )
-                            ]
+                            [html.H6('2ND GRAPH CONTAINER',
+                                    className='graph__title')]
                         ),
                         dcc.Graph(
-                            id = '',
+                            id = 'gps-tracker',
                             animate = True,
-                            figure = dict(
-                                layout = dict(
-                                    plot_bgcolor=app_color["graph_bg"],
-                                    paper_bgcolor=app_color["graph_bg"],
-                                )
-                            )
                         ),
                         dcc.Interval(
-                            id = '',
+                            id = 'gps-update',
                             interval = int(GRAPH_INTERVAL),
                             n_intervals = 0
                         ),
@@ -174,8 +195,8 @@ app.layout = html.Div(
                                 html.Div(
                                     [
                                         html.P(children=[
-                                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados. Creado por ',
-                                            html.A('Kenobi', href='https://github.com/CxrlosKenobi')
+                                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados.'
+                                            #Creado por ', html.A('Kenobi', href='https://github.com/CxrlosKenobi')
                                             ],
                                             className='app__footer--grey',
                                         ),
@@ -201,28 +222,17 @@ def get_current_time():
     return total_time
 '''
 
-Xt = deque(maxlen=20)
-Xt.append(np.random.randint(1,60))
 
-X = deque(maxlen=20)
-X.append(module_data(type='GyroX'))
-#X.append(np.random.randint(15,20))
-
-Y = deque(maxlen=20)
-Y.append(module_data(type='GyroY'))
-#Y.append(np.random.randint(35,40))
-
-Z = deque(maxlen=20)
-Z.append(module_data(type='GyroZ'))
-#Z.append(np.random.randint(50,60))
+####################################################################################################
+# Live-update graph GY91
+#####################################################################################################
 
 @app.callback(
 	Output('live-graph', 'figure'),
 	[ Input('graph-update', 'n_intervals') ]
 )
-
 def update_graph_scatter(n):
-    Xt.append(Xt[-1]+1)
+    Xt.append(Xt[-1]+ 1)
 
     X.append(X[-1] + X[-1] * random.uniform(-0.1, 0.1))
     Y.append(Y[-1] + Y[-1] * random.uniform(-0.1, 0.1))
@@ -271,6 +281,43 @@ def update_graph_scatter(n):
                         height=400
 					)
 			}
+@app.callback(
+    Output('counter_text', 'children'),
+    [ Input('interval-component', 'n_intervals')]
+)
+def update_layout_gps(n):
+    #something
+
+@app.callback(
+    Ourput('gps-tracker', 'figure'),
+    [ Input('gps-update', 'n_intervals') ]
+)
+def gps_tracker_update(n):
+    #append varibales for update then the graph
+    fig = go.Figure(
+        go.Scattermapbox(
+            mode = 'markers+lines',
+            lon = [],
+            lat = [],
+            marker = {'size': 10}
+        )
+    )
+    fig.update_layout(
+        margin = {'l':0, 't': 0, 'b':0, 'r':0},
+        mapbox = {
+            'center': {'lon':n, 'lat':n},
+            'style' : 'stamen-terrain',
+            'center': {'lon':n, 'lat':nn},
+            'zoom':1
+        }
+    )
+    return {'data':fig,
+        'layout':go.Layout()
+        }
+
+app.layout = html.Div([
+    dcc.Graph(figure=fig)
+])
 
 if __name__ == '__main__':
 	app.run_server(debug=True)
