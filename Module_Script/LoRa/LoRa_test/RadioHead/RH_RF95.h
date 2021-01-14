@@ -6,13 +6,25 @@
 //
 // Author: Mike McCauley (mikem@airspayce.com)
 // Copyright (C) 2014 Mike McCauley
-// $Id: RH_RF95.h,v 1.10 2016/04/04 01:40:12 mikem Exp mikem $
+// $Id: RH_RF95.h,v 1.14 2017/01/13 01:29:36 mikem Exp mikem $
 // 
 
 #ifndef RH_RF95_h
 #define RH_RF95_h
 
 #include <RHSPIDriver.h>
+
+// If you don't want to use interupts (mainly to win one I/O pin) then
+// you just need to uncomment this line, if you're on Raspberry PI 
+// it will be set automaticly below
+//#define RH_RF69_IRQLESS
+
+#if (RH_PLATFORM == RH_PLATFORM_RASPI)
+// No IRQ used on Raspberry PI
+#ifndef RH_RF95_IRQLESS
+#define RH_RF95_IRQLESS
+#endif
+#endif // RH_PLATFORM_RASPI PI
 
 // This is the maximum number of interrupts the driver can support
 // Most Arduinos can handle 2, Megas can handle more
@@ -99,6 +111,7 @@
 // RH_RF95_REG_01_OP_MODE                             0x01
 #define RH_RF95_LONG_RANGE_MODE                       0x80
 #define RH_RF95_ACCESS_SHARED_REG                     0x40
+#define RH_RF95_LOW_FREQUENCY_MODE                    0x08
 #define RH_RF95_MODE                                  0x07
 #define RH_RF95_MODE_SLEEP                            0x00
 #define RH_RF95_MODE_STDBY                            0x01
@@ -140,9 +153,17 @@
 
 // RH_RF95_REG_0C_LNA                                 0x0c
 #define RH_RF95_LNA_GAIN                              0xe0
-#define RH_RF95_LNA_BOOST                             0x03
-#define RH_RF95_LNA_BOOST_DEFAULT                     0x00
-#define RH_RF95_LNA_BOOST_150PC                       0x11
+#define RH_RF95_LNA_GAIN_G1                           0x20
+#define RH_RF95_LNA_GAIN_G2                           0x40
+#define RH_RF95_LNA_GAIN_G3                           0x60                
+#define RH_RF95_LNA_GAIN_G4                           0x80
+#define RH_RF95_LNA_GAIN_G5                           0xa0
+#define RH_RF95_LNA_GAIN_G6                           0xc0
+#define RH_RF95_LNA_BOOST_LF                          0x18
+#define RH_RF95_LNA_BOOST_LF_DEFAULT                  0x00
+#define RH_RF95_LNA_BOOST_HF                          0x03
+#define RH_RF95_LNA_BOOST_HF_DEFAULT                  0x00
+#define RH_RF95_LNA_BOOST_HF_150PC                    0x11
 
 // RH_RF95_REG_11_IRQ_FLAGS_MASK                      0x11
 #define RH_RF95_RX_TIMEOUT_MASK                       0x80
@@ -178,19 +199,24 @@
 #define RH_RF95_FHSS_PRESENT_CHANNEL                  0x3f
 
 // RH_RF95_REG_1D_MODEM_CONFIG1                       0x1d
-#define RH_RF95_BW                                    0xc0
-#define RH_RF95_BW_125KHZ                             0x00
-#define RH_RF95_BW_250KHZ                             0x40
-#define RH_RF95_BW_500KHZ                             0x80
-#define RH_RF95_BW_RESERVED                           0xc0
-#define RH_RF95_CODING_RATE                           0x38
-#define RH_RF95_CODING_RATE_4_5                       0x00
-#define RH_RF95_CODING_RATE_4_6                       0x08
-#define RH_RF95_CODING_RATE_4_7                       0x10
-#define RH_RF95_CODING_RATE_4_8                       0x18
-#define RH_RF95_IMPLICIT_HEADER_MODE_ON               0x04
-#define RH_RF95_RX_PAYLOAD_CRC_ON                     0x02
-#define RH_RF95_LOW_DATA_RATE_OPTIMIZE                0x01
+#define RH_RF95_BW                                    0xf0
+
+#define RH_RF95_BW_7_8KHZ                             0x00
+#define RH_RF95_BW_10_4KHZ                            0x10
+#define RH_RF95_BW_15_6KHZ                            0x20
+#define RH_RF95_BW_20_8KHZ                            0x30
+#define RH_RF95_BW_31_25KHZ                           0x40
+#define RH_RF95_BW_41_7KHZ                            0x50
+#define RH_RF95_BW_62_5KHZ                            0x60
+#define RH_RF95_BW_125KHZ                             0x70
+#define RH_RF95_BW_250KHZ                             0x80
+#define RH_RF95_BW_500KHZ                             0x90
+#define RH_RF95_CODING_RATE                           0x0e
+#define RH_RF95_CODING_RATE_4_5                       0x02
+#define RH_RF95_CODING_RATE_4_6                       0x04
+#define RH_RF95_CODING_RATE_4_7                       0x06
+#define RH_RF95_CODING_RATE_4_8                       0x08
+#define RH_RF95_IMPLICIT_HEADER_MODE_ON               0x01
 
 // RH_RF95_REG_1E_MODEM_CONFIG2                       0x1e
 #define RH_RF95_SPREADING_FACTOR                      0xf0
@@ -202,8 +228,12 @@
 #define RH_RF95_SPREADING_FACTOR_2048CPS              0xb0
 #define RH_RF95_SPREADING_FACTOR_4096CPS              0xc0
 #define RH_RF95_TX_CONTINUOUS_MOE                     0x08
-#define RH_RF95_AGC_AUTO_ON                           0x04
+
+#define RH_RF95_PAYLOAD_CRC_ON                        0x04
 #define RH_RF95_SYM_TIMEOUT_MSB                       0x03
+
+// RH_RF95_REG_4B_TCXO                                0x4b
+#define RH_RF95_TCXO_TCXO_INPUT_ON                    0x10
 
 // RH_RF95_REG_4D_PA_DAC                              0x4d
 #define RH_RF95_PA_DAC_DISABLE                        0x04
@@ -228,6 +258,8 @@
 /// and inAir9 modules http://modtronix.com/inair9.html.
 /// - the excellent Rocket Scream Mini Ultra Pro with the RFM95W 
 ///   http://www.rocketscream.com/blog/product/mini-ultra-pro-with-radio/
+/// - Lora1276 module from NiceRF http://www.nicerf.com/product_view.aspx?id=99
+/// - Adafruit Feather M0 with RFM95 
 ///
 /// \par Overview
 ///
@@ -379,6 +411,11 @@
 /// ...
 /// \endcode
 ///
+/// For Adafruit Feather M0 with RFM95, construct the driver like this:
+/// \code
+/// RH_RF95 rf95(8, 3);
+/// \endcode
+///
 /// It is possible to have 2 or more radios connected to one Arduino, provided
 /// each radio has its own SS and interrupt line (SCK, SDI and SDO are common
 /// to all radios)
@@ -440,6 +477,14 @@
 /// At 20dBm (100mW) with Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on. 
 /// (Default medium range) in the conditions described above.
 /// - Range over flat ground through heavy trees and vegetation approx 2km.
+///
+/// Caution: the performance of this radio, especially with narrow bandwidths is strongly dependent on the
+/// accuracy and stability of the chip clock. HopeRF and Semtech do not appear to 
+/// recommend bandwidths of less than 62.5 kHz 
+/// unless you have the optional Temperature Compensated Crystal Oscillator (TCXO) installed and 
+/// enabled on your radio module. See the refernece manual for more data.
+/// Also https://lowpowerlab.com/forum/rf-range-antennas-rfm69-library/lora-library-experiences-range/15/
+/// and http://www.semtech.com/images/datasheet/an120014-xo-guidance-lora-modulation.pdf
 /// 
 /// \par Transmitter Power
 ///
@@ -528,6 +573,9 @@ public:
     /// introduced in later versions (though we will try to avoid it).
     /// Caution: if you are using slow packet rates and long packets with RHReliableDatagram or subclasses
     /// you may need to change the RHReliableDatagram timeout for reliable operations.
+    /// Caution: for some slow rates nad with ReliableDatagrams youi may need to increase the reply timeout 
+    /// with manager.setTimeout() to
+    /// deal with the long transmission times.
     typedef enum
     {
 	Bw125Cr45Sf128 = 0,	   ///< Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on. Default medium range
@@ -580,6 +628,13 @@ public:
     /// \return true if index is a valid choice.
     bool        setModemConfig(ModemConfigChoice index);
 
+    /// Get the values of one of the predefined modem configurations.
+    /// 
+    /// \param[in] index The configuration choice.
+    /// \param[in] config A ModemConfig structure that will contains values of the modem configuration values.
+    /// \return true if index is a valid choice and config has been filled with values
+    bool        getModemConfig(ModemConfigChoice index, ModemConfig* config);
+
     /// Tests whether a new message is available
     /// from the Driver. 
     /// On most drivers, this will also put the Driver into RHModeRx mode until
@@ -600,12 +655,23 @@ public:
     virtual bool    recv(uint8_t* buf, uint8_t* len);
 
     /// Waits until any previous transmit packet is finished being transmitted with waitPacketSent().
+    /// Then optionally waits for Channel Activity Detection (CAD) 
+    /// to show the channnel is clear (if the radio supports CAD) by calling waitCAD().
     /// Then loads a message into the transmitter and starts the transmitter. Note that a message length
     /// of 0 is permitted. 
     /// \param[in] data Array of data to be sent
     /// \param[in] len Number of bytes of data to send
-    /// \return true if the message length was valid and it was correctly queued for transmit
+    /// specify the maximum time in ms to wait. If 0 (the default) do not wait for CAD before transmitting.
+    /// \return true if the message length was valid and it was correctly queued for transmit. Return false
+    /// if CAD was requested and the CAD timeout timed out before clear channel was detected.
     virtual bool    send(const uint8_t* data, uint8_t len);
+
+    /// Blocks until the current message (if any) 
+    /// has been transmitted
+    /// \return true on success, false if the chip is not in transmit mode or other transmit failure
+#ifdef RH_RF95_IRQLESS
+    virtual bool   waitPacketSent();
+#endif
 
     /// Sets the length of the preamble
     /// in bytes. 
@@ -667,11 +733,31 @@ public:
     /// \return true if sleep mode was successfully entered.
     virtual bool    sleep();
 
+    // Bent G Christensen (bentor@gmail.com), 08/15/2016
+    /// Use the radio's Channel Activity Detect (CAD) function to detect channel activity.
+    /// Sets the RF95 radio into CAD mode and waits until CAD detection is complete.
+    /// To be used in a listen-before-talk mechanism (Collision Avoidance)
+    /// with a reasonable time backoff algorithm.
+    /// This is called automatically by waitCAD().
+    /// \return true if channel is in use.  
+    virtual bool    isChannelActive();
+
+    /// Enable TCXO mode
+    /// Call this immediately after init(), to force your radio to use an external 
+    /// frequency source, such as a Temperature Compensated Crystal Oscillator (TCXO).
+    /// See the comments in the main documentation about the sensitivity of this radio to
+    /// clock frequency especially when using narrow bandwidths.
+    /// Leaves the module in sleep mode.
+    /// Caution, this function has not been tested by us.
+    void enableTCXO();
+
 protected:
     /// This is a low level function to handle the interrupts for one instance of RH_RF95.
     /// Called automatically by isr*()
     /// Should not need to be called by user code.
+#ifndef RH_RF95_IRQLESS
     void           handleInterrupt();
+#endif
 
     /// Examine the revceive buffer to determine whether the message is for this node
     void validateRxBuf();
@@ -680,6 +766,8 @@ protected:
     void clearRxBuf();
 
 private:
+
+#ifndef RH_RF95_IRQLESS
     /// Low level interrupt service routine for device connected to interrupt 0
     static void         isr0();
 
@@ -701,6 +789,8 @@ private:
     /// The index into _deviceForInterrupt[] for this device (if an interrupt is already allocated)
     /// else 0xff
     uint8_t             _myInterruptIndex;
+
+#endif
 
     /// Number of octets in the buffer
     volatile uint8_t    _bufLen;
