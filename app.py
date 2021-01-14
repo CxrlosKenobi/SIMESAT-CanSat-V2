@@ -175,7 +175,7 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 700,
+        height = 600,
         xaxis = {
             'range':[-5,5],
             'showline':True,
@@ -187,15 +187,13 @@ def update_graph_scatter(n):
         },
         yaxis = {
             'range': [
-                min(0, min(df['yG'])),
-                max(45, max(df['yG']))
+                -1,-1
             ],
             'showgrid':True,
             'showline':True,
             'fixedrange':True,
             'zeroline':False,
             "gridcolor": app_color["graph_line"],
-            "nticks": max(6, round(df["yG"].iloc[-1] / 10)),
         },
     )
 
