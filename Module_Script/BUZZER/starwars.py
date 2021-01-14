@@ -75,7 +75,7 @@ def playSong(songnotes, songbeats, tempo):
 #play two songs
 for i in range(0,2):
 	for i in range(0,2):
-		playSong(starwars_notes, starwars_beats, 0.15)
+		playSong(starwars_notes, starwars_beats, 0.17)
 		time.sleep(2)
 
 

@@ -1,12 +1,21 @@
-import datetime
 from mpu9250_jmdev.mpu_9250 import MPU9250
 from mpu9250_jmdev.registers import *
 
-import dash
-import dash_core_components as dcc
+from dash.dependencies import Input, Output, State
 import dash_html_components as html
+import dash_core_components as dcc
+import plotly.graph_objs as go
+import plotly.io as pio
 import plotly
-from dash.dependencies import Input, Output
+from db.api import get_gy91_data, get_gy91_data_by_id
+
+import datetime as dt
+from collections import deque
+import numpy as np
+from time import *
+import random
+import dash
+import os
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -32,6 +41,7 @@ app = dash.Dash(
 	__name__,
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+
 server = app.server
 
 
