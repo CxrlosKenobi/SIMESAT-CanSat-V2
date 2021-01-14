@@ -153,11 +153,3 @@ h6 {
     position: static;
     z-index: auto;
 }
-
-
-.div-line {
-    display:block;
-    height:1px;
-    width:33%;
-    background:#000;
-}
