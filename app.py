@@ -82,7 +82,12 @@ app.layout = html.Div(
         						),
         						dcc.Graph(
         							id = 'live-graph',
-        							animate = True
+        							figure = dict(
+									layout = dict(
+										plot_bgcolor = app_color['graph_bg'],
+										paper_bgcolor = app_color['graph_bg'],
+									)
+								),
         						),
         						dcc.Interval(
         							id = 'graph-update',
