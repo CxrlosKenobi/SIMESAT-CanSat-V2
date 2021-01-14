@@ -10,6 +10,7 @@ import plotly
 from db.api import get_gy91_data, get_gy91_data_by_id
 
 from collections import deque
+import datetime as dt
 import numpy as np
 from time import *
 import random
@@ -21,7 +22,7 @@ import os
 # App set-up
 #####################################################################################################
 
-#1000 miliseconds = 1 second
+# 1000 miliseconds = 1 second
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
 
 app = dash.Dash(
@@ -198,89 +199,6 @@ def update_graph_scatter(n):
 
     return dict(data=[trace], layout=layout)
 
-'''
-    trace0 = go.Scatter(
-    			x=list(Xt),
-    			y=list(X),
-    			name='X',
-    			mode= 'lines+markers',
-                line={"color": "#FF0000"},
-#                hoverinfo='skip'
-                )
-    trace1 = go.Scatter(
-    			x=list(Xt),
-    			y=list(Y),
-    			name='Y',
-    			mode= 'lines+markers',
-                line={"color": "#00FF00"}
-                )
-    trace2 = go.Scatter(
-                x=list(Xt),
-    			y=list(Z),
-    			name='Z',
-    			mode= 'lines+markers',
-                line={"color": "#FFFF00"}
-                )
-    data = [trace0, trace1, trace2]
-    return {'data': data,
-            'layout':go.Layout(
-                        xaxis = {
-                            'range':[min(Xt), max(Xt)],
-                            'title':'X axis',
-                            'showline':True,
-                        },
-                        yaxis = {
-                            'range':[min(X),max(Z)],
-                            'title':'Y axis',
-                            'showgrid':True,
-                            "showline": True,
-                            "zeroline": False,
-                            "gridcolor": app_color["graph_line"]
-                        },
-                        plot_bgcolor=app_color["graph_bg"],
-                        paper_bgcolor=app_color["graph_bg"],
-                        font={"color": "#fff"},
-                        height=400
-					)
-			}
-
-@app.callback(
-    Output('counter_text', 'children'),
-    [ Input('interval-component', 'n_intervals')]
-)
-def update_layout_gps(n):
-    #something
-
-@app.callback(
-    Ourput('gps-tracker', 'figure'),
-    [ Input('gps-update', 'n_intervals') ]
-)
-def gps_tracker_update(n):
-    #append varibales for update then the graph
-    fig = go.Figure(
-        go.Scattermapbox(
-            mode = 'markers+lines',
-            lon = [],
-            lat = [],
-            marker = {'size': 10}
-        )
-    )
-    fig.update_layout(
-        margin = {'l':0, 't': 0, 'b':0, 'r':0},
-        mapbox = {
-            'center': {'lon':n, 'lat':n},
-            'style' : 'stamen-terrain',
-            'center': {'lon':n, 'lat':nn},
-            'zoom':1
-        }
-    )
-    return {'data':fig,
-        'layout':go.Layout()
-        }
-
-app.layout = html.Div([
-    dcc.Graph(figure=fig)
-])
-'''
 if __name__ == '__main__':
 	app.run_server(debug=True)
+
