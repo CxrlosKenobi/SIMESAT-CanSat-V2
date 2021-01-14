@@ -18,6 +18,21 @@ import dash
 import os
 
 
+
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
+
+yy = round(mpu.readGyroscopeMaster()[1], 6)
+print(yy)
+
 ####################################################################################################
 # App set-up
 #####################################################################################################
