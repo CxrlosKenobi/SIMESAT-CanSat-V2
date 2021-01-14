@@ -27,3 +27,4 @@ def get_gy91_data_by_id(id):
     statement = f'SELECT yG FROM Gyroscope WHERE rowid = "{id}";'
     df = pd.read_sql_query(statement, con)
     return df
+

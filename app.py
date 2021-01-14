@@ -18,6 +18,18 @@ import dash
 import os
 
 
+
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
+
 ####################################################################################################
 # App set-up
 #####################################################################################################
@@ -50,7 +62,7 @@ app.layout = html.Div(
 						className='app__header__title'
 						),
 						html.P(
-							'This app continually queries csv files and displays live charts of the modules in the OBC at the nano-satellite',
+							'This app continually queries a SQL database and displays live charts',
 							className='app__header__title--grey',
 						),
 					],
@@ -73,22 +85,16 @@ app.layout = html.Div(
         		#GY-91 container
         		html.Div(
         			[
-        				#GY91 simulation
+        				#GY91
         				html.Div(
         					[
         						html.Div(
-        							[html.H6("GY-91 - simulation",
+        							[html.H6("Live GPS",
         							className='graph__title')]
         						),
-        						dcc.Graph(
-        							id = 'live-graph',
-        							animate = True
-        						),
-        						dcc.Interval(
-        							id = 'graph-update',
-        							interval = int(GRAPH_INTERVAL),
-        							n_intervals = 0
-        						),
+
+
+
         					],
         				),
         			],
@@ -101,23 +107,56 @@ app.layout = html.Div(
         html.Div(
             [   # Second graph
                 html.Div(
-                    ['''
+                    [
                         html.Div(
-                            [html.H6('2ND GRAPH CONTAINER',
+                            [html.H6('Live 3D Gyroscope',
                                     className='graph__title')]
                         ),
-                        dcc.Graph(
-                            id = 'gps-tracker',
-                            animate = True,
-                        ),
-                        dcc.Interval(
-                            id = 'gps-update',
-                            interval = int(GRAPH_INTERVAL),
-                            n_intervals = 0
-                        ),'''
+						dcc.Graph(
+							id = 'live-graph2',
+							figure = dict(
+								layout = dict(
+									plot_bgcolor = app_color['graph_bg'],
+									paper_bgcolor = app_color['graph_bg'],
+									)
+							),
+						),
+						dcc.Interval(
+							id = 'graph-update2',
+							interval = int(GRAPH_INTERVAL),
+							n_intervals = 0
+						),
                     ],
-                    className='graph__container first'
-                )
+                    className='graph__container first',
+                ),
+				# Third container
+				html.Div(
+					[
+						html.Div(
+							[
+								html.H6(
+									"Live Conditions Plot",
+									className = 'graph__title'
+								)
+							]
+						),
+						dcc.Graph(
+							id = 'live-graph',
+							figure = dict(
+								layout = dict(
+									plot_bgcolor = app_color['graph_bg'],
+									paper_bgcolor = app_color['graph_bg'],
+									)
+							),
+						),
+						dcc.Interval(
+							id = 'graph-update',
+							interval = int(GRAPH_INTERVAL),
+							n_intervals = 0
+						),
+					],
+					className = 'graph__container second',
+				)
             ],
             className='one-third column histogram__direction',
         ),
@@ -170,7 +209,7 @@ def update_graph_scatter(n):
 	hoverinfo = 'skip',
 	error_y = {
 		'type':'data',
-		'array':df['xG'],
+		'array':df['yG'],
 		'thickness':1.5,
 		'width':2,
 		'color':'#B4E8FC',
@@ -182,19 +221,19 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 600,
+        height = 250,
         xaxis = {
             'range':[-5,5],
             'showline':True,
             'zeroline':False,
             'fixedrange':True,
-            'tickvals':[-0, 50, 100, 150, 200],
+            'tickvals':[0, 50, 100, 150, 200],
             "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapses (sec)',
+            'title':'Time Elapsed (sec)'
         },
         yaxis = {
             'range': [
-                -2,2
+                -5,5
             ],
             'showgrid':True,
             'showline':True,
@@ -206,6 +245,49 @@ def update_graph_scatter(n):
 
     return dict(data=[trace], layout=layout)
 
+
+@app.callback(
+	Output('live-graph2', 'figure'), [Input('graph-update2', 'n_intervals')]
+)
+def update_graph_scatter(n):
+    total_time = get_current_time()
+    df = get_gy91_data(total_time - 200, total_time)
+
+    trace = dict(
+        type = 'scatter',
+        y = df['yG'],
+        line = {'color':'#42C4F7'},
+	hoverinfo = 'skip',
+	mode = 'lines',
+    )
+
+    layout = dict(
+        plot_bgcolor = app_color['graph_bg'],
+        paper_bgcolor = app_color['graph_bg'],
+        font = {'color':'#fff'},
+        height = 250,
+        xaxis = {
+            'range':[-5,5],
+            'showline':True,
+            'zeroline':False,
+            'fixedrange':True,
+            'tickvals':[0, 50, 100, 150, 200],
+            "ticktext": ["200", "150", "100", "50", "0"],
+            'title':'Time Elapsed (sec)'
+        },
+        yaxis = {
+            'range': [
+                -5,5
+            ],
+            'showgrid':True,
+            'showline':True,
+            'fixedrange':True,
+            'zeroline':False,
+            "gridcolor": app_color["graph_line"],
+        },
+    )
+
+    return dict(data=[trace], layout=layout)
 
 if __name__ == '__main__':
 	app.run_server(debug=True)
