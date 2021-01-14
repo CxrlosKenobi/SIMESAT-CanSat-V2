@@ -143,7 +143,7 @@ app.layout = html.Div(
                     ],
                 ),
             ],
-            #className='app__content',
+            className='app__content',
         ), # footer's end
 	],
 	className='app__container',
@@ -181,19 +181,20 @@ def update_graph_scatter(n):
             'showline':True,
             'zeroline':False,
             'fixedrange':True,
-            'tickvals':[-0, 50, 100, 150, 200],
+            'tickvals':[0, 50, 100, 150, 200],
             "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapses (sec)'
+            'title':'Time Elapsed (sec)'
         },
         yaxis = {
             'range': [
-                -1,-1
+                -5,5
             ],
             'showgrid':True,
             'showline':True,
             'fixedrange':True,
             'zeroline':False,
             "gridcolor": app_color["graph_line"],
+            'nticks':max(6, round(df['yG'].iloc[-1] / 10)),
         },
     )
 
