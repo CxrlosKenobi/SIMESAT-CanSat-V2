@@ -194,7 +194,6 @@ def update_graph_scatter(n):
             'fixedrange':True,
             'zeroline':False,
             "gridcolor": app_color["graph_line"],
-            'nticks':max(6, round(df['yG'].iloc[-1] / 10)),
         },
     )
 
