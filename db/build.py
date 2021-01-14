@@ -2,11 +2,16 @@ import time
 import csv
 import os
 import random
-from datetime import datetime
+from datetime import datetime, date
 import sqlite3
+from mpu9250_jmdev.mpu_9250 import MPU9250
+from mpu9250_jmdev.registers import *
+from colorama import init, Fore, Back, Style
 
 conn = sqlite3.connect('gy91.db')
 cur = conn.cursor()
+
+print(Fore.GREEN  + '[ ok ] ' + Fore.WHITE + 'Succesfully Connected to DB' + Style.RESET_ALL + '\n')
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -19,21 +24,29 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
 
+try:
+	while True:
+	    now = datetime.now()
+	    current_time = now.strftime('%H:%M:%S')
+	    gyroscope = mpu.readGyroscopeMaster()
 
-while True:
-    now = datetime.now()
-    current_time = now.strftime('%H:%M:%S')
+	    #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
+	    xG = round(gyroscope[0], 6)
+	    yG = round(gyroscope[1], 6)
+	    zG = round(gyroscope[2], 6)
+	    outG = [xG, yG, zG]
 
-	gyroscope = mpu.readGyroscopeMaster()
 
-	#Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
-	xG = round(gyroscope[0], 6)
-	yG = round(gyroscope[1], 6)
-	zG = round(gyroscope[2], 6)
-	outG = [xG, yG, zG]
+	    # Add data to database
+	    cur.execute("INSERT INTO Gyroscope (time, xG, yG, zG) VALUES(?,?,?,?)", (date.today(), xG, yG, zG))
+	    print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Data succesful added to db' + Style.RESET_ALL)
 
-    # Add data to database
-    cur.execute('INSERT INTO Gyroscope(time, x, y, z) VALUES(?, ?,?,?)'.format(now, xG, yG, zG))
+	    time.sleep(1)
 
-    time.sleep(1)
-conn.commit()
+	    conn.commit()
+
+except KeyboardInterrupt:
+    conn.commit()
+    cur.close()
+    print('\n' + '[ bye ]')
+
