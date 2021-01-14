@@ -1,0 +1,152 @@
+@import "compass/css3";
+
+/* Play with speed and easing of the animation */
+$one-second: 1s;
+$easing: cubic-bezier(1,0,1,0);
+/* =========================================== */
+
+@mixin animate($count) {
+  $step: (100 / $count);
+  $progress: 0%;
+  $translate: -$digit-height;
+  @while $progress < 100 {
+    #{$progress} { transform: translateY($translate); }
+    $progress: $progress + $step;
+    $translate: $translate - $digit-height;
+  }
+}
+
+$digit-height: 180px;
+
+.digit {
+  display: inline-block;
+  font-size: 200px;
+  color: rgba(0,0,0,0.25);
+  height: $digit-height;
+  line-height: 1;
+}
+
+.time-part-wrapper {
+  display: inline-block;
+  margin-right: 50px;
+  position: relative;
+
+  &:not(:last-child):after {
+    content: ":";
+    display: block;
+    width: 30px;
+    height: 230px;
+    position: absolute;
+    top: 0px;
+    right: -30px;
+    color: rgba(0,0,0,0.25);
+    font-size: 200px;
+    line-height: 0.9;
+  }
+}
+
+.time-part {
+  width: 140px;
+  text-align: center;
+  height: $digit-height;
+  overflow: hidden;
+  display: inline-block;
+  margin-left: -5px;
+  box-sizing: border-box;
+  
+  .digit-wrapper {
+    animation-timing-function: $easing;
+  }
+  
+  &.minutes {
+    &.tens .digit-wrapper {
+      animation-name: minutes-tens;
+      animation-duration: $one-second * 10 * 6 * 10 * 6;
+      animation-iteration-count: 1;
+    }
+    &.ones .digit-wrapper {
+      animation-name: minutes-ones;
+      animation-duration: $one-second * 10 * 6 * 10;
+      animation-iteration-count: 6;
+    }
+  }
+  
+  &.seconds {
+    &.tens .digit-wrapper {
+      animation-name: seconds-tens;
+      animation-duration: $one-second * 10 * 6;
+      animation-iteration-count: 60;
+    }
+    &.ones .digit-wrapper {
+      animation-name: seconds-ones;
+      animation-duration: $one-second * 10;
+      animation-iteration-count: 360;
+    }
+  }
+  
+  &.hundredths {
+    &.tens .digit-wrapper {
+      animation-name: hundredths-tens;
+      animation-duration: $one-second;
+      animation-iteration-count: 3600;
+    }
+    &.ones .digit-wrapper {
+      animation-name: hundredths-ones;
+      animation-duration: $one-second / 10;
+      animation-iteration-count: 36000;
+    }
+  }
+}
+
+@keyframes minutes-tens {
+  @include animate(6);
+}
+@keyframes minutes-ones {
+  @include animate(10);
+}
+
+@keyframes seconds-tens {
+  @include animate(6);
+}
+@keyframes seconds-ones {
+  @include animate(10);
+}
+
+@keyframes hundredths-tens {
+  @include animate(10);
+}
+@keyframes hundredths-ones {
+  @include animate(10);
+}
+
+body {
+  background: #F1614B;
+  margin: 0;
+  font-family: "Aldrich";
+}
+
+.wrapper {
+  margin: 100px auto;
+  width: 1000px;
+  position: relative;
+  
+  &:before, &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 20px;
+    z-index: 10;
+  }
+  
+  &:before {
+    top: 0px;
+    @include background-image(linear-gradient(top,  rgba(241,97,75,1) 0%,rgba(241,97,75,0) 100%));
+  }
+  
+  &:after {
+    bottom: 0px;
+    @include background-image(linear-gradient(top,  rgba(241,97,75,0) 0%,rgba(241,97,75,1) 100%));
+  }
+}
