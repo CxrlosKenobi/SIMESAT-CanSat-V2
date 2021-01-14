@@ -10,14 +10,13 @@ import plotly
 from db.api import get_gy91_data, get_gy91_data_by_id
 
 import datetime as dt
+import dash_daq as daq
 from collections import deque
 import numpy as np
 from time import *
 import random
 import dash
 import os
-
-
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -30,265 +29,100 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
 
-####################################################################################################
-# App set-up
-#####################################################################################################
+def gyro():
+    gyroscope = mpu.readGyroscopeMaster()
 
-#1000 miliseconds = 1 second
-GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
+    xG = round(gyroscope[0], 6)
+    yG = round(gyroscope[1], 6)
+    zG = round(gyroscope[2], 6)
+    outG = [xG, yG, zG]
+    return outG
 
 app = dash.Dash(
 	__name__,
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
-app.title = "SIMESAT 1 - DRAFT DASHBOARD"
-
-colors = {'background':'#111111', 'text':'#7FDBFF'}
-colors['text']
 
 server = app.server
 
-app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
-# Main layout
 app.layout = html.Div(
-	[
-		#header
-		html.Div(
-			[
-				html.Div(
-					[
-						html.H4('🛰️ SIMESAT 1 - DRAFT DASHBOARD',
-						className='app__header__title'
-						),
-						html.P(
-							'This app continually queries a SQL database and displays live charts',
-							className='app__header__title--grey',
-						),
-					],
-					className='app__header__desc'
-				),
-				html.Div(
-					[
-						html.Img(
-							src=app.get_asset_url('SIMES_white.png'),
-							className='app__menu__img',
-						)
-					],
-					className='app__header__logo',
-				),
-			],
-			className='app__header',
-		),
-        html.Div(
-            [
-        		#GY-91 container
-        		html.Div(
-        			[
-        				#GY91
-        				html.Div(
-        					[
-        						html.Div(
-        							[html.H6("Live GPS",
-        							className='graph__title')]
-        						),
-
-
-
-        					],
-        				),
-        			],
-                className="two-thirds column wind__speed__container",
-    			#className='app__content'
-                ),
-            ],
-        ),
-        # Second column container
-        html.Div(
-            [   # Second graph
-                html.Div(
-                    [
-                        html.Div(
-                            [html.H6('Live 3D Gyroscope',
-                                    className='graph__title')]
-                        ),
-						dcc.Graph(
-							id = 'live-graph2',
-							figure = dict(
-								layout = dict(
-									plot_bgcolor = app_color['graph_bg'],
-									paper_bgcolor = app_color['graph_bg'],
-									)
-							),
-						),
-						dcc.Interval(
-							id = 'graph-update2',
-							interval = int(GRAPH_INTERVAL),
-							n_intervals = 0
-						),
-                    ],
-                    className='graph__container first',
-                ),
-				# Third container
-				html.Div(
-					[
-						html.Div(
-							[
-								html.H6(
-									"Live Conditions Plot",
-									className = 'graph__title'
-								)
-							]
-						),
-						dcc.Graph(
-							id = 'live-graph',
-							figure = dict(
-								layout = dict(
-									plot_bgcolor = app_color['graph_bg'],
-									paper_bgcolor = app_color['graph_bg'],
-									)
-							),
-						),
-						dcc.Interval(
-							id = 'graph-update',
-							interval = int(GRAPH_INTERVAL),
-							n_intervals = 0
-						),
-					],
-					className = 'graph__container second',
-				)
-            ],
-            className='one-third column histogram__direction',
-        ),
-        # footer
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.Div(
-                                    [	html.Hr(),
-                                        html.P(children=[
-                                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados.'
-                                            #Creado por ', html.A('Kenobi', href='https://github.com/CxrlosKenobi')
-                                            ],
-                                            className='app__footer--grey',
-                                        ),
-                                    ],
-                                ),
-                            ],
-                        ),
-                    ],
-                ),
-            ],
-            className='app__content',
-        ), # footer's end
-	],
-	className='app__container',
+    html.Div([
+        html.H4('TERRA Satellite Live Feed'),
+        html.Div(id='live-update-text'),
+        dcc.Graph(id='live-update-graph'),
+        dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # in milliseconds
+            n_intervals=0
+        )
+    ])
 )
 
-def get_current_time():
-    """ Helper function to get the current time in seconds. """
 
-    now = dt.datetime.now()
-    total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
-    return total_time
-
-@app.callback(
-	Output('live-graph', 'figure'), [Input('graph-update', 'n_intervals')]
-)
-def update_graph_scatter(n):
-    total_time = get_current_time()
-    df = get_gy91_data(total_time - 200, total_time)
-
-    trace = dict(
-        type = 'scatter',
-        y = df['yG'],
-        line = {'color':'#42C4F7'},
-	hoverinfo = 'skip',
-	error_y = {
-		'type':'data',
-		'array':df['yG'],
-		'thickness':1.5,
-		'width':2,
-		'color':'#B4E8FC',
-	},
-	mode = 'lines',
-    )
-
-    layout = dict(
-        plot_bgcolor = app_color['graph_bg'],
-        paper_bgcolor = app_color['graph_bg'],
-        font = {'color':'#fff'},
-        height = 250,
-        xaxis = {
-            'range':[-5,5],
-            'showline':True,
-            'zeroline':False,
-            'fixedrange':True,
-            'tickvals':[0, 50, 100, 150, 200],
-            "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapsed (sec)'
-        },
-        yaxis = {
-            'range': [
-                -5,5
-            ],
-            'showgrid':True,
-            'showline':True,
-            'fixedrange':True,
-            'zeroline':False,
-            "gridcolor": app_color["graph_line"],
-        },
-    )
-
-    return dict(data=[trace], layout=layout)
+@app.callback(Output('live-update-text', 'children'),
+              Input('interval-component', 'n_intervals'))
+def update_metrics(n):
+    lon = gyro()
+    lat = gyro()
+    alt = gyro()
+    style = {'padding': '5px', 'fontSize': '16px'}
+    return [
+        html.Span('Longitude: {0:.2f}'.format(lon[0]), style=style),
+        html.Span('Latitude: {0:.2f}'.format(lat[1]), style=style),
+        html.Span('Altitude: {0:0.2f}'.format(alt[2]), style=style)
+    ]
 
 
-@app.callback(
-	Output('live-graph2', 'figure'), [Input('graph-update2', 'n_intervals')]
-)
-def update_graph_scatter(n):
-    total_time = get_current_time()
-    df = get_gy91_data(total_time - 200, total_time)
+# Multiple components can update everytime interval gets fired.
+@app.callback(Output('live-update-graph', 'figure'),
+              Input('interval-component', 'n_intervals'))
+def update_graph_live(n):
+    data = {
+        'time': [],
+        'Latitude': [],
+        'Longitude': [],
+        'Altitude': []
+    }
 
-    trace = dict(
-        type = 'scatter',
-        y = df['yG'],
-        line = {'color':'#42C4F7'},
-	hoverinfo = 'skip',
-	mode = 'lines',
-    )
+    # Collect some data
+    for i in range(180):
+        time = datetime.datetime.now() - datetime.timedelta(seconds=i*20)
+        lon = gyro()
+        lat = gyro()
+        alt = gyro()
 
-    layout = dict(
-        plot_bgcolor = app_color['graph_bg'],
-        paper_bgcolor = app_color['graph_bg'],
-        font = {'color':'#fff'},
-        height = 250,
-        xaxis = {
-            'range':[-5,5],
-            'showline':True,
-            'zeroline':False,
-            'fixedrange':True,
-            'tickvals':[0, 50, 100, 150, 200],
-            "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapsed (sec)'
-        },
-        yaxis = {
-            'range': [
-                -5,5
-            ],
-            'showgrid':True,
-            'showline':True,
-            'fixedrange':True,
-            'zeroline':False,
-            "gridcolor": app_color["graph_line"],
-        },
-    )
+        data['Longitude'].append(lon[0])
+        data['Latitude'].append(lat[1])
+        data['Altitude'].append(alt[2])
+        data['time'].append(time)
 
-    return dict(data=[trace], layout=layout)
+    # Create the graph with subplots
+    fig = plotly.tools.make_subplots(rows=2, cols=1, vertical_spacing=0.2)
+    fig['layout']['margin'] = {
+        'l': 30, 'r': 10, 'b': 30, 't': 10
+    }
+    fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
+
+    fig.append_trace({
+        'x': data['time'],
+        'y': data['Altitude'],
+        'name': 'Altitude',
+        'mode': 'lines+markers',
+        'type': 'scatter'
+    }, 1, 1)
+    fig.append_trace({
+        'x': data['Longitude'],
+        'y': data['Latitude'],
+        'text': data['time'],
+        'name': 'Longitude vs Latitude',
+        'mode': 'lines+markers',
+        'type': 'scatter'
+    }, 2, 1)
+
+    return fig
+
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
+    app.run_server(debug=True)
 
