@@ -7,7 +7,6 @@ import dash_core_components as dcc
 import plotly.graph_objs as go
 import plotly.io as pio
 import plotly
-import dash_deck
 from db.api import get_gy91_data, get_gy91_data_by_id
 
 import datetime as dt
@@ -18,8 +17,6 @@ from time import *
 import random
 import dash
 import os
-
-
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -50,73 +47,9 @@ colors['text']
 
 server = app.server
 
-# Mapbox
-MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiY3hybG9za2Vub2JpIiwiYSI6ImNrangwOG1mMjJ5ejcyeXFseWM1NHF1MDAifQ.Icq82Gz4RRFvfScW3ltvMA"
-MAPBOX_STYLE = "mapbox://styles/plotlymapbox/cjyivwt3i014a1dpejm5r7dwr"
-
-# Dash_DAQ elements
-utc = html.Div(
-	id = 'control-panel-utc',
-	children = [
-		daq,LEDDisplay(
-			id = 'control-panel-utc-component',
-			value = '16:23',
-			label = 'Time',
-			size = 40,
-			color = '#FEC036',
-			backgroundColor = '#2B2B2B',
-		)
-	],
-)
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
 
-map_data = [
-    {
-        "type": "scattermapbox",
-        "lat": [0],
-        "lon": [0],
-        "hoverinfo": "text+lon+lat",
-        "text": "Satellite Path",
-        "mode": "lines",
-        "line": {"width": 2, "color": "#707070"},
-    },
-    {
-        "type": "scattermapbox",
-        "lat": [0],
-        "lon": [0],
-        "hoverinfo": "text+lon+lat",
-        "text": "Current Position",
-        "mode": "markers",
-        "marker": {"size": 10, "color": "#fec036"},
-    },
-]
-map_layout = {
-    "mapbox": {
-        "accesstoken": MAPBOX_ACCESS_TOKEN,
-        "style": MAPBOX_STYLE,
-        "center": {"lat": 45},
-    },
-    "showlegend": False,
-    "autosize": True,
-    "paper_bgcolor": "#1e1e1e",
-    "plot_bgcolor": "#1e1e1e",
-    "margin": {"t": 0, "r": 0, "b": 0, "l": 0},
-}
-
-map_graph = html.Div(
-    id="world-map-wrapper",
-    children=[
-        map_toggle,
-        dcc.Graph(
-            id="world-map",
-            figure={"data": map_data, "layout": map_layout},
-            config={"displayModeBar": False, "scrollZoom": False},
-        ),
-    ],
-)
-
-deck_component = dash_deck.DeckGL(data = data, id = 'deck-gl')
 
 # Main layout
 app.layout = html.Div(
@@ -160,9 +93,7 @@ app.layout = html.Div(
         							[html.H6("Live GPS",
         							className='graph__title')]
         						),
-								html.Div(
-									deck_component
-								)
+
 								)
         					],
         				),
