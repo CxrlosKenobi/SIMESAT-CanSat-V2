@@ -49,3 +49,5 @@ except KeyboardInterrupt:
     conn.commit()
     cur.close()
     print('\n' + '[ bye ]')
+
+
