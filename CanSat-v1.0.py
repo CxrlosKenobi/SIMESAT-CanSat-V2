@@ -47,7 +47,7 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
-    address_mpu_master=MPU9050# Distributed with a free-will license.
+    address_mpu_master=MPU9050
 # Use it any way you want, profit or free, provided it fits in the licenses of its associated works.
 # BMP280
 # This code is designed to work with the BMP280_I2CS I2C Mini Module available from ControlEverything.com.

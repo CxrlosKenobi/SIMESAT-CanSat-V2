@@ -5,3 +5,4 @@ mpu9250_jmdev==1.0.12
 dash_html_components==1.1.1
 dash_core_components==1.14.1
 gunicorn==19.0.0
+pandas==1.2.0
