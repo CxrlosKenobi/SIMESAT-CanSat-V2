@@ -13,7 +13,7 @@ def get_gy91_data(start, end):
     """
 
     con = sqlite3.connect(str(DB_FILE))
-    statement = f'''SELECT xG, yG, zG FROM Gyroscope WHERE rowid > "{start}" AND rowid <= "{end}";'''
+    statement = f'''SELECT yG FROM Gyroscope WHERE rowid > "{start}" AND rowid <= "{end}";'''
     df = pd.read_sql_query(statement, con)
     return df
 
@@ -24,7 +24,7 @@ def get_gy91_data_by_id(id):
     :returns: pandas dataframe object
     """
     con = sqlite3.connect(str(DB_FILE))
-    statement = f'SELECT * FROM Gyroscope WHERE rowid = "{id}";'
+    statement = f'SELECT yG FROM Gyroscope WHERE rowid = "{id}";'
     df = pd.read_sql_query(statement, con)
     return df
 
