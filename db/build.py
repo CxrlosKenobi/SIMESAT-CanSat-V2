@@ -50,4 +50,3 @@ except KeyboardInterrupt:
     cur.close()
     print('\n' + '[ bye ]')
 
-

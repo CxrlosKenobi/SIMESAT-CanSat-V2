@@ -2,7 +2,7 @@ import pathlib
 import sqlite3
 import pandas as pd
 
-DB_FILE = 'gy91.db'
+DB_FILE = pathlib.Path(__file__).resolve().parent.joinpath("gy91.db").resolve()
 
 def get_gy91_data(start, end):
     """
@@ -12,9 +12,9 @@ def get_gy91_data(start, end):
     :returns: pandas dataframe object
     """
 
-    conn = sqlite3.connect(str(DB_FILE))
-    statement = f'SELECT gX, gY, gZ FROM Gyroscope WHERE rowid > "{start}" AND rowid <= "{end}";'
-    df = pd.read_sql_query(statement, conn)
+    con = sqlite3.connect(str(DB_FILE))
+    statement = f'''SELECT xG, yG, zG FROM Gyroscope WHERE rowid > "{start}" AND rowid <= "{end}";'''
+    df = pd.read_sql_query(statement, con)
     return df
 
 def get_gy91_data_by_id(id):
@@ -23,8 +23,8 @@ def get_gy91_data_by_id(id):
     :params id: a row id
     :returns: pandas dataframe object
     """
-    conn = sqlite3.connect(str(DB_FILE))
-    statement = f'SELECVT * FROM Gyroscope WHERE rowid = "{id}";'
-    df = pd.read_sql_query(statement, conn)
+    con = sqlite3.connect(str(DB_FILE))
+    statement = f'SELECT * FROM Gyroscope WHERE rowid = "{id}";'
+    df = pd.read_sql_query(statement, con)
     return df
 
