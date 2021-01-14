@@ -9,6 +9,7 @@ import plotly.io as pio
 import plotly
 from db.api import get_gy91_data, get_gy91_data_by_id
 
+import datetime as dt
 from collections import deque
 import numpy as np
 from time import *
@@ -16,6 +17,18 @@ import random
 import dash
 import os
 
+
+
+mpu = MPU9250(
+    address_ak=AK8963_ADDRESS,
+    address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
+    address_mpu_slave=None,
+    bus=1,
+    gfs=GFS_1000,
+    afs=AFS_8G,
+    mfs=AK8963_BIT_16,
+    mode=AK8963_MODE_C100HZ)
+mpu.configure()
 
 ####################################################################################################
 # App set-up
@@ -49,7 +62,7 @@ app.layout = html.Div(
 						className='app__header__title'
 						),
 						html.P(
-							'This app continually queries csv files and displays live charts of the modules in the OBC at the nano-satellite',
+							'This app continually queries a SQL database and displays live charts',
 							className='app__header__title--grey',
 						),
 					],
@@ -72,22 +85,16 @@ app.layout = html.Div(
         		#GY-91 container
         		html.Div(
         			[
-        				#GY91 simulation
+        				#GY91
         				html.Div(
         					[
         						html.Div(
-        							[html.H6("GY-91 - simulation",
+        							[html.H6("Live GPS",
         							className='graph__title')]
         						),
-        						dcc.Graph(
-        							id = 'live-graph',
-        							animate = True
-        						),
-        						dcc.Interval(
-        							id = 'graph-update',
-        							interval = int(GRAPH_INTERVAL),
-        							n_intervals = 0
-        						),
+
+
+
         					],
         				),
         			],
@@ -102,21 +109,54 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Div(
-                            [html.H6('2ND GRAPH CONTAINER',
+                            [html.H6('Live 3D Gyroscope',
                                     className='graph__title')]
                         ),
-                        dcc.Graph(
-                            id = 'gps-tracker',
-                            animate = True,
-                        ),
-                        dcc.Interval(
-                            id = 'gps-update',
-                            interval = int(GRAPH_INTERVAL),
-                            n_intervals = 0
-                        ),
+						dcc.Graph(
+							id = 'live-graph2',
+							figure = dict(
+								layout = dict(
+									plot_bgcolor = app_color['graph_bg'],
+									paper_bgcolor = app_color['graph_bg'],
+									)
+							),
+						),
+						dcc.Interval(
+							id = 'graph-update2',
+							interval = int(GRAPH_INTERVAL),
+							n_intervals = 0
+						),
                     ],
-                    className='graph__container first'
-                )
+                    className='graph__container first',
+                ),
+				# Third container
+				html.Div(
+					[
+						html.Div(
+							[
+								html.H6(
+									"Live Conditions Plot",
+									className = 'graph__title'
+								)
+							]
+						),
+						dcc.Graph(
+							id = 'live-graph',
+							figure = dict(
+								layout = dict(
+									plot_bgcolor = app_color['graph_bg'],
+									paper_bgcolor = app_color['graph_bg'],
+									)
+							),
+						),
+						dcc.Interval(
+							id = 'graph-update',
+							interval = int(GRAPH_INTERVAL),
+							n_intervals = 0
+						),
+					],
+					className = 'graph__container second',
+				)
             ],
             className='one-third column histogram__direction',
         ),
@@ -142,7 +182,7 @@ app.layout = html.Div(
                     ],
                 ),
             ],
-            #className='app__content',
+            className='app__content',
         ), # footer's end
 	],
 	className='app__container',
@@ -156,8 +196,7 @@ def get_current_time():
     return total_time
 
 @app.callback(
-	Output('live-graph', 'figure'),
-	[ Input('graph-update', 'n_intervals') ]
+	Output('live-graph', 'figure'), [Input('graph-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
     total_time = get_current_time()
@@ -165,122 +204,83 @@ def update_graph_scatter(n):
 
     trace = dict(
         type = 'scatter',
-        y = df['Y'],
+        y = df['yG'],
         line = {'color':'#42C4F7'},
+	hoverinfo = 'skip',
+	mode = 'lines',
     )
 
     layout = dict(
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 700,
+        height = 250,
         xaxis = {
             'range':[-5,5],
             'showline':True,
             'zeroline':False,
             'fixedrange':True,
-            'tickvals':[-0, 50, 100, 150, 200],
+            'tickvals':[0, 50, 100, 150, 200],
             "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapses (sec)'
+            'title':'Time Elapsed (sec)'
         },
         yaxis = {
             'range': [
-                min(0, min(df['aY'])),
-                max(45, max(df['aY']))
+                -5,5
             ],
             'showgrid':True,
             'showline':True,
+            'fixedrange':True,
             'zeroline':False,
             "gridcolor": app_color["graph_line"],
-            "nticks": max(6, round(df["Y"].iloc[-1] / 10)),
         },
     )
 
     return dict(data=[trace], layout=layout)
 
-'''
-    trace0 = go.Scatter(
-    			x=list(Xt),
-    			y=list(X),
-    			name='X',
-    			mode= 'lines+markers',
-                line={"color": "#FF0000"},
-#                hoverinfo='skip'
-                )
-    trace1 = go.Scatter(
-    			x=list(Xt),
-    			y=list(Y),
-    			name='Y',
-    			mode= 'lines+markers',
-                line={"color": "#00FF00"}
-                )
-    trace2 = go.Scatter(
-                x=list(Xt),
-    			y=list(Z),
-    			name='Z',
-    			mode= 'lines+markers',
-                line={"color": "#FFFF00"}
-                )
-    data = [trace0, trace1, trace2]
-    return {'data': data,
-            'layout':go.Layout(
-                        xaxis = {
-                            'range':[min(Xt), max(Xt)],
-                            'title':'X axis',
-                            'showline':True,
-                        },
-                        yaxis = {
-                            'range':[min(X),max(Z)],
-                            'title':'Y axis',
-                            'showgrid':True,
-                            "showline": True,
-                            "zeroline": False,
-                            "gridcolor": app_color["graph_line"]
-                        },
-                        plot_bgcolor=app_color["graph_bg"],
-                        paper_bgcolor=app_color["graph_bg"],
-                        font={"color": "#fff"},
-                        height=400
-					)
-			}
 
 @app.callback(
-    Output('counter_text', 'children'),
-    [ Input('interval-component', 'n_intervals')]
+	Output('live-graph2', 'figure'), [Input('graph-update2', 'n_intervals')]
 )
-def update_layout_gps(n):
-    #something
+def update_graph_scatter(n):
+    total_time = get_current_time()
+    df = get_gy91_data(total_time - 200, total_time)
 
-@app.callback(
-    Ourput('gps-tracker', 'figure'),
-    [ Input('gps-update', 'n_intervals') ]
-)
-def gps_tracker_update(n):
-    #append varibales for update then the graph
-    fig = go.Figure(
-        go.Scattermapbox(
-            mode = 'markers+lines',
-            lon = [],
-            lat = [],
-            marker = {'size': 10}
-        )
+    trace = dict(
+        type = 'scatter',
+        y = df['yG'],
+        line = {'color':'#42C4F7'},
+	hoverinfo = 'skip',
+	mode = 'lines',
     )
-    fig.update_layout(
-        margin = {'l':0, 't': 0, 'b':0, 'r':0},
-        mapbox = {
-            'center': {'lon':n, 'lat':n},
-            'style' : 'stamen-terrain',
-            'center': {'lon':n, 'lat':nn},
-            'zoom':1
-        }
-    )
-    return {'data':fig,
-        'layout':go.Layout()
-        }
 
-app.layout = html.Div([
-    dcc.Graph(figure=fig)
-])
-'''
+    layout = dict(
+        plot_bgcolor = app_color['graph_bg'],
+        paper_bgcolor = app_color['graph_bg'],
+        font = {'color':'#fff'},
+        height = 250,
+        xaxis = {
+            'range':[-5,5],
+            'showline':True,
+            'zeroline':False,
+            'fixedrange':True,
+            'tickvals':[0, 50, 100, 150, 200],
+            "ticktext": ["200", "150", "100", "50", "0"],
+            'title':'Time Elapsed (sec)'
+        },
+        yaxis = {
+            'range': [
+                -5,5
+            ],
+            'showgrid':True,
+            'showline':True,
+            'fixedrange':True,
+            'zeroline':False,
+            "gridcolor": app_color["graph_line"],
+        },
+    )
+
+    return dict(data=[trace], layout=layout)
+
 if __name__ == '__main__':
 	app.run_server(debug=True)
