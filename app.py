@@ -180,7 +180,7 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 600,
+        height = 450,
         xaxis = {
             'range':[-5,5],
             'showline':True,
