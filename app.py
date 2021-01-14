@@ -107,12 +107,11 @@ app.layout = html.Div(
         html.Div(
             [   # Second graph
                 html.Div(
-                    ['''
+                    [
                         html.Div(
                             [html.H6('Live 3D Gyroscope',
                                     className='graph__title')]
                         ),
-<<<<<<< HEAD
 						dcc.Graph(
 							id = 'live-graph2',
 							figure = dict(
@@ -127,17 +126,6 @@ app.layout = html.Div(
 							interval = int(GRAPH_INTERVAL),
 							n_intervals = 0
 						),
-=======
-                        dcc.Graph(
-                            id = 'gps-tracker',
-                            animate = True,
-                        ),
-                        dcc.Interval(
-                            id = 'gps-update',
-                            interval = int(GRAPH_INTERVAL),
-                            n_intervals = 0
-                        ),'''
->>>>>>> 5e21996f25cb3fc9140f825520a130a4daf97edc
                     ],
                     className='graph__container first',
                 ),
@@ -219,16 +207,13 @@ def update_graph_scatter(n):
         y = df['yG'],
         line = {'color':'#42C4F7'},
 	hoverinfo = 'skip',
-<<<<<<< HEAD
-=======
 	error_y = {
 		'type':'data',
-		'array':df['xG'],
+		'array':df['yG'],
 		'thickness':1.5,
 		'width':2,
 		'color':'#B4E8FC',
 	},
->>>>>>> 5e21996f25cb3fc9140f825520a130a4daf97edc
 	mode = 'lines',
     )
 
@@ -236,11 +221,7 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-<<<<<<< HEAD
         height = 250,
-=======
-        height = 600,
->>>>>>> 5e21996f25cb3fc9140f825520a130a4daf97edc
         xaxis = {
             'range':[-5,5],
             'showline':True,
@@ -248,19 +229,11 @@ def update_graph_scatter(n):
             'fixedrange':True,
             'tickvals':[0, 50, 100, 150, 200],
             "ticktext": ["200", "150", "100", "50", "0"],
-<<<<<<< HEAD
             'title':'Time Elapsed (sec)'
         },
         yaxis = {
             'range': [
                 -5,5
-=======
-            'title':'Time Elapses (sec)',
-        },
-        yaxis = {
-            'range': [
-                -2,2
->>>>>>> 5e21996f25cb3fc9140f825520a130a4daf97edc
             ],
             'showgrid':True,
             'showline':True,
@@ -272,7 +245,6 @@ def update_graph_scatter(n):
 
     return dict(data=[trace], layout=layout)
 
-<<<<<<< HEAD
 
 @app.callback(
 	Output('live-graph2', 'figure'), [Input('graph-update2', 'n_intervals')]
@@ -317,8 +289,5 @@ def update_graph_scatter(n):
 
     return dict(data=[trace], layout=layout)
 
-=======
-
->>>>>>> 5e21996f25cb3fc9140f825520a130a4daf97edc
 if __name__ == '__main__':
 	app.run_server(debug=True)
