@@ -2,7 +2,7 @@ import pathlib
 import sqlite3
 import pandas as pd
 
-DB_FILE = pathlib.Path(__file__).resolve().parent.joinpath("wind-data.db").resolve()
+DB_FILE = 'gy91.db'
 
 def get_gy91_data(start, end):
     """
@@ -24,6 +24,6 @@ def get_gy91_data_by_id(id):
     :returns: pandas dataframe object
     """
     con = sqlite3.connect(str(DB_FILE))
-    statement = f'SELECVT * FROM Gyroscope WHERE rowid = "{id}";'
+    statement = f'SELECT * FROM Gyroscope WHERE rowid = "{id}";'
     df = pd.read_sql_query(statement, con)
     return df

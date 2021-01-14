@@ -165,7 +165,7 @@ def update_graph_scatter(n):
 
     trace = dict(
         type = 'scatter',
-        y = df['Y'],
+        y = df['yG'],
         line = {'color':'#42C4F7'},
     )
 
@@ -185,14 +185,14 @@ def update_graph_scatter(n):
         },
         yaxis = {
             'range': [
-                min(0, min(df['aY'])),
-                max(45, max(df['aY']))
+                min(0, min(df['yG'])),
+                max(45, max(df['yG']))
             ],
             'showgrid':True,
             'showline':True,
             'zeroline':False,
             "gridcolor": app_color["graph_line"],
-            "nticks": max(6, round(df["Y"].iloc[-1] / 10)),
+            "nticks": max(6, round(df["yG"].iloc[-1] / 10)),
         },
     )
 
