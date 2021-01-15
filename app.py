@@ -11,7 +11,6 @@ import plotly.io as pio
 import plotly
 
 from collections import deque
-import dash_daq as daq
 import datetime as dt
 import numpy as np
 from time import *
@@ -95,8 +94,6 @@ app.layout = html.Div(
         							[html.H6("Live GPS",
         							className='graph__title')]
         						),
-
-								)
         					],
         				),
         			],
