@@ -20,6 +20,12 @@ import sys
 import os
 sys.path.append('./SDL_Pi_HDC1080_Python3')
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
+X = deque(maxlen=30) # Time
+X.append(1)
+Y = deque(maxlen=30) # Temp
+Y.append(1)
+Z = deque(maxlen=30) # Humi
+Z.append(1)
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -94,6 +100,18 @@ app.layout = html.Div(
         							[html.H6("Live GPS",
         							className='graph__title')]
         						),
+                                                        dcc.Graph(
+                                                                id = 'live-graph',
+                                                                figure = dict(
+                                                                	layout = dict(
+                                                                        	plot_bgcolor = app_color['graph_bg'],
+                                                                                paper_bgcolor = app_color['graph_bg'],
+                                                                        ),
+                                                                ),
+                                                        ),
+                                                        dcc.Interval(
+                                                                id = 'graph-update'
+                                                        ),
         					],
         				),
         			],
@@ -214,7 +232,7 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 250,
+        height = 500,
         xaxis = {
             'range':[-5,5],
             'showline':True,
@@ -259,6 +277,7 @@ def update_graph_scatter(n):
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
         height = 250,
+        autosize = False,
         xaxis = {
             'range':[-5,5],
             'showline':True,
@@ -288,24 +307,50 @@ def update_graph_scatter(n):
 def update_graph_scatter(input_data):
     X.append(X[-1]+1)
     Y.append(round(hdc1080.readTemperature(), 2))
-    data = go.Scatter(
+    Z.append(round(hdc1080.readHumidity(), 2))
+
+    minV = [min(Y), min(Z)]
+    maxV = [max(Y), max(Z)]
+    trace0 = go.Scatter( # Temperature
                 x = list(X),
                 y = list(Y),
                 name = 'Scatter',
                 mode = 'lines+markers',
+                line = {'color':'#42C4F7'},
             )
-    layout = go.Layout(
-                xaxis = dict(
-                        range = [min(X), max(X)],
-                ),
-                yaxis = dict(
-                            range = [min(Y)- .5, max(Y)+ .5]
-                        )
+    trace1 = go.Scatter( # Humidity
+                x = list(X),
+                y = list(Z),
+                name = 'Scatter',
+                mode = 'lines+markers',
+                line = {'color':'#51E751'},
             )
 
-    return {'data': [data], 'layout' : layout}
+    layout = go.Layout(
+                plot_bgcolor = app_color['graph_bg'],
+                paper_bgcolor = app_color['graph_bg'],
+                font = {'color':'#fff'},
+                height = 250,
+                autosize = True,
+                xaxis = dict(
+                        range = [min(minV)- .5, max(maxV)+ .5],
+                        showline = True,
+                        zeroline = False,
+                        fixedrange = True,
+                        title = 'Time elapsed (sec)'
+                ),
+                yaxis = dict(
+                            range = [min(minV)- .5, max(maxV)+ .5],
+                            showgrid = True,
+                            showline = True,
+                            fixedrange = True,
+                            zeroline = False,
+                            gridcolor = app_color['graph_line']
+                        ),
+            )
+
+    return {'data': [trace0, trace1], 'layout' : layout}
 
 
 if __name__ == '__main__':
-	app.run_server(debug=True)
-
+    app.run_server(host='192.168.10.37', debug=True)
