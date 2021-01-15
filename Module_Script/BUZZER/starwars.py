@@ -4,7 +4,7 @@ import time
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-BUZZER= 23
+BUZZER= 24
 buzzState = False
 
 GPIO.setup(BUZZER, GPIO.OUT)
@@ -75,7 +75,7 @@ def playSong(songnotes, songbeats, tempo):
 #play two songs
 for i in range(0,2):
 	for i in range(0,2):
-		playSong(starwars_notes, starwars_beats, 0.2)
+		playSong(starwars_notes, starwars_beats, 0.17)
 		time.sleep(2)
 
 
