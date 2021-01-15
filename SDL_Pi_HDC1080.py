@@ -241,3 +241,4 @@ class SDL_Pi_HDC1080:
             serialNumber = serialNumber*256 + buf[0]*256 + buf[1] 
     
             return serialNumber
+
