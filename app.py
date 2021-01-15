@@ -1,23 +1,25 @@
 from mpu9250_jmdev.mpu_9250 import MPU9250
 from mpu9250_jmdev.registers import *
+import SDL_Pi_HDC1080
 
+from db.api import get_gy91_data, get_gy91_data_by_id
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
 import plotly.graph_objs as go
 import plotly.io as pio
 import plotly
-from db.api import get_gy91_data, get_gy91_data_by_id
 
-import datetime as dt
 from collections import deque
+import datetime as dt
 import numpy as np
 from time import *
 import random
 import dash
+import sys
 import os
-
-
+sys.path.append('./SDL_Pi_HDC1080_Python3')
+hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
@@ -34,8 +36,8 @@ mpu.configure()
 # App set-up
 #####################################################################################################
 
-#1000 miliseconds = 1 second
-GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 850)
+# 1000 miliseconds = 1 second
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
 
 app = dash.Dash(
 	__name__,
@@ -92,9 +94,6 @@ app.layout = html.Div(
         							[html.H6("Live GPS",
         							className='graph__title')]
         						),
-
-
-
         					],
         				),
         			],
@@ -141,16 +140,10 @@ app.layout = html.Div(
 							]
 						),
 						dcc.Graph(
-							id = 'live-graph',
-							figure = dict(
-								layout = dict(
-									plot_bgcolor = app_color['graph_bg'],
-									paper_bgcolor = app_color['graph_bg'],
-									)
-							),
+							id = 'live-temp', animate = True
 						),
 						dcc.Interval(
-							id = 'graph-update',
+							id = 'temp-update',
 							interval = int(GRAPH_INTERVAL),
 							n_intervals = 0
 						),
@@ -288,6 +281,30 @@ def update_graph_scatter(n):
     )
 
     return dict(data=[trace], layout=layout)
+
+
+@app.callback(Output('live-temp', 'figure'),
+              [Input('temp-update', 'n_intervals')])
+def update_graph_scatter(input_data):
+    X.append(X[-1]+1)
+    Y.append(round(hdc1080.readTemperature(), 2))
+    data = go.Scatter(
+                x = list(X),
+                y = list(Y),
+                name = 'Scatter',
+                mode = 'lines+markers',
+            )
+    layout = go.Layout(
+                xaxis = dict(
+                        range = [min(X), max(X)],
+                ),
+                yaxis = dict(
+                            range = [min(Y)- .5, max(Y)+ .5]
+                        )
+            )
+
+    return {'data': [data], 'layout' : layout}
+
 
 if __name__ == '__main__':
 	app.run_server(debug=True)
