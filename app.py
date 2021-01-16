@@ -18,15 +18,26 @@ import random
 import dash
 import sys
 import os
+
+############################
+# Graph container 3 SET-UP #
+############################
 sys.path.append('./SDL_Pi_HDC1080_Python3')
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
+
 X = deque(maxlen=30) # Time
 X.append(1)
-Y = deque(maxlen=30) # Temp
+
+Y = deque(maxlen=30) # Temperature
 Y.append(1)
-Z = deque(maxlen=30) # Humi
+
+Z = deque(maxlen=30) # Humidity
 Z.append(1)
 
+
+############################
+# Graph container 2 SET-UP #
+############################
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
@@ -37,6 +48,19 @@ mpu = MPU9250(
     mfs=AK8963_BIT_16,
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
+
+time = deque(maxlen=30) # Time for X-axis
+time.append(1)
+
+GyroscopeX = deque(maxlen=30)
+GyroscopeX.append(1)
+
+GyroscopeY = deque(maxlen=30)
+GyroscopeY.append(1)
+
+GyroscopeZ = deque(maxlen=30)
+GyroscopeZ.append(1)
+
 
 ####################################################################################################
 # App set-up
@@ -97,7 +121,7 @@ app.layout = html.Div(
         				html.Div(
         					[
         						html.Div(
-        							[html.H6("Live GPS",
+        							[html.H6("Live GPS Feed",
         							className='graph__title')]
         						),
                                                         dcc.Graph(
@@ -126,23 +150,17 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.Div(
-                            [html.H6('Live 3D Gyroscope',
+                            [html.H6('Live 2D Gyroscope',
                                     className='graph__title')]
                         ),
 						dcc.Graph(
-							id = 'live-graph2',
-							figure = dict(
-								layout = dict(
-									plot_bgcolor = app_color['graph_bg'],
-									paper_bgcolor = app_color['graph_bg'],
-									)
-							),
-						),
-						dcc.Interval(
-							id = 'graph-update2',
-							interval = int(GRAPH_INTERVAL),
-							n_intervals = 0
-						),
+							id = 'Gyroscope-live', animate = True
+                        ),
+                        dcc.Interval(
+                            id = 'Gyroscope-update',
+                            interval = int(GRAPH_INTERVAL),
+                            n_intervals = 0
+                        ),
                     ],
                     className='graph__container first',
                 ),
@@ -158,10 +176,10 @@ app.layout = html.Div(
 							]
 						),
 						dcc.Graph(
-							id = 'live-temp', animate = True
+							id = 'HDC-live', animate = True
 						),
 						dcc.Interval(
-							id = 'temp-update',
+							id = 'HDC-update',
 							interval = int(GRAPH_INTERVAL),
 							n_intervals = 0
 						),
@@ -171,30 +189,6 @@ app.layout = html.Div(
             ],
             className='one-third column histogram__direction',
         ),
-        # footer
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.Div(
-                                    [	html.Hr(),
-                                        html.P(children=[
-                                            '© 2021 Academia de Ciencias SIMES. Todos los derechos reservados.'
-                                            #Creado por ', html.A('Kenobi', href='https://github.com/CxrlosKenobi')
-                                            ],
-                                            className='app__footer--grey',
-                                        ),
-                                    ],
-                                ),
-                            ],
-                        ),
-                    ],
-                ),
-            ],
-            className='app__content',
-        ), # footer's end
 	],
 	className='app__container',
 )
@@ -210,17 +204,13 @@ def get_current_time():
 	Output('live-graph', 'figure'), [Input('graph-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
-    total_time = get_current_time()
-    df = get_gy91_data(total_time - 200, total_time)
 
     trace = dict(
         type = 'scatter',
-        y = df['yG'],
         line = {'color':'#42C4F7'},
 	hoverinfo = 'skip',
 	error_y = {
 		'type':'data',
-		'array':df['yG'],
 		'thickness':1.5,
 		'width':2,
 		'color':'#B4E8FC',
@@ -232,15 +222,13 @@ def update_graph_scatter(n):
         plot_bgcolor = app_color['graph_bg'],
         paper_bgcolor = app_color['graph_bg'],
         font = {'color':'#fff'},
-        height = 500,
+        height = 570,
         xaxis = {
             'range':[-5,5],
             'showline':True,
             'zeroline':False,
             'fixedrange':True,
-            'tickvals':[0, 50, 100, 150, 200],
-            "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapsed (sec)'
+            'title':'X axis'
         },
         yaxis = {
             'range': [
@@ -257,54 +245,77 @@ def update_graph_scatter(n):
     return dict(data=[trace], layout=layout)
 
 
+#####################
+# Graph container 2 #
+#####################
+@app.callback(Output('Gyroscope-live', 'figure'),
+              [Input('Gyroscope-update', 'n_intervals')])
+def update_graph_scatter(input_data):
+    time.append(X[-1]+1)
+
+    GyroscopeX.append(round( mpu.readGyroscopeMaster()[0] , 4))
+    GyroscopeY.append(round( mpu.readGyroscopeMaster()[1] , 4))
+    GyroscopeZ.append(round( mpu.readGyroscopeMaster()[2] , 4))
+
+    minV = [min(GyroscopeX), min(GyroscopeY), min(GyroscopeZ)]
+    maxV = [max(GyroscopeX), max(GyroscopeY), max(GyroscopeZ)]
+
+    GyroX = go.Scatter( # Gyroscope X-axis
+                x = list(time),
+                y = list(GyroscopeX),
+                name = 'X-Gyroscope',
+                mode = 'lines',
+                line = {'color':'#A50EFF'},
+            )
+    GyroY = go.Scatter( # Gyroscope Y-axis
+                x = list(time),
+                y = list(GyroscopeY),
+                name = 'Y-Gyroscope',
+                mode = 'lines',
+                line = {'color':'#FF2C00'},
+            )
+    GyroZ = go.Scatter( # Gyroscope Z-axis
+                x = list(time),
+                y = list(GyroscopeZ),
+                name = 'Z-Gyroscope',
+                mode = 'lines',
+                line = {'color':'#FF0082'},
+            )
+
+    layout = go.Layout(
+                plot_bgcolor = app_color['graph_bg'],
+                paper_bgcolor = app_color['graph_bg'],
+                font = {'color':'#fff'},
+                height = 250,
+                autosize = True,
+                showlegend = False,
+                xaxis = dict(
+                        range = [min(X)- 1.5, max(X)+ 1.5],
+                        showline = True,
+                        zeroline = False,
+                        fixedrange = True,
+                        title = 'Time elapsed (sec)'
+                ),
+                yaxis = dict(
+                            range = [min(minV)- 1.5, max(maxV)+ 1.5],
+                            showgrid = True,
+                            showline = True,
+                            fixedrange = True,
+                            zeroline = False,
+                            gridcolor = app_color['graph_line']
+                        ),
+            )
+
+    return {'data': [GyroX, GyroY, GyroZ], 'layout' : layout}
+
+
+#######################
+# HDC1080 - live feed #
+#######################
 @app.callback(
-	Output('live-graph2', 'figure'), [Input('graph-update2', 'n_intervals')]
+	Output('HDC-live', 'figure'), [Input('HDC-update', 'n_intervals')]
 )
 def update_graph_scatter(n):
-    total_time = get_current_time()
-    df = get_gy91_data(total_time - 200, total_time)
-
-    trace = dict(
-        type = 'scatter',
-        y = df['yG'],
-        line = {'color':'#42C4F7'},
-	hoverinfo = 'skip',
-	mode = 'lines',
-    )
-
-    layout = dict(
-        plot_bgcolor = app_color['graph_bg'],
-        paper_bgcolor = app_color['graph_bg'],
-        font = {'color':'#fff'},
-        height = 250,
-        autosize = False,
-        xaxis = {
-            'range':[-5,5],
-            'showline':True,
-            'zeroline':False,
-            'fixedrange':True,
-            'tickvals':[0, 50, 100, 150, 200],
-            "ticktext": ["200", "150", "100", "50", "0"],
-            'title':'Time Elapsed (sec)'
-        },
-        yaxis = {
-            'range': [
-                -5,5
-            ],
-            'showgrid':True,
-            'showline':True,
-            'fixedrange':True,
-            'zeroline':False,
-            "gridcolor": app_color["graph_line"],
-        },
-    )
-
-    return dict(data=[trace], layout=layout)
-
-
-@app.callback(Output('live-temp', 'figure'),
-              [Input('temp-update', 'n_intervals')])
-def update_graph_scatter(input_data):
     X.append(X[-1]+1)
     Y.append(round(hdc1080.readTemperature(), 2))
     Z.append(round(hdc1080.readHumidity(), 2))
@@ -314,15 +325,15 @@ def update_graph_scatter(input_data):
     trace0 = go.Scatter( # Temperature
                 x = list(X),
                 y = list(Y),
-                name = 'Scatter',
-                mode = 'lines+markers',
+                name = 'Temperature (C)',
+                mode = 'lines',
                 line = {'color':'#42C4F7'},
             )
     trace1 = go.Scatter( # Humidity
-                x = list(X),
+                x = list(time),
                 y = list(Z),
-                name = 'Scatter',
-                mode = 'lines+markers',
+                name = 'Humidity (%)',
+                mode = 'lines',
                 line = {'color':'#51E751'},
             )
 
@@ -332,15 +343,16 @@ def update_graph_scatter(input_data):
                 font = {'color':'#fff'},
                 height = 250,
                 autosize = True,
+                showlegend = False,
                 xaxis = dict(
-                        range = [min(minV)- .5, max(maxV)+ .5],
+                        range = [min(X)- 1.5, max(X)+ 1.5],
                         showline = True,
                         zeroline = False,
                         fixedrange = True,
                         title = 'Time elapsed (sec)'
                 ),
                 yaxis = dict(
-                            range = [min(minV)- .5, max(maxV)+ .5],
+                            range = [min(minV)- 1.5, max(maxV)+ 1.5],
                             showgrid = True,
                             showline = True,
                             fixedrange = True,

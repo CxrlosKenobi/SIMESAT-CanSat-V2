@@ -8,7 +8,7 @@ h6 {
 }
 
 .app__container {
-    margin: 3% 5%;
+    margin: 3.125% 5.125%;
 }
 
 .app__header {
@@ -56,6 +56,7 @@ h6 {
     background-color: #082255;
     border-radius: 0.55rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    align-content: center;
 }
 
 .graph__title {
