@@ -6,7 +6,7 @@ from time import *
 import csv
 import os
 
-os.system('clear')
+#os.system('clear')
 counter = 0
 hr = 0
 min = 0
