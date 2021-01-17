@@ -25,13 +25,13 @@ import os
 sys.path.append('./SDL_Pi_HDC1080_Python3')
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
-X = deque(maxlen=30) # Time
+X = deque(maxlen=60) # Time
 X.append(1)
 
-Y = deque(maxlen=30) # Temperature
+Y = deque(maxlen=60) # Temperature
 Y.append(1)
 
-Z = deque(maxlen=30) # Humidity
+Z = deque(maxlen=60) # Humidity
 Z.append(1)
 
 
@@ -49,16 +49,16 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
 
-time = deque(maxlen=30) # Time for X-axis
+time = deque(maxlen=60) # Time for X-axis
 time.append(1)
 
-GyroscopeX = deque(maxlen=30)
+GyroscopeX = deque(maxlen=60)
 GyroscopeX.append(1)
 
-GyroscopeY = deque(maxlen=30)
+GyroscopeY = deque(maxlen=60)
 GyroscopeY.append(1)
 
-GyroscopeZ = deque(maxlen=30)
+GyroscopeZ = deque(maxlen=60)
 GyroscopeZ.append(1)
 
 
