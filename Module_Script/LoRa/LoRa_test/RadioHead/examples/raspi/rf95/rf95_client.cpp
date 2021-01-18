@@ -2,7 +2,7 @@
 //
 // Example program showing how to use RH_RF95 on Raspberry Pi
 // Uses the bcm2835 library to access the GPIO pins to drive the RFM95 module
-// Requires bcm2835 library to be already installed:
+// Requires bcm2835 library to be already installed
 // http://www.airspayce.com/mikem/bcm2835/
 // Use the Makefile in this directory:
 // cd example/raspi/rf95
@@ -10,9 +10,6 @@
 // sudo ./rf95_client
 //
 // Contributed by Charles-Henri Hallard based on sample RH_NRF24 by Mike Poublon
-// Edited by: Ramin Sangesari
-// https://www.hackster.io/idreams/
-
 
 #include <bcm2835.h>
 #include <stdio.h>
@@ -22,25 +19,13 @@
 #include <RH_RF69.h>
 #include <RH_RF95.h>
 
-#include <stdlib.h>
-#include <fcntl.h>
-#include <dirent.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-
-
 // define hardware used change to fit your need
 // Uncomment the board you have, if not listed 
 // uncommment custom board and set wiring tin custom section
 
 // LoRasPi board 
 // see https://github.com/hallard/LoRasPI
-//#define BOARD_DRAGINO_PIHAT
-
-// Adafruit RFM95W LoRa Radio Transceiver Breakout
-// see https://www.adafruit.com/product/3072
-#define BOARD_ADAFRUIT_RFM95W
+#define BOARD_LORASPI
 
 // iC880A and LinkLab Lora Gateway Shield (if RF module plugged into)
 // see https://github.com/ch2i/iC880A-Raspberry-PI
@@ -60,10 +45,8 @@
 
 // Our RFM95 Configuration 
 #define RF_FREQUENCY  868.00
-//#define RF_GATEWAY_ID 1 
+#define RF_GATEWAY_ID 1 
 #define RF_NODE_ID    10
-
-uint8_t RF_GATEWAY_ID = 1;
 
 // Create an instance of a driver
 RH_RF95 rf95(RF_CS_PIN, RF_IRQ_PIN);
@@ -72,13 +55,6 @@ RH_RF95 rf95(RF_CS_PIN, RF_IRQ_PIN);
 //Flag for Ctrl-C
 volatile sig_atomic_t force_exit = false;
 
-void Data_create(float *val, uint8_t data[]){
-    uint8_t *sends;
-    sends = (uint8_t *) val;
-    memcpy(data, sends, sizeof(float));
-}
-
-
 void sig_handler(int sig)
 {
   printf("\n%s Break received, exiting!\n", __BASEFILE__);
@@ -86,13 +62,8 @@ void sig_handler(int sig)
 }
 
 //Main Function
-//int main (int argc, const char* argv[] )
-//{
-int main(int argc, char **argv)
+int main (int argc, const char* argv[] )
 {
-    if( argc == 2 )
-        RF_GATEWAY_ID = atoi(argv[1]);	
-	
   static unsigned long last_millis;
   static unsigned long led_blink = 0;
   
@@ -195,85 +166,36 @@ int main(int argc, char **argv)
         led_blink = millis();
         digitalWrite(RF_LED_PIN, HIGH);
 #endif
-    ///////////////////////////////////////////////////
-    // DS18b20 Temperature sensor
-    ///////////////////////////////////////////////////
-		
-	char path[50] = "/sys/bus/w1/devices/";
-	char rom[20];
-	char buf[100];
-	DIR *dirp;
-	struct dirent *direntp;
-	int fd =-1;
-	char *temp;
-	float value;
-	// These tow lines mount the device:
-	system("sudo modprobe w1-gpio");
-	system("sudo modprobe w1-therm");
-	// Check if /sys/bus/w1/devices/ exists.
-	if((dirp = opendir(path)) == NULL)
-	{
-		printf("opendir error\n");
-		return 1;
-	}
-	// Reads the directories or files in the current directory.
-	while((direntp = readdir(dirp)) != NULL)
-	{
-		// If 28-00000 is the substring of d_name,
-		// then copy d_name to rom and print rom.  
-		if(strstr(direntp->d_name,"28-00000"))
-		{
-			strcpy(rom,direntp->d_name);
-			//printf(" rom: %s\n",rom);
-		}
-	}
-	closedir(dirp);
-	// Append the String rom and "/w1_slave" to path
-	// path becomes to "/sys/bus/w1/devices/28-00000xxxx/w1_slave"
-	strcat(path,rom);
-	strcat(path,"/w1_slave");
-	// Open the file in the path.
-	if((fd = open(path,O_RDONLY)) < 0)
-	{
-		printf("open error\n");
-		return 1;
-	}
-	// Read the file
-	if(read(fd,buf,sizeof(buf)) < 0)
-	{
-		printf("read error\n");
-		return 1;
-	}
-	// Returns the first index of 't'.
-	temp = strchr(buf,'t');
-		
-	// Read the string following "t=".
-	sscanf(temp,"t=%s",temp);
-			
-	// atof: changes string to float.
-	value = atof(temp)/1000;
-	char c[50]; //size of the number
-	//sprintf(c, "%.2f °C", value);
-	sprintf(c, "%.2f", value);
-		
-	//printf("Temperature: %s\n", c);
-			
-    ///////////////////////////////////////////////////
-    // DS18b20 Temperature sensor
-    ///////////////////////////////////////////////////
-		
-	
-    // Send Temperature data to rf95_server
-    //uint8_t data[] = "Hi Hackster !";
-    uint8_t * data = (uint8_t *)c;
-    uint8_t len = sizeof(data);
-    printf("Sending %02d bytes to node #%d => ", len, RF_GATEWAY_ID );
-    printbuffer(data, len);
-    printf("\n" );
-    rf95.send(data, len);
-    rf95.waitPacketSent();
         
-    }
+        // Send a message to rf95_server
+        uint8_t data[] = "Hi Raspi!";
+        uint8_t len = sizeof(data);
+        
+        printf("Sending %02d bytes to node #%d => ", len, RF_GATEWAY_ID );
+        printbuffer(data, len);
+        printf("\n" );
+        rf95.send(data, len);
+        rf95.waitPacketSent();
+/*
+        // Now wait for a reply
+        uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
+        uint8_t len = sizeof(buf);
+
+        if (rf95.waitAvailableTimeout(1000)) { 
+          // Should be a reply message for us now   
+          if (rf95.recv(buf, &len)) {
+            printf("got reply: ");
+            printbuffer(buf,len);
+            printf("\nRSSI: %d\n", rf95.lastRssi());
+          } else {
+            printf("recv failed");
+          }
+        } else {
+          printf("No reply, is rf95_server running?\n");
+        }
+*/
+        
+      }
 
 #ifdef RF_LED_PIN
       // Led blink timer expiration ?
@@ -296,3 +218,4 @@ int main(int argc, char **argv)
   bcm2835_close();
   return 0;
 }
+

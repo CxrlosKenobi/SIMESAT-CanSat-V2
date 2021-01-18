@@ -1,7 +1,5 @@
 // defined pins definition of different hardware boards used
 // Contributed by Charles-Henri Hallard http://hallard.me
-// Edited by: Ramin Sangesari
-// https://www.hackster.io/idreams/
 
 // If a pin is not used just define it to NOT_A_PIN
 // or do not define it, both works
@@ -66,16 +64,6 @@
 #define RF_IRQ_PIN RPI_V2_GPIO_P1_07 // IRQ on GPIO4 so P1 connector pin #7
 #define RF_RST_PIN RPI_V2_GPIO_P1_11 // Reset on GPIO17 so P1 connector pin #11
 #define RF_LED_PIN NOT_A_PIN				 // No onboard led to drive
-
-// Adafruit RFM95W LoRa Radio Transceiver Breakout (no obboard led)
-// =========================================
-// see https://www.adafruit.com/product/3072
-#elif defined (BOARD_ADAFRUIT_RFM95W)
-#define RF_CS_PIN  RPI_V2_GPIO_P1_22 	// Slave Select on GPIO25 so P1 connector pin #22
-#define RF_IRQ_PIN RPI_V2_GPIO_P1_07 	// IRQ on GPIO4 so P1 connector pin #7
-#define RF_RST_PIN RPI_V2_GPIO_P1_11 	// Reset on GPIO17 so P1 connector pin #11
-#define RF_LED_PIN NOT_A_PIN			// No onboard led to drive
-
 
 #else
 #error "RasPiBoards.h => Please define Hardware Board"
