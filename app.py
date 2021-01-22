@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import SDL_Pi_HDC1080
+
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
@@ -15,6 +17,12 @@ import random
 import dash
 import sys
 import os
+
+####################################
+ # Graph container HDC1080 SET-UP #
+####################################
+sys.path.append('./SDL_Pi_HDC1080_Python3')
+hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
 ############################
 # Graph container 3 SET-UP #
@@ -204,12 +212,12 @@ def get_current_time():
 )
 def update_graph_scatter(n):
     X.append(X[-1] + 1)
-    Y.append(np.random.randint(20, 25) * random.uniform(-1, 1))
-    Z.append(np.random.randint(25, 30) * random.uniform(-1, 1))
+    #  Y.append(np.random.randint(20, 25) * random.uniform(-1, 1))
+    #  Z.append(np.random.randint(25, 30) * random.uniform(-1, 1))
 
     #  X.append(X[-1]+1)
-    #  Y.append(round(hdc1080.readTemperature(), 2))
-    #  Z.append(round(hdc1080.readHumidity(), 2))
+    Y.append(round(hdc1080.readTemperature(), 2))
+    Z.append(round(hdc1080.readHumidity(), 2))
 
     minV = [min(Y), min(Z)]
     maxV = [max(Y), max(Z)]
@@ -220,7 +228,7 @@ def update_graph_scatter(n):
         y=list(Y),
         name='Temperature (C)',
         mode='lines',
-        line={'color': '#42C4F7'}
+        line={'color': '#FF8300', 'width': 2.5}
     )
 
     # Humidity
@@ -229,7 +237,7 @@ def update_graph_scatter(n):
         y=list(Z),
         name='Humidity (%)',
         mode='lines',
-        line={'color': '#51E751'}
+        line={'color': '#51E751', 'width': 2.5}
     )
 
     layout = go.Layout(
@@ -375,4 +383,4 @@ def update_graph_scatter(n):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(host='192.168.10.37', debug=True)
