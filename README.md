@@ -1,5 +1,5 @@
 # SIMESAT CanSat V1
-[![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)  
 
 ## The first CanSat built and launched only by Chilean high school students
 
@@ -15,12 +15,39 @@ Using Autodesk Fusion 360, we have designed a simple and strong frame that will 
 Instead of using a single body, our CanSat is made up of two bodies joined by wire.
   </td>
   <td width="100%" align='center'>
-<img src=https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/media/media/CanSat-Diseno-v4.gif>
+<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/CanSat-Diseno-v8.2-768x473.png>
   </td>
   </table>
 
 After 5 hours of flight, the CanSat will be received on the ground with the help of a parachute.
 The work does not end here. This is only the beginning of a great journey full of feats and great achievements.
+
+## Electronics designed with Open-Source software
+<table width="100%">
+  <tr>
+  <td width="50%" align='center'>
+Our board has been designed thanks to KiCad. Our future V2 board will be designed with the same software, implementing improvements to the first prototype.
+<br><br>
+We have chosen KiCad for its ease of use and compatibility with GNU-Linux systems. In addition, being free, it allows anyone to edit and improve our designs.  </td>
+  <td width="100%" align='center'>
+<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
+  </td>
+  </table>
+
+## Simple and accurate dashboard
+### Accessible from any device, from anywhere
+<table width="100%">
+  <td width="100%" align='center'>
+<img src=https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png>
+  </td>
+  </table>
+<br>
+## SIMES-1 Cansat
+<table>
+  <td width="80%" align='center'>
+    <img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/IMG-20210119-WA0005-576x1024.jpg>
+  </td>
+<table>
 
 
 ## Conceptual mindmap of the coding's flow
@@ -31,11 +58,6 @@ The work does not end here. This is only the beginning of a great journey full o
 [![Carlos Pinto](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/media/images/CarlosPinto.jpg)](https://www.linkedin.com/in/carloskenobi/) | [![Rodrigo Flores](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/media/images/RodrigoFlores.jpeg)](https://www.linkedin.com/in/rodrigo-flores-549269160/)
 ---|---
 [Carlos Pinto ](https://www.linkedin.com/in/carloskenobi/) |[Rodrigo Flores](http://linkedin.com/in/rodrigo-flores-549269160)
-
-
-https://github.com/Paxa/postbird/blob/master/README.md
-
-
 
 
 *[Centro SIMES](https://aeroespacial.centrosimes.cl/)*
