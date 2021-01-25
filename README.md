@@ -7,7 +7,7 @@
 
 <code><img title="Assembled in Chile" height="30" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/parachute.png"></code> Parachute Assembled in Chile
 
-### The first CanSat built and launched only by Chilean high school students. <br>SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
+### The first CanSat built and launched only by Chilean high school students. <br><br>SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
 <br>
 
 ## Simple and lightweight design with 3D printing
