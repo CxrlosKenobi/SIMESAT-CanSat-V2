@@ -25,13 +25,14 @@ The work does not end here. This is only the beginning of a great journey full o
 ## Electronics designed with Open-Source software
 <table width="100%">
   <tr>
+  <td width="10%" align='center'>
+<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
+  </td>
   <td width="50%" align='center'>
 Our board has been designed thanks to KiCad. Our future V2 board will be designed with the same software, implementing improvements to the first prototype.
 <br><br>
-We have chosen KiCad for its ease of use and compatibility with GNU-Linux systems. In addition, being free, it allows anyone to edit and improve our designs.  </td>
-  <td width="100%" align='center'>
-<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
-  </td>
+We have chosen KiCad for its ease of use and compatibility with GNU-Linux systems. In addition, being free, it allows anyone to edit and improve our designs.
+</td>
   </table>
 
 ## Simple and accurate dashboard
