@@ -1,14 +1,13 @@
 # SIMESAT CanSat V1
-[![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)  
+[![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
+> The first CanSat built and launched only by Chilean high school students.
 
 <code><img title="Open-Source Project" height="30" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/opensource.png"></code> Open-Source Project
 
 <code><img title="Powered by Raspberry Pi OS" height="30" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/raspberrypi.png"></code> CanSat Powered by Raspberry Pi OS
 
 <code><img title="Assembled in Chile" height="30" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/parachute.png"></code> Parachute Assembled in Chile
-
-### The first CanSat built and launched only by Chilean high school students.
-<br>
 
 ## Simple and lightweight design with 3D printing
 <table width="100%">
@@ -36,11 +35,6 @@ We have chosen KiCad for its ease of use and compatibility with GNU-Linux system
 </td>
   </table>
 
-## Simple and accurate dashboard
-### Accessible from any device, from anywhere
-![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png)
-<br><p align="center">
-
 ## SIMES-1 Cansat
 <table width="100%">
   <tr>
@@ -52,9 +46,11 @@ SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which acc
   </td>
   </table>
 
-<img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/cansat.png" width="500">
-<br><p align="center">
 
+## Simple and accurate dashboard
+### Accessible from any device, from anywhere
+![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png)
+<br><p align="center">
 
 ## Conceptual mindmap of the coding's flow
 ![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/media/images/flow.png)
