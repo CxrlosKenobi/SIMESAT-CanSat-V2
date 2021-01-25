@@ -25,7 +25,7 @@ Instead of using a single body, our CanSat is made up of two bodies joined by wi
 ## Electronics designed with Open-Source software
 <table width="100%">
   <tr>
-  <td width="35%" align='center'>
+  <td width="30%" align='center'>
 <img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
   </td>
   <td width="50%" align='center'>
