@@ -37,7 +37,7 @@ Our board has been designed thanks to KiCad. Our future V2 board will be designe
 <td>
 We have chosen KiCad for its ease of use and compatibility with GNU-Linux systems. In addition, being free, it allows anyone to edit and improve our designs.
 </td>
-  <td width="35%" align="center">
+  <td width="45%" align="center">
 <img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/placa_cansat_3d.png"
   </td>
   </table>
