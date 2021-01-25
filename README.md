@@ -2,7 +2,9 @@
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)  
 
 <code><img title="Open-Source Project" height="40" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/opensource.png"></code> Open-Source Project
+
 <code><img title="Powered by Raspberry Pi OS" height="40" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/raspberrypi.png"></code> CanSat Powered by Raspberry Pi OS
+
 <code><img title="Assembled in Chile" height="40" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/parachute.png"></code> Parachute Assembled in Chile
 
 ## The first CanSat built and launched only by Chilean high school students
