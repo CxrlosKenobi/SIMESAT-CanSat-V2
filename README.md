@@ -63,7 +63,7 @@ SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which acc
 [Carlos Pinto ](https://www.linkedin.com/in/carloskenobi/) |[Rodrigo Flores](http://linkedin.com/in/rodrigo-flores-549269160)
 
 ## Team
-<td width="20%">
+<td width="5%">
   <img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/team.png">
 </td>
 
