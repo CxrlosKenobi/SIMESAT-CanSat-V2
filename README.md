@@ -25,14 +25,21 @@ Instead of using a single body, our CanSat is made up of two bodies joined by wi
 ## Electronics designed with Open-Source software
 <table width="100%">
   <tr>
-  <td width="50%" align='center'>
+  <td width="35%" align='center'>
 <img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
   </td>
   <td width="50%" align='center'>
 Our board has been designed thanks to KiCad. Our future V2 board will be designed with the same software, implementing improvements to the first prototype.
-<br><br>
+  </td>
+  </table>
+<table width="100%">
+<tr>
+<td>
 We have chosen KiCad for its ease of use and compatibility with GNU-Linux systems. In addition, being free, it allows anyone to edit and improve our designs.
 </td>
+  <td width="35%" align="center">
+<img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/placa_cansat_3d.png"
+  </td>
   </table>
 
 ## SIMES-1 Cansat
@@ -64,7 +71,7 @@ SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which acc
 
 ## Team
 <td width="5%">
-  <a href="https://aeroespacial.centrosimes.cl/simesat-cansat-v1/"> <img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/team.png">
+  <a href="https://aeroespacial.centrosimes.cl/simesat-cansat-v1/ "> <img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/team.png">
 </td>
 
 ##### Made in Chile 🇨🇱
