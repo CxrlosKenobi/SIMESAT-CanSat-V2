@@ -36,18 +36,12 @@ We have chosen KiCad for its ease of use and compatibility with GNU-Linux system
 
 ## Simple and accurate dashboard
 ### Accessible from any device, from anywhere
-<table width="100%">
-  <td width="100%" align='center'>
-<img src=https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png>
-  </td>
-  </table>
-<br>
+![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png)
+<br><p align="center">
+
 ## SIMES-1 Cansat
-<table>
-  <td width="80%" align='center'>
-    <img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/IMG-20210119-WA0005-576x1024.jpg>
-  </td>
-<table>
+![image](https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/IMG-20210119-WA0005-576x1024.jpg)
+<br><p align="center">
 
 
 ## Conceptual mindmap of the coding's flow
