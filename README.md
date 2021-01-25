@@ -45,10 +45,10 @@ We have chosen KiCad for its ease of use and compatibility with GNU-Linux system
 <table width="100%">
   <tr>
   <td width="50%" align='center'>
-SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
+SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br><br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
 </td>
   <td width="50%" align='center'>
-<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
+<img src=https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/cansat.png>
   </td>
   </table>
 
