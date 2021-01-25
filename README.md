@@ -7,13 +7,13 @@
 
 <code><img title="Assembled in Chile" height="30" src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/parachute.png"></code> Parachute Assembled in Chile
 
-#### The first CanSat built and launched only by Chilean high school students. <br><br>SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
+### The first CanSat built and launched only by Chilean high school students.
 <br>
 
 ## Simple and lightweight design with 3D printing
 <table width="100%">
   <tr>
-  <td width="50%" align='center'>
+  <td width="40%" align='center'>
 Using Autodesk Fusion 360, we have designed a simple and strong frame that will protect systems from impact, dirt and moisture.
 <br><br>
 Instead of using a single body, our CanSat is made up of two bodies joined by wire.
@@ -42,6 +42,16 @@ We have chosen KiCad for its ease of use and compatibility with GNU-Linux system
 <br><p align="center">
 
 ## SIMES-1 Cansat
+<table width="100%">
+  <tr>
+  <td width="50%" align='center'>
+SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which accommodates a series of components inside a cylinder with the shape and dimensions of a soda can. <br>Our CanSat has at its heart a Raspberry Pi Zero-W microcomputer which will reach an altitude of 29.000 meters above sea level.
+</td>
+  <td width="50%" align='center'>
+<img src=https://aeroespacial.centrosimes.cl/wp-content/uploads/2021/01/cansat-pcb-v1.png>
+  </td>
+  </table>
+
 <img src="https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/cansat.png" width="500">
 <br><p align="center">
 
