@@ -30,12 +30,12 @@ while True:
 		HH += 1
 		MM = 0
 
-	temperature = round(hdc1080.readTemperature(),6)
-	humidity = round(hdc1080.readHumidity(),1)
-
 	with open('HDC-1080.csv', 'a+', newline='') as file:
 		writer = csv.writer(file)
 		writer.writerow([current_time, hdc1080.readTemperature(), hdc1080.readHumidity()])
+
+	temperature = round(hdc1080.readTemperature(),1)
+	humidity = round(hdc1080.readHumidity(),1)
 
 	print (Fore.RED + "|-------" + Fore.WHITE + f"{HH}:{MM}:{SS}" + Fore.RED + "-------|")
 	print (Fore.WHITE + f'Temperature = {temperature} C°')

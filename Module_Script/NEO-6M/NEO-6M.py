@@ -18,8 +18,7 @@ def parseGPS(str):
         lon = msg.lon,msg.lon_dir
         alt =  msg.altitude,msg.altitude_units
         
-        os.system("echo >> NEO-6M.csv " + "%s,%s %s,%s %s,%s %s" % (current_time,msg.lat,msg.lat_dir,msg.lon,msg.lon_dir,msg.altitude,msg.altitude_units)
-)    
+        os.system("echo >> NEO-6M.csv " + "%s,%s %s,%s %s,%s %s" % (current_time,msg.lat,msg.lat_dir,msg.lon,msg.lon_dir,msg.altitude,msg.altitude_units))    
 
 serialPort = serial.Serial("/dev/ttyAMA0", 9600, timeout=0.5)
 

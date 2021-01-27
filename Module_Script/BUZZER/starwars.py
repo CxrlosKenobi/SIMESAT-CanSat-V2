@@ -4,7 +4,7 @@ import time
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-BUZZER= 24
+BUZZER= 18
 buzzState = False
 
 GPIO.setup(BUZZER, GPIO.OUT)
