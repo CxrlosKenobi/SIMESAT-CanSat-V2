@@ -31,6 +31,24 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
 
+##  Accelerometer & Gyroscope
+mpu.calibrateMPU6500() #  Calibrate sensors
+mpu.configure() #  The calibration function rests the sensors, so you need to reconfigure them
+
+abias = mpu.abias # Get the master accelerometer biases
+abias_slave = mpu.abias_slave # Get the slave accelerometer biases
+gbias = mpu.gbias # Get the master gyroscope biases
+gbias_slave = mpu.gbias_slave # Get the slave gyroscope biases
+
+
+##  Magnetometer
+mpu.calibrateAK8963() # Calibrate sensors
+mpu.configure() # The calibration function resets the sensors, so you need to reconfigure them
+
+magScale = mpu.magScale # Get magnetometer soft iron distortion
+mbias = mpu.mbias # Get magnetometer hard iron distortion
+
+
 with open('GY-91.csv', 'w', newline='') as file:
 	write = csv.writer(file)
 	write.writerow(['Time','Acelerometer','Gyroscope','Magnetometer'])
