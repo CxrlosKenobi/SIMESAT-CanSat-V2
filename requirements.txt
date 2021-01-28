@@ -6,4 +6,5 @@ mpu9250_jmdev==1.0.12
 dash_html_components==1.1.1
 dash_core_components==1.14.1
 gunicorn==19.0.0
-
+pyserial==3.5
+pynmea2==1.15.0
