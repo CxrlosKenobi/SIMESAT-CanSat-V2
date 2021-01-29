@@ -31,13 +31,13 @@ hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 ############################
 # Graph container 3 SET-UP #
 ############################
-X = deque(maxlen=45)  # Time
+X = deque(maxlen=30)  # Time
 X.append(1)
 
-Y = deque(maxlen=45)  # Temperature
+Y = deque(maxlen=30)  # Temperature
 Y.append(1)
 
-Z = deque(maxlen=45)  # Humidity
+Z = deque(maxlen=30)  # Humidity
 Z.append(1)
 
 ############################
@@ -93,7 +93,7 @@ colors['text']
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
 
 FA = "https://use.fontawesome.com/releases/v5.15.1/css/all.css"
-PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
+PLOTLY_LOGO = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/satellite_1f6f0.png"
 
 app = dash.Dash(
 	__name__,
@@ -101,7 +101,7 @@ app = dash.Dash(
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 
-app.title = "SIMESAT 1 - DRAFT DASHBOARD"
+app.title = "SIMES-1"
 
 sidebar = html.Div(
     [
@@ -109,7 +109,6 @@ sidebar = html.Div(
             [
                 #  width: 3rem ensures the logo is the exact width of the collapsed sidebar (acounting for padding)
                 html.Img(src=PLOTLY_LOGO, style={"width":"4rem"}),
-                html.H2("SIMESAT-1"),
             ],
             className="sidebar-header",
         ),
@@ -121,22 +120,26 @@ sidebar = html.Div(
                     html.Span("Home")],
                     href="/",
                     active="exact",
+                    className="sidebar__header__text--grey",
                 ),
                 dbc.NavLink(
                     [
-                        html.I(className="fas fa-calendar-alt mr-2"),
-                        html.Span("Demostration"),
+                        html.I(className="fas fa-stethoscope mr-2"),
+                        html.Span("Demo"),
                     ],
                     href="/demo",
                     active="exact",
+                    className="sidebar__header__text--grey",
                 ),
                 dbc.NavLink(
                     [
-                        html.I(className="fas fa-envelope-open-text mr-2"),
-                        html.Span("Messages"),
+                        #html.I(className="fas fa-envelope-open-t mr-2"),
+                        html.I(className="fab fa-github mr-2"),
+                        html.Span("GitHub repo"),
                     ],
-                    href="/messages",
+                    href="https://github.com/CxrlosKenobi/SIMESAT-CanSat-v1",
                     active="exact",
+                    className="sidebar__header__text--grey",
                 ),
             ],
             vertical=True,
@@ -162,7 +165,7 @@ homeDir = html.Div(
             [
                 html.Div(
                     [html.H4(
-                        '🛰️ SIMESAT 1 - DRAFT DASHBOARD',
+                        'SIMES-1 CANSAT - DRAFT DASHBOARD',
                         className='app__header__title'
                     ),
                         html.P(
@@ -284,7 +287,7 @@ def render_page_content(pathname):
         return homeDir
     elif pathname == "/demo":
         return html.P("Here are our demostration with random data!")
-    elif pathname == "/calendar":
+    elif pathname == "/github":
         return html.P("This is your calendar... not much in the diary...")
 
     #  If the user tries to reach a different page, return a 404 message

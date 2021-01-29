@@ -19,7 +19,6 @@ h6 {
   z-index: 1050;
   transition: width 0.1s ease-in-out;
 }
-
 /* when the user hovers on the sidebar, expand it */
 .sidebar:hover {
   width: 18rem;
@@ -33,6 +32,7 @@ h6 {
 }
 
 /* fix the width of the icons */
+/* distance between icons and text */
 .sidebar .nav-link i {
   width: 2rem;
 }
@@ -59,6 +59,7 @@ h6 {
   align-items: center;
   overflow: hidden;
   white-space: nowrap;
+  color: #C4CDD5;
 }
 
 /* position the header relative to the logo and hide by default */
@@ -73,10 +74,13 @@ h6 {
 .sidebar:hover .sidebar-header h2 {
   opacity: 1;
 }
+.sidebar__header__text--grey {
+  color: #C4CDD5;
+}
 
 /* position the content relative to the collapsed sidebar */
 .content {
-  margin-left: 7rem;
+  margin-left: 1rem;
   margin-right: 2rem;
   padding: 2rem 1rem;
 }
