@@ -1,19 +1,28 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: #061E44;
+}
+
+h6 {
+  margin-top: 0;
+}
+
 /* This creates a skinny side bar fixed to the left of the page */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 5rem;
+  width: 6rem;
   padding: 2rem 1rem;
-  background-color: #f8f9fa;
+  background-color: #14305D;
   z-index: 1050;
   transition: width 0.1s ease-in-out;
 }
 
 /* when the user hovers on the sidebar, expand it */
 .sidebar:hover {
-  width: 16rem;
+  width: 18rem;
 }
 
 /* make sure the contents of the navlink don't wrap when navbar collapses */
@@ -25,7 +34,7 @@
 
 /* fix the width of the icons */
 .sidebar .nav-link i {
-  width: 1rem;
+  width: 2rem;
 }
 
 /* hide the navlink labels by default */
@@ -38,7 +47,7 @@
 /* when the sidebar is hovered, reveal the labels */
 .sidebar:hover .nav-link span {
   visibility: visible;
-  opacity: 1;
+  opacity: 0.8;
 }
 
 /* container for the sidebar header. make sure the contents don't wrap when
@@ -53,9 +62,9 @@
 }
 
 /* position the header relative to the logo and hide by default */
-.sidebar-header h2 {
+.sidebar-header h1 {
   opacity: 0;
-  margin-left: 1rem;
+  margin-left: 2rem;
   margin-bottom: 0;
   transition: opacity 0.1s ease-in-out;
 }
@@ -72,14 +81,6 @@
   padding: 2rem 1rem;
 }
 
-body {
-  font-family: "Open Sans", sans-serif;
-  background-color: #061E44;
-}
-
-h6 {
-  margin-top: 0;
-}
 
 .app__container {
     margin: 3.125% 5.125%;

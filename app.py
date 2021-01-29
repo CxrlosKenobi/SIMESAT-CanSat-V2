@@ -108,8 +108,8 @@ sidebar = html.Div(
         html.Div(
             [
                 #  width: 3rem ensures the logo is the exact width of the collapsed sidebar (acounting for padding)
-                html.Img(src=PLOTLY_LOGO, style={"width":"3rem"}),
-                html.H2("Sidebar"),
+                html.Img(src=PLOTLY_LOGO, style={"width":"4rem"}),
+                html.H2("SIMESAT-1"),
             ],
             className="sidebar-header",
         ),
