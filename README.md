@@ -56,7 +56,7 @@ SIMESAT CanSat V1 is a device with characteristics of a nanosatellite, which acc
 
 ## Simple and accurate dashboard
 ### Accessible from any device, from anywhere
-![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/Dashboard-shot.png)
+![image](https://raw.githubusercontent.com/CxrlosKenobi/SIMESAT-CanSat-v1/main/assets/dashboard-shot.png)
 <br><p align="center">
 
 ## Conceptual mindmap of the coding's flow
