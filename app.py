@@ -14,6 +14,7 @@ import plotly.io as pio
 import plotly
 import dash
 
+from colorama import init, Fore, Back, Style
 from collections import deque
 import datetime as dt
 import numpy as np
@@ -21,6 +22,10 @@ from time import *
 import random
 import sys
 import os
+init(autoreset=True)
+
+print(Style.RESET_ALL + Fore.GREEN + '[ ok ] ' + Style.RESET_ALL +
+    'Initializing script ...')
 
 ####################################
  # Graph container HDC1080 SET-UP #
@@ -43,6 +48,9 @@ Z.append(1)
 ############################
 # Graph container 2 SET-UP #
 ############################
+for i in range(2):
+    print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+    'Configuring MPU9250 ...')
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
@@ -54,23 +62,40 @@ mpu = MPU9250(
     mode=AK8963_MODE_C100HZ)
 mpu.configure()
 
+print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+'Configuring MPU9250 ...')
+print(Style.RESET_ALL + Fore.GREEN + '[ ok ] ' + Style.RESET_ALL +
+    'Configured MPU9250 !')
+
 ##  Accelerometer & Gyroscope
 mpu.calibrateMPU6500() #  Calibrate sensors
 mpu.configure() #  The calibration function rests the sensors, so you need to reconfigure them
 
-abias = mpu.abias # Get the master accelerometer biases
-abias_slave = mpu.abias_slave # Get the slave accelerometer biases
-gbias = mpu.gbias # Get the master gyroscope biases
-gbias_slave = mpu.gbias_slave # Get the slave gyroscope biases
+print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+'Calibrating MPU9250 sensors ...')
 
+abias = mpu.abias # Get the master accelerometer biases
+gbias = mpu.gbias # Get the master gyroscope biases
+
+print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+'Calibrating MPU9250 sensors ...')
 
 ##  Magnetometer
 mpu.calibrateAK8963() # Calibrate sensors
 mpu.configure() # The calibration function resets the sensors, so you need to reconfigure them
 
-magScale = mpu.magScale # Get magnetometer soft iron distortion
-mbias = mpu.mbias # Get magnetometer hard iron distortion
+print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+'Calibrating MPU9250 sensors ...')
 
+magScale = mpu.magScale # Get magnetometer soft iron distortion
+
+print(Style.RESET_ALL + Fore.YELLOW + '[ set-up ] ' + Style.RESET_ALL +
+'Calibrating MPU9250 sensors ...')
+
+mbias = mpu.mbias # Get magnetometer hard iron distortion
+print(Style.RESET_ALL + Fore.GREEN + '[ ok ] ' + Style.RESET_ALL +
+    'Calibrated MPU9250 !\n\n')
+sleep(1)
 time = deque(maxlen=30)  # Time for X-axis
 time.append(1)
 
@@ -93,14 +118,13 @@ colors['text']
 GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
 
 FA = "https://use.fontawesome.com/releases/v5.15.1/css/all.css"
-PLOTLY_LOGO = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/satellite_1f6f0.png"
+LOGO = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/satellite_1f6f0.png"
 
 app = dash.Dash(
 	__name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP, FA],
 	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
-
 app.title = "📡 SIMES-1"
 
 sidebar = html.Div(
@@ -108,7 +132,7 @@ sidebar = html.Div(
         html.Div(
             [
                 #  width: 3rem ensures the logo is the exact width of the collapsed sidebar (acounting for padding)
-                html.Img(src=PLOTLY_LOGO, style={"width":"4rem"}),
+                html.Img(src=LOGO, style={"width":"4rem"}),
             ],
             className="sidebar-header",
         ),
@@ -156,8 +180,11 @@ server = app.server
 app_color = {"graph_bg": "#082255", "graph_line": "#007ACE"}
 
 ############################################################
-# App layout
+#  App layouts
 ############################################################
+print(Style.RESET_ALL + Fore.RED + '[ ok ] ' + Style.RESET_ALL +
+    'Now running app server!')
+#  Home / Stats menu
 homeDir = html.Div(
     [
         # Header
@@ -165,13 +192,13 @@ homeDir = html.Div(
             [
                 html.Div(
                     [html.H4(
-                        'SIMES-1 CANSAT - DRAFT DASHBOARD',
+                        'SIMES-1 CANSAT',
                         className='app__header__title'
                     ),
                         html.P(
                         'This app continually queries a SQL database and displays live charts',
                         className='app__header__title--grey',
-                    ),
+                        ),
                     ],
                     className='app__header__desc'
                 ),
@@ -199,8 +226,8 @@ homeDir = html.Div(
                                 id='HDC-live',  # ID
                                 figure=dict(
                                     layout=dict(
-                                                plot_bgcolor=app_color['graph_bg'],
-                                                paper_bgcolor=app_color['graph_bg'],
+                                            plot_bgcolor=app_color['graph_bg'],
+                                            paper_bgcolor=app_color['graph_bg'],
                                     ),
                                 ),
                             ),
@@ -276,6 +303,41 @@ homeDir = html.Div(
     className='app__container',
 )
 
+#  Demo / Debug menu
+demoDir = html.Div(
+    [
+        # Header
+        html.Div(
+            [
+                html.Div(
+                    [html.H4(
+                        'Demostration / Debug menu',
+                        className='app__header__title'
+                    ),
+                    html.P(
+                    '''Charts display with random data for debug
+                    and set demo phase at each graph while the final
+                    code release is not concluded.''',
+                    className='app__header__title--grey',
+                    ),
+                    ],
+                    className='app__header__desc'
+                ),
+                html.Div(
+                    [html.Img(
+                        src=app.get_asset_url('SIMES_white.png'),
+                        className='app__menu__img',
+                    ),
+                    ],
+                    className='app__header__logo',
+                ),
+            ],
+            className='app__header',
+        ),
+    ],
+    className='app__container'
+)
+
 
 app.layout = html.Div(
     [dcc.Location(id="url"), sidebar, content]
@@ -286,9 +348,9 @@ def render_page_content(pathname):
     if pathname == "/":
         return homeDir
     elif pathname == "/demo":
-        return html.P("Here are our demostration with random data!")
+        return demoDir
     elif pathname == "/github":
-        return html.P("This is your calendar... not much in the diary...")
+        return html.P("Redirecting to GitHub repository...")
 
     #  If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
@@ -300,9 +362,8 @@ def render_page_content(pathname):
     )
 
 
+#  Helper function to get the current time in seconds.
 def get_current_time():
-    """ Helper function to get the current time in seconds. """
-
     now = dt.datetime.now()
     total_time = (now.hour * 3600) + (now.minute * 60) + (now.second)
     return total_time
@@ -484,6 +545,9 @@ def update_graph_scatter(n):
 
     return dict(data=[trace], layout=layout)
 
+###########################
+# Usage and args commands #
+###########################
 tab = '    '
 try:
     if sys.argv[1] == '--dev':
