@@ -27,6 +27,25 @@ init(autoreset=True)
 print(Style.RESET_ALL + Fore.GREEN + '[ ok ] ' + Style.RESET_ALL +
     'Initializing script ...')
 
+############################################################
+# App set-up
+############################################################
+colors = {'background':'#111111', 'text':'#7FDBFF'}
+colors['text']
+
+# 1000 miliseconds = 1 second
+GRAPH_INTERVAL = os.environ.get("GRAPH_INTERVAL", 1000)
+
+FA = "https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+LOGO = "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/satellite_1f6f0.png"
+
+app = dash.Dash(
+	__name__,
+    external_stylesheets=[dbc.themes.BOOTSTRAP, FA],
+	meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
+)
+app.title = "📡 SIMES-1"
+
 ####################################
  # Graph container HDC1080 SET-UP #
 ####################################
@@ -552,15 +571,22 @@ tab = '    '
 try:
     if sys.argv[1] == '--dev':
         if __name__ == '__main__':
-            app.run_server(host='192.168.10.37', debug=True)
+            app.run_server(host='192.168.10.68', debug=True)
+#            app.run_server(debug=True)
+
     elif sys.argv[1] == '--public':
         if __name__ == '__main__':
-            app.run_server(host='192.168.10.37', debug=True, dev_tools_ui=False)
+            app.run_server(host='192.168.10.68', debug=True, dev_tools_ui=False)
+#            app.run_server(debug=True, dev_tools_ui=False)
+
     else:
         print(f'\nUsage:\n  python3 app.py [options]\n\nOptions:\n\
           --dev{tab}Developer mode with UI Dev Tools.\n\
           --public{tab}Presenter mode without Dev Tools & Debug.\n')
+        exit()
+
 except IndexError:
     print(f'\nUsage:\n  python3 app.py [options]\n\nOptions:\n\
       --dev   {tab}Developer mode with UI Dev Tools.\n\
       --public{tab}Presenter mode without Dev Tools & Debug.\n')
+    exit()
