@@ -1,10 +1,16 @@
 #pyserial library is required for working
+from datetime import *
 import serial
+import csv
+import time
 
 mport = '/dev/ttyAMA0'                     #choose your com port on which you connected your neo 6m GPS
 #mport = "/dev/ttyAMA0"            #for Raspberry Pi pins
 #mport = "/dev/ttyUSB0"            #for Raspberry Pi USB
 
+with open('NEO-6M.csv', 'w', newline='') as file:
+    write = csv.writer(file)
+    write.writerow(['Time', 'Latitude','Longitude'])
 
 def parseGPS(data):
     if data[0:6] == "$GPGGA":
@@ -42,11 +48,19 @@ def decode(coord):
 ser = serial.Serial(mport,9600,timeout = 2)
 
 while True:
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+
     try:
         dat = ser.readline().decode()
         mylat,mylon = parseGPS(dat)
         #mylat,mylon,myalt = parseGPS(dat)
         print("Lat: -", mylat, "---", "Lon: -", mylon)
-        #print("Lat: ", mylat, "---", "Lon: ", mylon, "---", "alt: ", myalt)
+        #print("Lat: -", mylat, "---", "Lon: -", mylon, "---", "alt: ", myalt)
+
+        with open('NEO-6M.csv', 'a+', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([current_time, mylat, mylon])
+
     except:
-        print("")
+        continue
