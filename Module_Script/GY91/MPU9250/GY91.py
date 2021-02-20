@@ -40,7 +40,6 @@ abias_slave = mpu.abias_slave # Get the slave accelerometer biases
 gbias = mpu.gbias # Get the master gyroscope biases
 gbias_slave = mpu.gbias_slave # Get the slave gyroscope biases
 
-
 ##  Magnetometer
 mpu.calibrateAK8963() # Calibrate sensors
 mpu.configure() # The calibration function resets the sensors, so you need to reconfigure them

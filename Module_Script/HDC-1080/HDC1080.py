@@ -1,7 +1,7 @@
 import sys
 from colorama import Fore, Back, Style
 import SDL_Pi_HDC1080
-from datetime import * 
+from datetime import *
 import time
 import csv
 import sys
@@ -11,7 +11,7 @@ os.system('clear')
 
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
-with open('HDC-1080-2.csv', 'w', newline='') as file:
+with open('HDC-1080.csv', 'w', newline='') as file:
 	write = csv.writer(file)
 	write.writerow(['Time', 'Temperature(C)', 'Humidity'])
 
@@ -44,4 +44,3 @@ while True:
 
 	SS += 1
 	time.sleep(1)
-
