@@ -62,5 +62,9 @@ while True:
             writer = csv.writer(file)
             writer.writerow([current_time, mylat, mylon])
 
+    except KeyboardInterrupt:
+        print('\nExiting...')
+        break
+
     except:
         continue
