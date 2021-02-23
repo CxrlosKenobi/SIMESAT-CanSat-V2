@@ -5,4 +5,4 @@
 - [About pyLoraRFM9x](pypi.org/project/pyLoraRFMx/)
 
 # Media to View
-![Raspberry Pi Zero W Pinout](https://i2.wp.com/peppe8o.com/wp-content/uploads/2020/09/Raspberry-PI-Zero-Pinout-schema.jpg?resize=910%2C657&ssl=1)
+![Raspberry Pi Zero W Pinout](https://raw.githubusercontent.com/SeeedDocument/Raspberry-Pi-Zero-W/master/img/Raspberry-Pi-Zero-W/Raspberry-Pi-Zero-W-c.jpg)
