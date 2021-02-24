@@ -9,13 +9,13 @@ def on_recv(payload):
     print("RSSI: {}; SNR: {}".format(payload.rssi, payload.snr))
 
 
-lora = LoRa(0, 17, 2, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=True) #GPIO
+lora = LoRa(1, 17, 101, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=True) #GPIO
 lora.on_recv = on_recv
 
 lora.set_mode_tx()
 while True:
     message = "Hello there!"
-    status = lora.send_to_wait(message, 10, retries=2)
+    status = lora.send_to_wait(message, 101, retries=2)
 
     if status is True:
         print("Message sent!")
