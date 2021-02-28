@@ -10,7 +10,7 @@ def on_recv(payload):
 
 # Use chip select 0. GPIO pin 17 will be used for interrupts
 # The address of this device will be set to 2
-lora = LoRa(1, 17, 10, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=True)
+lora = LoRa(1, 25, 10, modem_config=ModemConfig.Bw125Cr45Sf128, tx_power=14, acks=False)
 lora.on_recv = on_recv
 
 lora.set_mode_rx() # Turn on the "recivier mode (rx)"
@@ -21,6 +21,7 @@ while True:
         print(lora.on_recv)
     except:
         print("Error")
+        break
 
 # Send a message to a recipient device with address 10
 # Retry sending the message twice if we don't get an  acknowledgment from the recipient
