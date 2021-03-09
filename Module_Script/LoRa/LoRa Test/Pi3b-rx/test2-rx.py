@@ -8,9 +8,15 @@ def on_recv(payload):
 
 
 # Use chip select 0. GPIO pin 17 will be used for interrupts
+<<<<<<< HEAD
 # The address of this device will be set to 2
 #sleep() # This is just a testing line.
 lora = LoRa(1, 25, 101, modem_config=ModemConfig.Bw125Cr45Sf2048, tx_power=14, acks=True)
+=======
+# The address of this device will be set to 101
+sleep() # This is just a testing line.
+lora = LoRa(1, 25, 101, modem_config=ModemConfig.Bw125Cr45Sf2048, tx_power=14, acks=False)
+>>>>>>> 02cd312d697a23873729b57efb4ee36e74e9dcc6
 lora.on_recv = on_recv
 
 lora.set_mode_rx() # Turn on the "recivier mode (rx)"
