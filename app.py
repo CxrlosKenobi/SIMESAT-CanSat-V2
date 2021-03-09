@@ -178,9 +178,10 @@ sidebar = html.Div(
                     [
                         #html.I(className="fas fa-envelope-open-t mr-2"),
                         html.I(className="fab fa-github mr-2"),
-                        html.Span("GitHub repo"),
+                        html.Span("GitHub Repository"),
                     ],
                     href="https://github.com/CxrlosKenobi/SIMESAT-CanSat-v1",
+                    target="_blank",
                     active="exact",
                     className="sidebar__header__text--grey",
                 ),
@@ -222,7 +223,8 @@ homeDir = html.Div(
                     className='app__header__desc'
                 ),
                 html.Div(
-                    [html.Img(
+                    [html.A(href="https://centrosimes.cl/"),
+                    html.Img(
                         src=app.get_asset_url('SIMES_white.png'),
                         className='app__menu__img',
                     )
