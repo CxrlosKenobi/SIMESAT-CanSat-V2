@@ -23,8 +23,8 @@ def transmitPackets(Payload):
         # rfm9x.destination = 2
 
         while True:
-            print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
-            return rfm9x.send(bytes(Payload, "UTF-8"))
+            rfm9x.send(bytes(Payload, "UTF-8"))
+            return print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
 
     except KeyboardInterrupt:
         print('\n[ ! ] Stopped')
