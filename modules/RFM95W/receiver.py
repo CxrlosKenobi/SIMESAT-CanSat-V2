@@ -1,9 +1,11 @@
+from colorama import init, Fore, Back, Style
 import board
 import digitalio
 import busio
 import adafruit_rfm9x
 import time as t
 import random
+init(autoreset=True)
 
 try:
     RADIO_FREQ_MHZ = 915.0
@@ -14,16 +16,13 @@ try:
     rfm9x.tx_power = 23
 
     while True:
-        t.sleep(1)
-
         packet = rfm9x.receive(timeout=1)
 
         if packet is not None:
             packet_text = str(packet, 'ascii')
             print('Received: {0}'.format(packet_text))
-
         else:
-            print("No packets recivied...")
+            print("No packets received...")
 
 except KeyboardInterrupt:
-    print('Canceled')
+    print('\n[ ! ] Stopped')

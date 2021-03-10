@@ -1,4 +1,4 @@
-# Module's Output Syntax 
+# Module's Output Syntax
 ## GY-91
 > **Time,Acelerometer,Gyroscope,Magnetometer** <br>
 > 11:51:02,"[-0.05835, 0.00293, 0.983643]","[0.946045, -0.366211, -0.061035]","[62.318376, 68.239793, -27.895673]" <br>
@@ -14,4 +14,3 @@
 ## NEO-6M
 `
 `
-

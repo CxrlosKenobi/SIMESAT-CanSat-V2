@@ -23,8 +23,8 @@ def transmitPackets(Payload):
         rfm9x.tx_power = 23 # min 5dB; max 23dB
 
         while True:
-            rfm9x.send(bytes(Payload, "UTF-8"))
             print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
+            return rfm9x.send(bytes(Payload, "UTF-8"))
 
     except KeyboardInterrupt:
-        print('\nStopped')
+        print('\n[ ! ] Stopped')
