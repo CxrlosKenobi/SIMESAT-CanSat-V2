@@ -16,11 +16,11 @@ def transmitPackets(Payload):
     spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
     try:
         rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ, baudrate=BAUDRATE)
-        rfm9x.enable_crc = True
-        rfm9x.ack_delay = .1
-        rfm9x.node = 1
-        rfm9x.destination = 2
         rfm9x.tx_power = 23 # min 5dB; max 23dB
+        # rfm9x.enable_crc = True
+        # rfm9x.ack_delay = .1
+        # rfm9x.node = 1
+        # rfm9x.destination = 2
 
         while True:
             print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
