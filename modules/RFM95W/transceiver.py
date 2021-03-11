@@ -28,3 +28,4 @@ def transmitPackets(Payload):
 
     except KeyboardInterrupt:
         print('\n[ ! ] Stopped')
+transmitPackets()

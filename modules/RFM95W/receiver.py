@@ -29,3 +29,4 @@ def receivePackets():
 
     except KeyboardInterrupt:
         print('\n[ ! ] Stopped')
+receivePackets()
