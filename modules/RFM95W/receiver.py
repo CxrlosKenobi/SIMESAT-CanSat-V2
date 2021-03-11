@@ -16,17 +16,31 @@ def receivePackets():
         rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ, baudrate=1000000)
         rfm9x.tx_power = 23
 
-        print('[ ? ] Waiting for packets ...')
+        times = 0
+
+        print(Fore.RED + '[ ? ] Waiting for packets ...')
+
         while True:
             packet = rfm9x.receive(timeout=3)
 
             if packet is not None:
                 packet_text = str(packet, 'ascii')
                 rssi = rfm9x.last_rssi
-                print(f'\nReceived (RAW bytes): {packet}')
+                times += 1
+
+                print(Fore.GREEN + f'\nPackets sents: [{times}] times.')
+                print(f'Received (RAW bytes): {packet}')
                 print(f'Received signal strength: {rssi} dB\n')
                 print(f'Received (ASCII): {packet_text}')
 
+
+            elif packet is None:
+                print(Fore.RED + '[ X ] The conection is interrupted.')
+
     except KeyboardInterrupt:
         print('\n[ ! ] Stopped')
+
+    except UnicodeDecodeError:
+        pass
+
 receivePackets()
