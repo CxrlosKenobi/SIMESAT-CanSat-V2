@@ -1,4 +1,5 @@
 from colorama import init, Fore, Back, Style
+import sys
 import board
 import digitalio
 import busio
