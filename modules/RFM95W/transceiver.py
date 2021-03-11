@@ -3,6 +3,7 @@ import sys
 import board
 import digitalio
 import busio
+import SDL_Pi_HDC1080
 import adafruit_rfm9x
 init(autoreset=True)
 
