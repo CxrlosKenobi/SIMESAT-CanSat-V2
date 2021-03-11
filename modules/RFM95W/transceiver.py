@@ -22,10 +22,11 @@ def transmitPackets(Payload):
         # rfm9x.node = 1
         # rfm9x.destination = 2
 
-        while True:
-            rfm9x.send(bytes(Payload, "UTF-8"))
-            return print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
+	rfm9x.send(bytes(Payload, "UTF-8"))
+        return print(Fore.GREEN + '[ ok ]' + Fore.WHITE + ' Transmitting packets...' + Style.RESET_ALL)
 
     except KeyboardInterrupt:
         print('\n[ ! ] Stopped')
-transmitPackets()
+
+while True:
+	transmitPackets(Payload='Eh, futuro; Code; Carlos Adonis, Vaso Mouse, Raton')
