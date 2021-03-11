@@ -4,9 +4,10 @@ import board
 import digitalio
 import busio
 import adafruit_rfm9x
+init(autoreset=True)
+
 sys.path.append('./SDL_Pi_HDC1080_Python3')
 hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
-init(autoreset=True)
 
 def transmitPackets(Payload):
     if len(Payload) > 252:
