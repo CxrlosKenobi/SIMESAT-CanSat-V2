@@ -10,3 +10,4 @@
 - [ ] Clone the main repository.
 - [ ] Install requirements.
 - [ ] Test the code after cloned.
+- [ ] Add exceptions to frequent errors like OSError
