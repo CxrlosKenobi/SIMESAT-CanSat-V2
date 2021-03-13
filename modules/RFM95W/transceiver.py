@@ -3,12 +3,8 @@ import sys
 import board
 import digitalio
 import busio
-import SDL_Pi_HDC1080
 import adafruit_rfm9x
 init(autoreset=True)
-
-sys.path.append('./SDL_Pi_HDC1080_Python3')
-hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
 def transmitPackets(Payload):
     if len(Payload) > 252:
@@ -34,4 +30,4 @@ def transmitPackets(Payload):
         print('\n[ ! ] Stopped')
 
 while True:
-	transmitPackets(Payload=str(round(hdc1080.readTemperature(),6)))
+	transmitPackets(Payload='Hello world!!')
