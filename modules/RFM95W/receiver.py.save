@@ -4,6 +4,8 @@ import digitalio
 import time as t
 import board
 import busio
+import os
+
 init(autoreset=True)
 
 def receivePackets():
@@ -30,8 +32,8 @@ def receivePackets():
 
                 print(Fore.GREEN + f'\nPackets sents: [{times}] times.')
                 print(f'Received (RAW bytes): {packet}')
-                print(f'Received signal strength: {rssi} dB\n' + f'\nType: {type(rssi)}\n')
-                print(f'Received (ASCII): {packet_text}')
+                print(f'Received signal strength: {rssi} dB\n')
+                print(f'Received (ASCII): {packet_text}
 
 
             elif packet is None:
