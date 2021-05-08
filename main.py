@@ -9,10 +9,12 @@ from data import cansat_csv
 # neo6m_csv = cansat_csv(file_name = "data/NEO-6M.csv", headers = ["Latitude", "Longitude"])
 
 while True:
+    """
     # BUZZER
     buzz = Buzzer()
     buzz.beep()
     print("SENT BUZZER SIGNAL")
+    """
 
     # HDC1080
     temperature, humidity = HDC1080()
