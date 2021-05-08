@@ -1,4 +1,4 @@
-from modules import buzzer
+# from modules import buzzer
 from modules import HDC1080
 from modules import NEO6M
 from modules import receiver
