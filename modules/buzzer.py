@@ -22,4 +22,4 @@ class Buzzer(self):
 		GPIO.output(pin, False)
 		sleep(2)
 
-	GPIO.cleanup()
+		GPIO.cleanup()
