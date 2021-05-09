@@ -103,13 +103,13 @@ def MPU9250_accel():
 def MPU9250_gyros():
     gyroscope = mpu.readGyroscopeMaster()
 
-	#Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
-	xG = round(gyroscope[0], 6)
-	yG = round(gyroscope[1], 6)
-	zG = round(gyroscope[2], 6)
-	outG = [xG, yG, zG]
+    #Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
+    xG = round(gyroscope[0], 6)
+    yG = round(gyroscope[1], 6)
+    zG = round(gyroscope[2], 6)
+    outG = [xG, yG, zG]
 
-	return outG
+    return outG
 
 def MPU9250_magnet():
     magnetometer = mpu.readMagnetometerMaster()
