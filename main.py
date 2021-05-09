@@ -215,7 +215,7 @@ def transmitPackets(Payload):
 
 ## BUZZER
 class Buzzer(self):
-    	def __init__(self):
+    def __init__(self):
 		pin = 12
 
 		GPIO.setmode(GPIO.BOARD)
