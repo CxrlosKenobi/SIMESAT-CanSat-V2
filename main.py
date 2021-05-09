@@ -144,6 +144,7 @@ def get_current_time():
 
 
 ## NEO6M
+'''
 #choose your com port on which you connected your neo 6m GPS
 mport = "/dev/ttyAMA0"            #for Raspberry Pi pins
 #mport = "/dev/ttyUSB0"            #for Raspberry Pi USB
@@ -185,6 +186,7 @@ def GPS():
     mylat,mylon = parseGPS(dat)
 
     return mylat, mylon
+'''
 
 ## TRANSCEIVER 
 # init(autoreset=True)
@@ -210,6 +212,7 @@ def transmitPackets(Payload):
 
     return "[ ok ] Sending packages"
 
+
 ## BUZZER
 class Buzzer(self):
     	def __init__(self):
@@ -234,6 +237,7 @@ class Buzzer(self):
 
 		GPIO.cleanup()
 
+
 ## MAIN PROGRAM
 while True:
     # BUZZER
@@ -247,7 +251,9 @@ while True:
     print("HDC1080 SIGNAL READY")
 
     # NEO6M
-    neo6m_la, neo6m_lo = GPS()
+    # neo6m_la, neo6m_lo = GPS()
+    neo_la = "NO DATA"
+    neo_lo = "NO DATA"
 
     print("NEO6M SIGNAL READY")
 
