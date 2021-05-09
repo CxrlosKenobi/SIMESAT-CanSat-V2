@@ -114,13 +114,13 @@ def MPU9250_gyros():
 def MPU9250_magnet():
     magnetometer = mpu.readMagnetometerMaster()
 
-	#Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
-	xM = round(magnetometer[0], 6)
-	yM = round(magnetometer[1], 6)
-	zM = round(magnetometer[2], 6)
-	outM = [xM, yM, zM]
+    #Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
+    xM = round(magnetometer[0], 6)
+    yM = round(magnetometer[1], 6)
+    zM = round(magnetometer[2], 6)
+    outM = [xM, yM, zM]
 
-	return outM
+    return outM
 
 
 ## HDC1080
