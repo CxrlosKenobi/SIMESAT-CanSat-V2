@@ -3,8 +3,8 @@ import sys
 import os
 
 
-def HDC1080()
-	sys.path.append('./SDL_Pi_HDC1080')
+def HDC1080():
+	sys.path.append('./SDL_Pi_HDC1080_Python3')
 
 	hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 

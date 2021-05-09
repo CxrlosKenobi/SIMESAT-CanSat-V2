@@ -4,7 +4,7 @@ import digitalio
 import busio
 import adafruit_rfm9x
 
-init(autoreset=True)
+# init(autoreset=True)
 
 def transmitPackets(Payload):
     if len(Payload) > 252:
@@ -24,6 +24,5 @@ def transmitPackets(Payload):
     #rfm9x.destination = 2
 
     rfm9x.send(bytes(Payload, "UTF-8"))
-    
-    return "[ ok ] Sending packages"
 
+    return "[ ok ] Sending packages"
