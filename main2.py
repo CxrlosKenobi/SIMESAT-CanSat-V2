@@ -48,7 +48,7 @@ def BMP_press():  # Get pressure
     return pressure
 
 
-def BMP_alt():  # Get altitude
+def BMP_alt(pressure):  # Get altitude
     baseline_values = []
     baseline_size = 100
 
@@ -268,7 +268,7 @@ while True:
 
     # BMP280
     bmp280_pr = BMP_press()
-    bmp_al = BMP_alt()
+    bmp_al = BMP_alt(BMP_press())
 
     print("BMP280 SIGNAL READY")
 
