@@ -64,6 +64,7 @@ def BMP_alt():  # Get altitude
 
 
 # MPU9250
+"""
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68,  # In 0x68 Address
@@ -139,7 +140,7 @@ def HDC1080():
     humidity = round(hdc1080.readHumidity(), 1)
 
     return temperature, humidity
-
+"""
 
 # Get current time
 def get_current_time():
@@ -275,9 +276,12 @@ while True:
     mpu9250_gy = MPU9250_gyros()
     mpu9250_ma = MPU9250_magnet()
 
+    mpu9250_ac = "NULL"
+    mpu9250_gy = "NULL"
+    mpu9250_ma = "NULL"
+
     print("MPU9250 SIGNAL READY")
 
     payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"
-    # payload = f"""{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"""
 
     transmitPackets(payload)
