@@ -301,8 +301,4 @@ while True:
     except KeyboardInterrupt:
         print("[ ! ] Exiting")
         print()
-<<<<<<< HEAD
         exit()
-=======
-        exit()
->>>>>>> ecfe76b06cf85f642a90e7440a04c8c2402efe05
