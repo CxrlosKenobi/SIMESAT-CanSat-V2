@@ -128,7 +128,7 @@ def MPU9250_magnet():
     outM = [xM, yM, zM]
 
     return outM
-
+"""
 
 # HDC1080
 def HDC1080():
@@ -140,7 +140,7 @@ def HDC1080():
     humidity = round(hdc1080.readHumidity(), 1)
 
     return temperature, humidity
-"""
+
 
 # Get current time
 def get_current_time():
