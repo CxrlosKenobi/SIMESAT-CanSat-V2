@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 import SDL_Pi_HDC1080
 import sys
 import os
