@@ -221,28 +221,26 @@ def transmitPackets(Payload):
 
 
 # BUZZER
-class Buzzer(self):
-    def __init__(self):
-        pin = 12
+pin = 12
 
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(pin, GPIO.OUT)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(pin, GPIO.OUT)
 
-        p = GPIO.PWM(pin, 300)
+p = GPIO.PWM(pin, 300)
 
-    def beep(self):
-        GPIO.setwarnings(False)
-        GPIO.output(pin, True)
-        p.start(0)
-        p.ChangeDutyCycle(100)
-        p.ChangeFrequency(100)
-        sleep(0.5)
-        p.stop()
+def beep():
+    GPIO.setwarnings(False)
+    GPIO.output(pin, True)
+    p.start(0)
+    p.ChangeDutyCycle(100)
+    p.ChangeFrequency(100)
+    sleep(0.5)
+    p.stop()
 
-        GPIO.output(pin, False)
-        sleep(2)
+    GPIO.output(pin, False)
+    sleep(2)
 
-        GPIO.cleanup()
+    GPIO.cleanup()
 
 
 # MAIN PROGRAM
