@@ -270,6 +270,7 @@ while True:
 
     print("MPU9250 SIGNAL READY")
     
-    payload = f'{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}'
+    payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"
+    # payload = f"""{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"""
 
     transmitPackets(payload)
