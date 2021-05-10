@@ -247,8 +247,7 @@ def beep():
 # MAIN PROGRAM
 while True:
     # BUZZER
-    buzz = Buzzer()
-    buzz.beep()
+    beep()
     print("BUZZER SIGNAL READY")
 
     # HDC1080
