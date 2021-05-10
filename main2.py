@@ -222,6 +222,8 @@ def transmitPackets(Payload):
 
 
 # BUZZER
+GPIO.cleanup()
+
 pin = 12
 
 GPIO.setmode(GPIO.BOARD)
