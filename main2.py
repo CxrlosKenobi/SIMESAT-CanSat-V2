@@ -223,6 +223,7 @@ def transmitPackets(Payload):
 
 
 # BUZZER
+"""
 GPIO.cleanup()
 
 pin = 12
@@ -245,13 +246,13 @@ def beep():
     sleep(2)
 
     GPIO.cleanup()
-
+"""
 
 # MAIN PROGRAM
 while True:
     # BUZZER
-    beep()
-    print("BUZZER SIGNAL READY")
+    # beep()
+    #print("BUZZER SIGNAL READY")
 
     # HDC1080
     hdc1080_te, hdc1080_hu = HDC1080()
