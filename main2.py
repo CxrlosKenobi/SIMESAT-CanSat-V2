@@ -8,9 +8,12 @@ import digitalio
 import busio
 import adafruit_rfm9x
 import csv
+from datetime import datetime
+import datetime as dt
 from bmp280 import BMP280
 from mpu9250_jmdev.mpu_9250 import MPU9250
 from mpu9250_jmdev.registers import *
+from time import *
 
 try:
     from smbus2 import SMBus  # (1)
@@ -64,7 +67,6 @@ def BMP_alt(pressure):  # Get altitude
 
 
 # MPU9250
-"""
 mpu = MPU9250(
     address_ak=AK8963_ADDRESS,
     address_mpu_master=MPU9050_ADDRESS_68,  # In 0x68 Address
@@ -128,7 +130,7 @@ def MPU9250_magnet():
     outM = [xM, yM, zM]
 
     return outM
-"""
+
 
 # HDC1080
 def HDC1080():
@@ -218,6 +220,7 @@ def transmitPackets(Payload):
     #rfm9x.destination = 2
 
     rfm9x.send(bytes(Payload, "UTF-8"))
+    # rfm9x.send(Payload)
 
     return "[ ok ] Sending packages"
 
@@ -250,39 +253,52 @@ def beep():
 
 # MAIN PROGRAM
 while True:
-    # BUZZER
-    # beep()
-    #print("BUZZER SIGNAL READY")
+    try:
+        # Current time
+        now = datetime.now()
 
-    # HDC1080
-    hdc1080_te, hdc1080_hu = HDC1080()
+        # BUZZER
+        # beep()
+        #print("BUZZER SIGNAL READY")
 
-    print("HDC1080 SIGNAL READY")
+        # HDC1080
+        hdc1080_te, hdc1080_hu = HDC1080()
 
-    # NEO6M
-    # neo6m_la, neo6m_lo = GPS()
-    neo_la = "NO DATA"
-    neo_lo = "NO DATA"
+        #print("HDC1080 SIGNAL READY")
 
-    print("NEO6M SIGNAL READY")
+        # NEO6M
+        # neo6m_la, neo6m_lo = GPS()
+        neo6m_la = "NO DATA"
+        neo6m_lo = "NO DATA"
 
-    # BMP280
-    bmp280_pr = BMP_press()
-    bmp_al = BMP_alt(BMP_press())
+        #print("NEO6M SIGNAL READY")
 
-    print("BMP280 SIGNAL READY")
+        # BMP280
+        bmp280_pr = round(BMP_press(), 2)
+        bmp_al = round(BMP_alt(BMP_press()), 2)
 
-    # MPU9250
-    mpu9250_ac = MPU9250_accel()
-    mpu9250_gy = MPU9250_gyros()
-    mpu9250_ma = MPU9250_magnet()
+        #print("BMP280 SIGNAL READY")
+        
+        # MPU9250
+        mpu9250_ac = MPU9250_accel()
+        mpu9250_gy = MPU9250_gyros()
+        mpu9250_ma = MPU9250_magnet()
+        """
+        mpu9250_ac = "NULL"
+        mpu9250_gy = "NULL"
+        mpu9250_ma = "NULL"
+        """
+        #print("MPU9250 SIGNAL READY")
 
-    mpu9250_ac = "NULL"
-    mpu9250_gy = "NULL"
-    mpu9250_ma = "NULL"
+        payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"
 
-    print("MPU9250 SIGNAL READY")
+        transmitPackets(payload)
 
-    payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"
+        print("[ ok ] Payload sent...")
 
-    transmitPackets(payload)
+        sleep(1)
+
+    except KeyboardInterrupt:
+        print("[ ! ] Exiting")
+        print()
+        exit()
