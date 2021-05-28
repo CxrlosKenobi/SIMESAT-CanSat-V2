@@ -2,7 +2,7 @@ from mpu9250_jmdev.mpu_9250 import MPU9250
 from mpu9250_jmdev.registers import *
 
 
-class MPU9250:
+class MPU:
 	def __init__(self):
 		mpu = MPU9250(
 			address_ak=AK8963_ADDRESS,

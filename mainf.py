@@ -12,9 +12,9 @@ from datetime import datetime
 import datetime as dt
 from time import *
 
-from modules import MPU9250
+from modules import MPU
 
-MPU = MPU9250()
+MPU = MPU()
 print(MPU.accel())
 exit()
 
