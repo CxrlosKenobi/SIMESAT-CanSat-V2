@@ -16,7 +16,7 @@ from modules.MPU9250 import MPU
 from modules.HDC1080 import HDC
 
 MPU = MPU()
-HCD = HDC()
+HDC = HDC()
 
 print(HDC.temp(), HDC.hum())
 exit()
