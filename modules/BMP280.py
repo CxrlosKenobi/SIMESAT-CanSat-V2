@@ -1,6 +1,5 @@
 from bmp280 import BMP280
 from subprocess import PIPE, Popen
-import time
 
 try:
     from smbus2 import SMBus
@@ -13,7 +12,7 @@ class BMP:
     def __init__(self):
         # Initialize the BMP280
         self.bus = SMBus(1)
-        self.bmp280 = BMP280(i2c_dev=bus)
+        self.bmp280 = BMP280(i2c_dev=self.bus)
 
     def temp(self):
         temperature = self.bmp280.get_temperature()
