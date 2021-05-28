@@ -28,7 +28,7 @@ class BMP:
 
         # Calibration with 100 sampling
         for i in range(baseline_size):
-            baseline_values.append(self.bmp280.get_pressure())
+            baseline_values.append(round(self.bmp280.get_pressure(), 4))
 
         baseline = sum(baseline_values[:-25]) / len(baseline_values[:-25])
         altitude = self.bmp280.get_altitude(qnh=baseline)
