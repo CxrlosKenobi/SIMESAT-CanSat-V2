@@ -13,10 +13,10 @@ class MPU:
 			afs=AFS_8G,
 			mfs=AK8963_BIT_16,
 			mode=AK8963_MODE_C100HZ)
-		mpu.configure()
+		self.mpu.configure()
 
 	def accel(self):
-		accelerometer = mpu.readAccelerometerMaster()
+		accelerometer = self.mpu.readAccelerometerMaster()
 
 		#Accelerometer sorted values if [0][1][2] are X,Y,Z axis respectively
 		xA = round(accelerometer[0], 6)
