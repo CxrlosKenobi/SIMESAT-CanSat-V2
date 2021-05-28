@@ -1,10 +1,8 @@
-import sys
 import board
 import digitalio
 import busio
 import adafruit_rfm9x
 
-# init(autoreset=True)
 
 def transmitPackets(Payload):
     if len(Payload) > 252:

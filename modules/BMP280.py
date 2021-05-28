@@ -1,5 +1,5 @@
-from bmp280 import BMP280
 from subprocess import PIPE, Popen
+from bmp280 import BMP280
 
 try:
     from smbus2 import SMBus

@@ -3,11 +3,9 @@ from time import *
 
 class Buzzer(self):
 	def __init__(self):
-		pin = 12
-
+		self.pin = 12
 		GPIO.setmode(GPIO.BOARD)
 		GPIO.setup(pin, GPIO.OUT)
-
 		p = GPIO.PWM(pin, 300)
 
 	def beep(self):
