@@ -22,7 +22,7 @@ class BMP:
         pressure = round(self.bmp280.get_pressure(), decimal)
         return pressure
 
-    def alt(self):
+    def alt(self, decimal):
         baseline_values = []
         baseline_size = 100
 
@@ -31,7 +31,7 @@ class BMP:
             baseline_values.append(round(self.bmp280.get_pressure(), 4))
 
         baseline = sum(baseline_values[:-25]) / len(baseline_values[:-25])
-        altitude = self.bmp280.get_altitude(qnh=baseline)
+        altitude = round(self.bmp280.get_altitude(qnh=baseline), decimal)
         return altitude
 
     # Gets the CPU temperature in degrees C

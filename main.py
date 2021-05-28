@@ -15,9 +15,9 @@ MPU = MPU()
 HDC = HDC()
 BMP = BMP()
 
-print(BMP.temp(3)) 
-print(BMP.press(3))
-print(BMP.alt())
+print(BMP.temp(4)) 
+print(BMP.press(4))
+print(BMP.alt(4))
 print(BMP.comps_temp())
 exit()
 
