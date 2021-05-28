@@ -45,15 +45,14 @@ class BMP:
         factor = 1.2  # Smaller numbers adjust temp down, vice versa
         smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
         cpu_temps = []
-        cpu_temp = get_cpu_temperature()
+        cpu_temp = self.get_cpu_temperature()
         cpu_temps.append(cpu_temp)
 
         if len(cpu_temps) > smooth_size:
             cpu_temps = cpu_temps[1:]
 
         smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-        raw_temp = bmp280.get_temperature()
+        raw_temp = self.bmp280.get_temperature()
         comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
-
-        print("Compensated temperature: {:05.2f} *C".format(comp_temp))
+        # print("Compensated temperature: {:05.2f} *C".format(comp_temp))
         return comp_temp
