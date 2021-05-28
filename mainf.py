@@ -18,7 +18,7 @@ from modules.HDC1080 import HDC
 MPU = MPU()
 HCD = HDC()
 
-print(HDC.temp(), HDC.hum())
+print(HDC.temp(3), HDC.hum(3))
 exit()
 
 # CSV
