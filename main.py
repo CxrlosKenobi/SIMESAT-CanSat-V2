@@ -34,6 +34,8 @@ if __name__ == '__main__':
     while True:
         try:
             main()
+        except OSError:
+            print('\n[ ! ] Warning: OSError, running anyways :).\n')
         except KeyboardInterrupt:
-            print("[ ! ] Exiting\n")
+            print("\n[ ! ] Exiting\n")
             exit()
