@@ -14,12 +14,12 @@ class BMP:
         self.bus = SMBus(1)
         self.bmp280 = BMP280(i2c_dev=self.bus)
 
-    def temp(self):
-        temperature = self.bmp280.get_temperature()
+    def temp(self, decimal):
+        temperature = round(self.bmp280.get_temperature(), decimal)
         return temperature
 
-    def press(self):
-        pressure = self.bmp280.get_pressure()
+    def press(self, decimal):
+        pressure = round(self.bmp280.get_pressure(), decimal)
         return pressure
 
     def alt(self):
