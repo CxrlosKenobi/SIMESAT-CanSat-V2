@@ -18,7 +18,6 @@ BMP = BMP()
 print(BMP.temp(4)) 
 print(BMP.press(4))
 print(BMP.alt(4))
-print(BMP.comps_temp())
 exit()
 
 # MAIN PROGRAM

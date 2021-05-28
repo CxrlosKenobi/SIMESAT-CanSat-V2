@@ -34,25 +34,25 @@ class BMP:
         altitude = round(self.bmp280.get_altitude(qnh=baseline), decimal)
         return altitude
 
-    # Gets the CPU temperature in degrees C
-    def get_cpu_temperature(self):
-        process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
-        output, _error = process.communicate()
-        #return float(output[output.index('=') + 1:output.rindex("'")])
-        return output
+    # # Gets the CPU temperature in degrees C
+    # def get_cpu_temperature(self):
+    #     process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
+    #     output, _error = process.communicate()
+    #     #return float(output[output.index('=') + 1:output.rindex("'")])
+    #     return output
 
-    def comps_temp(self):
-        factor = 1.2  # Smaller numbers adjust temp down, vice versa
-        smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
-        cpu_temps = []
-        cpu_temp = self.get_cpu_temperature()
-        cpu_temps.append(cpu_temp)
+    # def comps_temp(self):
+    #     factor = 1.2  # Smaller numbers adjust temp down, vice versa
+    #     smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
+    #     cpu_temps = []
+    #     cpu_temp = self.get_cpu_temperature()
+    #     cpu_temps.append(cpu_temp)
 
-        if len(cpu_temps) > smooth_size:
-            cpu_temps = cpu_temps[1:]
+    #     if len(cpu_temps) > smooth_size:
+    #         cpu_temps = cpu_temps[1:]
 
-        smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-        raw_temp = self.bmp280.get_temperature()
-        comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
-        # print("Compensated temperature: {:05.2f} *C".format(comp_temp))
-        return comp_temp
+    #     smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
+    #     raw_temp = self.bmp280.get_temperature()
+    #     comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
+    #     # print("Compensated temperature: {:05.2f} *C".format(comp_temp))
+    #     return comp_temp

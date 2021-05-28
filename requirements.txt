@@ -3,11 +3,12 @@ dash_core_components==1.14.1
 dash_html_components==1.1.1
 plotly==4.14.1
 dash==1.18.1
+gunicorn==19.0.0
 colorama==0.4.3
 pandas==1.0.1
-mpu9250_jmdev==1.0.12
-gunicorn==19.0.0
-pyserial==3.5
 pynmea2==1.15.0
-adafruit-circuitpython-rfm9x==2.1.4
 numpy==1.18.1
+pyserial==3.5
+mpu9250_jmdev==1.0.12
+adafruit-circuitpython-rfm9x==2.1.4
+bmp280==0.0.3
