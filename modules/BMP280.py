@@ -8,50 +8,53 @@ try:
 except ImportError:
     from smbus import SMBus
 
-# Initialize the BMP280
-bus = SMBus(1)
-bmp280 = BMP280(i2c_dev=bus)
 
-def BMP_temp():
-    temperature = bmp280.get_temperature()
-    return temperature
+class BMP:
+    def __init__(self):
+        # Initialize the BMP280
+        self.bus = SMBus(1)
+        self.bmp280 = BMP280(i2c_dev=bus)
 
-def BMP_press():
-    pressure = bmp280.get_pressure()
-    return pressure
+    def temp(self):
+        temperature = self.bmp280.get_temperature()
+        return temperature
 
-def BMP_alt():
-    baseline_values = []
-    baseline_size = 100
+    def press(self):
+        pressure = self.bmp280.get_pressure()
+        return pressure
 
-    # Calibration with 100 sampling
-    for i in range(baseline_size):
-        baseline_values.append(pressure)
+    def alt(self):
+        baseline_values = []
+        baseline_size = 100
 
-    baseline = sum(baseline_values[:-25]) / len(baseline_values[:-25])
-    altitude = bmp280.get_altitude(qnh=baseline)
-    return altitude
+        # Calibration with 100 sampling
+        for i in range(baseline_size):
+            baseline_values.append(pressure)
 
-# Gets the CPU temperature in degrees C
-def get_cpu_temperature():
-    process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
-    output, _error = process.communicate()
-    #return float(output[output.index('=') + 1:output.rindex("'")])
-    return output
+        baseline = sum(baseline_values[:-25]) / len(baseline_values[:-25])
+        altitude = self.bmp280.get_altitude(qnh=baseline)
+        return altitude
 
-def comps_temp():
-    factor = 1.2  # Smaller numbers adjust temp down, vice versa
-    smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
-    cpu_temps = []
-    cpu_temp = get_cpu_temperature()
-    cpu_temps.append(cpu_temp)
+    # Gets the CPU temperature in degrees C
+    def get_cpu_temperature(self):
+        process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE)
+        output, _error = process.communicate()
+        #return float(output[output.index('=') + 1:output.rindex("'")])
+        return output
 
-    if len(cpu_temps) > smooth_size:
-        cpu_temps = cpu_temps[1:]
+    def comps_temp(self):
+        factor = 1.2  # Smaller numbers adjust temp down, vice versa
+        smooth_size = 10  # Dampens jitter due to rapid CPU temp changes
+        cpu_temps = []
+        cpu_temp = get_cpu_temperature()
+        cpu_temps.append(cpu_temp)
 
-    smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
-    raw_temp = bmp280.get_temperature()
-    comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
+        if len(cpu_temps) > smooth_size:
+            cpu_temps = cpu_temps[1:]
 
-    print("Compensated temperature: {:05.2f} *C".format(comp_temp))
-    return comp_temp
+        smoothed_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
+        raw_temp = bmp280.get_temperature()
+        comp_temp = raw_temp - ((smoothed_cpu_temp - raw_temp) / factor)
+
+        print("Compensated temperature: {:05.2f} *C".format(comp_temp))
+        return comp_temp
