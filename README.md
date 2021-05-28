@@ -1,4 +1,4 @@
-# SIMESAT CanSat V1
+# SIMESAT CanSat V2
 [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tZrpTUVAwrEr1ZIU1PQhDnTa7Ga5HgIw?usp=sharing) [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 > Outdated readme, come back later to get the up-to-date work info!
 
