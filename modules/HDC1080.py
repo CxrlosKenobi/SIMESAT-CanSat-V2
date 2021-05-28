@@ -8,9 +8,9 @@ class HDC:
 		self.hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
 	def temp(self, decimal):
-		temperature = round(self.hdc1080.readTemperature(), self.decimal)
+		temperature = round(self.hdc1080.readTemperature(), decimal)
 		return temperature
 
 	def hum(self, decimal):
-		humidity = round(self.hdc1080.readHumidity(), self.decimal)
+		humidity = round(self.hdc1080.readHumidity(), decimal)
 		return humidity
