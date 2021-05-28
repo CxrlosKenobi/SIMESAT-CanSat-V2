@@ -21,10 +21,11 @@ def main():
     NEO_lo = "NO DATA"
     NEO_la = "NO DATA"
 
-    payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{BMP.press(4)},{BMP.alt(4)};{HDC.temp()},{HDC.hum()};{NEO_la},{NEO_lo};{MPU.accel()};{MPU.gyros()};{MPU.magnet()}"
+    now = dt.datetime.now()
+    payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{BMP.press(4)},{BMP.alt(4)};{HDC.temp(4)},{HDC.hum(4)};{NEO_la},{NEO_lo};{MPU.accel()};{MPU.gyros()};{MPU.magnet()}"
 
     transmitPackets(payload)
-    print("[ OK ] Payload sent...")
+    print("[ OK ] Payload sent ...")
 
     sleep(1)
 
