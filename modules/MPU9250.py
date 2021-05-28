@@ -4,7 +4,7 @@ from mpu9250_jmdev.registers import *
 
 class MPU:
 	def __init__(self):
-		mpu = MPU9250(
+		self.mpu = MPU9250(
 			address_ak=AK8963_ADDRESS,
 			address_mpu_master=MPU9050_ADDRESS_68, # In 0x68 Address
 			address_mpu_slave=None,
