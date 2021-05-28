@@ -27,7 +27,7 @@ class MPU:
 		return outA
 
 	def gyros(self):
-		gyroscope = mpu.readGyroscopeMaster()
+		gyroscope = self.mpu.readGyroscopeMaster()
 
 		#Gyroscope sorted values if [0][1][2] are X,Y,Z axis respectively
 		xG = round(gyroscope[0], 6)
@@ -38,7 +38,7 @@ class MPU:
 		return outG
 
 	def magnet(self):
-		magnetometer = mpu.readMagnetometerMaster()
+		magnetometer = self.mpu.readMagnetometerMaster()
 
 		#Magnetometer sorted values if [0][1][2] are X,Y,Z axis respectively
 		xM = round(magnetometer[0], 6)

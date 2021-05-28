@@ -13,9 +13,12 @@ import datetime as dt
 from time import *
 
 from modules.MPU9250 import MPU
+from modules.HDC1080 import HDC
 
 MPU = MPU()
-print(MPU.accel())
+HCD = HDC()
+
+print(HDC.temp(), HDC.hum())
 exit()
 
 # CSV
@@ -64,18 +67,7 @@ while True:
 
         #print("BMP280 SIGNAL READY")
         
-        # MPU9250
-        mpu9250_ac = MPU9250_accel()
-        mpu9250_gy = MPU9250_gyros()
-        mpu9250_ma = MPU9250_magnet()
-        """
-        mpu9250_ac = "NULL"
-        mpu9250_gy = "NULL"
-        mpu9250_ma = "NULL"
-        """
-        #print("MPU9250 SIGNAL READY")
-
-        payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{mpu9250_ac};{mpu9250_gy};{mpu9250_ma}"
+        payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{bmp280_pr},{bmp_al};{hdc1080_te},{hdc1080_hu};{neo6m_la},{neo6m_lo};{MPU.accel()};{MPU.gyros()};{MPU.magnet()}"
 
         transmitPackets(payload)
 

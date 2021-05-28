@@ -2,13 +2,15 @@ import SDL_Pi_HDC1080
 import sys
 import os
 
+class HDC:
+	def __init__(self):
+		self.sys.path.append('./SDL_Pi_HDC1080_Python3')
+		self.hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
 
-def HDC1080():
-    	sys.path.append('./SDL_Pi_HDC1080_Python3')
+	def temp(self, decimal):
+		temperature = round(hdc1080.readTemperature(), self.decimal)
+		return temperature
 
-	hdc1080 = SDL_Pi_HDC1080.SDL_Pi_HDC1080()
-
-	temperature = round(hdc1080.readTemperature(),1)
-	humidity = round(hdc1080.readHumidity(),1)
-
-	return temperature, humidity
+	def hum(self, decimal):
+		humidity = round(hdc1080.readHumidity(), self.decimal)
+		return humidity
