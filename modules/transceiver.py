@@ -1,7 +1,7 @@
-import board
-import digitalio
-import busio
 import adafruit_rfm9x
+import digitalio
+import board
+import busio
 
 
 def transmitPackets(Payload):

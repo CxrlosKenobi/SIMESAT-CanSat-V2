@@ -1,4 +1,3 @@
-from datetime import datetime
 import datetime as dt
 from time import *
 
@@ -20,6 +19,7 @@ def get_current_time():
 def main():
     NEO_lo = "NO DATA"
     NEO_la = "NO DATA"
+    # NEO_al = "NO DATA"
 
     now = dt.datetime.now()
     payload = f"{now.strftime('%d/%m, %H:%M:%S')};{get_current_time()};{BMP.press(4)},{BMP.alt(4)};{HDC.temp(4)},{HDC.hum(4)};{NEO_la},{NEO_lo};{MPU.accel()};{MPU.gyros()};{MPU.magnet()}"
