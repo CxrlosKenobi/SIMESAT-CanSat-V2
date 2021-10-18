@@ -1,7 +1,7 @@
 import datetime as dt
 from time import *
 
-from modules.transceiver import transmitPackets
+from modules.lora import transmitPackets
 from modules.BMP280 import BMP
 from modules.MPU9250 import MPU
 from modules.HDC1080 import HDC
